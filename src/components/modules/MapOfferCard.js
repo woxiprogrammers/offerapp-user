@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import {
   CardItem,
-  // Right,
+  Button,
+  Right,
   // Body,
+  Icon,
   Text,
   Left,
   View,
   Card
 } from 'native-base';
+// import AHImage from 'react-native-auto-height-image';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import {
-  // responsiveHeight,
+  responsiveHeight,
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
@@ -21,16 +24,21 @@ import {
   colors,
  } from '../../styles';
 
- export default class SmallOfferCard extends Component {
+ export default class MapOfferCard extends Component {
    render() {
      const {
-       cardHeaderStyle,
+       cardBodyStyle,
        cardStyle,
      } = styles;
      return (
-       <TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#1E2D3E',
+            height: responsiveHeight(16.5),
+            marginTop: responsiveHeight(-1) }}
+        >
         <Card style={cardStyle}>
-          <CardItem style={cardHeaderStyle}>
+          <CardItem cardBody style={cardBodyStyle}>
           <Left
             style={{
               alignSelf: 'flex-start',
@@ -47,32 +55,49 @@ import {
             <Text
               style={{
                 marginLeft: normalize.normalize(7),
+                marginTop: responsiveHeight(0.1),
                 alignSelf: 'flex-start',
                 fontSize: responsiveFontSize(2) }}
             >Adidas, Kothrud</Text>
+            <Text
+              style={{
+                marginLeft: normalize.normalize(7),
+                marginTop: responsiveHeight(0.3),
+                alignSelf: 'flex-start',
+                fontSize: responsiveFontSize(1.5),
+                width: responsiveWidth(75),
+                textAlign: 'left' }}
+            >Shop No: 2, Next to Woodland Shop, Dahanukar A, Dahanukar Colony, Kothrud</Text>
             </Left>
-          </CardItem>
-          <CardItem cardBody>
-            <View style={{ backgroundColor: '#C0CCDA' }} />
+            <View>
+            <Right>
+              <Text
+                style={{
+                  marginRight: normalize.normalize(7),
+                  marginTop: responsiveHeight(0),
+                  alignSelf: 'flex-end',
+                  fontSize: responsiveFontSize(2) }}
+              >0.6 Km</Text>
+            </Right>
+            </View>
           </CardItem>
         </Card>
        </TouchableOpacity>
      );
    }
- }
+}
 
 const styles = StyleSheet.create({
   cardStyle: {
     flex: 1,
     marginLeft: 0,
-    marginRight: 10,
-    width: (variables.SCREEN_WIDTH * 0.45) + 15 // 15 for right side padding
+    width: responsiveWidth(100)
   },
-  cardHeaderStyle: {
-    backgroundColor: colors.smallOfferCardHeader,
+  cardBodyStyle: {
+    backgroundColor: colors.white,
     paddingRight: 0,
     paddingLeft: 0,
     paddingTop: 5,
-    height: variables.SCREEN_HEIGHT * 0.1
+    height: responsiveHeight(15),
   },
 });

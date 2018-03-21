@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import {
   CardItem,
-  // Right,
+  Button,
+  Right,
   // Body,
+  Icon,
   Text,
   Left,
-  View,
+  // View,
   Card
 } from 'native-base';
+import AHImage from 'react-native-auto-height-image';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import {
   // responsiveHeight,
@@ -21,10 +24,11 @@ import {
   colors,
  } from '../../styles';
 
- export default class SmallOfferCard extends Component {
+ export default class ListingOfferCard extends Component {
    render() {
      const {
        cardHeaderStyle,
+       cardBodyStyle,
        cardStyle,
      } = styles;
      return (
@@ -51,22 +55,34 @@ import {
                 fontSize: responsiveFontSize(2) }}
             >Adidas, Kothrud</Text>
             </Left>
+            <Right>
+              <Button transparent style={{ paddingRight: responsiveWidth(3) }}>
+                <Icon
+                  style={{ color: 'black', fontSize: responsiveFontSize(4) }}
+                  ios='ios-locate'
+                  android="md-locate"
+                />
+              </Button>
+            </Right>
           </CardItem>
-          <CardItem cardBody>
-            <View style={{ backgroundColor: '#C0CCDA' }} />
+          <CardItem cardBody style={cardBodyStyle}>
+            <AHImage
+              source={{ uri: 'http://offers.droom.in/wp-content/uploads/2016/08/offer-page.jpg' }}
+              width={responsiveWidth(95)}
+            />
           </CardItem>
         </Card>
        </TouchableOpacity>
      );
    }
- }
+}
 
 const styles = StyleSheet.create({
   cardStyle: {
     flex: 1,
     marginLeft: 0,
     marginRight: 10,
-    width: (variables.SCREEN_WIDTH * 0.45) + 15 // 15 for right side padding
+    width: (variables.SCREEN_WIDTH * 0.95)
   },
   cardHeaderStyle: {
     backgroundColor: colors.smallOfferCardHeader,
@@ -74,5 +90,10 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     paddingTop: 5,
     height: variables.SCREEN_HEIGHT * 0.1
+  },
+  cardBodyStyle: {
+    flex: 1,
+    paddingRight: 0,
+    paddingLeft: 0,
   },
 });

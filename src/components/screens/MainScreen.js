@@ -14,7 +14,14 @@ import {
   Text,
 } from 'native-base';
 import Swiper from 'react-native-swiper';
+import { Actions } from 'react-native-router-flux';
 import {
+  // responsiveHeight,
+  // responsiveWidth,
+  responsiveFontSize
+} from 'react-native-responsive-dimensions';
+import {
+  normalize,
   variables,
   // mixins,
   colors,
@@ -72,7 +79,7 @@ export default class MainScreen extends React.Component {
           iosBarStyle='light-content'
         >
           <Left>
-            <Button transparent>
+            <Button transparent style={{ padding: 0 }} onPress={Actions.drawerOpen}>
               <Icon style={{ color: 'white' }} ios='ios-menu' android="md-menu" />
             </Button>
           </Left>
@@ -81,21 +88,26 @@ export default class MainScreen extends React.Component {
           </Body>
           <Right />
         </Header>
-        <Content style={{ paddingTop: 5 }}>
+        <Content style={{ paddingTop: normalize.normalize(5) }}>
           <View style={{ flex: 1 }}>
             <View style={locationStyle}>
               <View>
-                <Text style={{ fontSize: variables.SCREEN_HEIGHT / 50 }}>YOUR LOCATION</Text>
+                <Text style={{ fontSize: responsiveFontSize(1.5) }}>YOUR LOCATION</Text>
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Icon style={{ color: 'black' }} ios='ios-pin' android="md-pin" />
-                <Text>  Vanaz Corner, Kothrud</Text>
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <Icon
+                  style={{ color: 'black', fontSize: responsiveFontSize(4) }}
+                  ios='ios-pin'
+                  android="md-pin"
+                />
+                <Text style={{ fontSize: responsiveFontSize(3) }}> Vanaz Corner, Kothrud</Text>
                 <Right>
                   <Button transparent>
                     <Text
                       style={{
-                        fontSize: variables.SCREEN_HEIGHT / 50,
-                        color: 'green',
+                        alignSelf: 'center',
+                        fontSize: responsiveFontSize(1.5),
+                        color: colors.headerColor,
                        }}
                     >CHANGE</Text>
                   </Button>
@@ -121,15 +133,16 @@ export default class MainScreen extends React.Component {
               style={{
                 backgroundColor: '#1C2A3A',
                 height: variables.SCREEN_HEIGHT * 0.4,
-                marginTop: 10,
-                paddingBottom: 10 }}
+                marginTop: normalize.normalize(5),
+                paddingBottom: normalize.normalize(10) }}
             >
               <View>
                 <Text
                   style={{
-                    paddingLeft: 10,
-                    paddingTop: 10,
-                    color: colors.white }}
+                    paddingLeft: normalize.normalize(9),
+                    paddingTop: normalize.normalize(9),
+                    color: colors.white,
+                    fontSize: responsiveFontSize(2.5) }}
                 >Top 5 Offers</Text>
               </View>
               <ScrollView
@@ -162,13 +175,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.white,
     textAlign: 'center',
-    fontSize: 18,
-    width: variables.SCREEN_WIDTH
+    fontSize: responsiveFontSize(3),
+    width: variables.SCREEN_WIDTH * 0.6
   },
   locationStyle: {
-    height: variables.SCREEN_HEIGHT / 10,
+    height: variables.SCREEN_HEIGHT * 0.1,
     backgroundColor: '#EFF2F7',
-    paddingLeft: 10
+    paddingLeft: 10,
+    paddingTop: normalize.normalize(2)
   },
   swiperStyle: {
     height: variables.SCREEN_HEIGHT * 0.25
