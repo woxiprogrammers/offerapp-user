@@ -138,6 +138,8 @@ export const getLocationFailure = (error) => {
     error
   };
 };
+
+
 export const searchLocation = (/*token,*/text) => {
   return (dispatch) => {
     dispatch(searchLocationRequest());
