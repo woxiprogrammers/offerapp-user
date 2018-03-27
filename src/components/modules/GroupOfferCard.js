@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
   CardItem,
-  Button,
-  Right,
+  // Button,
+  // Right,
   // Body,
-  Icon,
+  // Icon,
   Text,
   Left,
   // View,

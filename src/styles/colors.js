@@ -15,6 +15,10 @@ export const green = '#24E1B3';
 export const headerColor = '#C10F41';
 // Small Offer Card colors
 export const smallOfferCardHeader = '#EFF2F7';
+//Login colors
+export const login = '#BF095C';
+//Signup colors
+export const signup = '#3B5A9D';
 // branding colors
 export const facebookBlue = '#3b5998';
 export const googleBlue = '#4885ed';

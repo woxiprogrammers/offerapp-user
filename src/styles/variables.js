@@ -15,6 +15,9 @@ const { height, width } = Dimensions.get('window');
 
 export const BUTTON_HEIGHT = height * 0.075;
 export const BUTTON_WIDTH = width * 0.25;
+
+export const LOGIN_BUTTON_HEIGHT = height * 0.075;
+export const LOGIN_BUTTON_WIDTH = width * 0.85;
 //
 // export const COUNTDOWN_HEIGHT = height * 0.5;
 // export const COUNTDOWN_WIDTH = width * 0.5;

@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@expo/vector-icons": "^6.2.2",
+    "axios": "^0.18.0",
     "eslint-config-rallycoding": "^3.2.0",
     "expo": "^25.0.0",
     "native-base": "^2.3.10",
@@ -11,6 +12,9 @@
     "react-native-auto-height-image": "^1.0.0",
     "react-native-responsive-dimensions": "^1.0.2",
     "react-native-router-flux": "^4.0.0-beta.28",
-    "react-native-swiper": "^1.5.13"
+    "react-native-swiper": "^1.5.13",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   }
 }

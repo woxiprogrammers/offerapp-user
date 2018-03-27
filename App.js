@@ -3,7 +3,9 @@ import Expo from 'expo';
 import Roboto from 'native-base/Fonts/Roboto.ttf';
 import RobotoMedium from 'native-base/Fonts/Roboto_medium.ttf';
 import Ionicons from '@expo/vector-icons/fonts/Ionicons.ttf';
+import { Provider } from 'react-redux';
 import Router from './Router';
+import store from './src/store';
 
 export default class App extends React.Component {
   constructor() {
@@ -23,7 +25,9 @@ export default class App extends React.Component {
   render() {
     if (this.state.isReady) {
       return (
-        <Router />
+        <Provider store={store}>
+          <Router />
+        </Provider>
       );
   }
   return null;

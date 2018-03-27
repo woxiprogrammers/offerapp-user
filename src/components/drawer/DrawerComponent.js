@@ -24,6 +24,12 @@ export default class DrawerComponent extends React.Component {
         <TouchableOpacity onPress={() => { Actions.drawerClose(); Actions.wishlistScreen(); }}>
           <Text style={{ alignSelf: 'center' }}>Wishlist Screen</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => { Actions.drawerClose(); Actions.interestedScreen(); }}>
+          <Text style={{ alignSelf: 'center' }}>I am Interested Screen</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => { Actions.drawerClose(); Actions.loginScreen(); }}>
+          <Text style={{ paddingTop: 25, alignSelf: 'center' }}>Log Out</Text>
+        </TouchableOpacity>
       </View>
     );
   }
