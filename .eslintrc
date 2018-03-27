@@ -1,0 +1,7 @@
+{
+  "extends": "rallycoding",
+  "rules": {
+      "arrow-body-style": ["error", "always"],
+      "no-underscore-dangle": ["error", { "allow": ["_root"] }]
+    }
+}
