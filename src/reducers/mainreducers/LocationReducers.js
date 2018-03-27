@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   longitude: 0.0,
   locationLoading: false,
   searchLocationLoading: false,
-  suggestedLocation: []
+  suggestedLocation: [],
 };
 
 export default (state = INITIAL_STATE, action) => {

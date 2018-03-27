@@ -7,6 +7,7 @@ import {
   Container,
   ListItem,
   Content,
+  Spinner,
   Header,
   Button,
   Right,
@@ -15,14 +16,15 @@ import {
   Left,
   Text,
   List,
-  // View,
+  View,
   Item,
   Icon,
   Body,
 } from 'native-base';
+import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {
-  // responsiveHeight,
+  responsiveHeight,
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
@@ -31,10 +33,40 @@ import {
   // mixins,
   colors,
 } from '../../../styles';
+import { searchLocation } from '../../../actions';
 
-export default class WishlistScreen extends React.Component {
+class ChangeLocationScreen extends React.Component {
+
+  onSearchTextChange(text) {
+    this.props.searchLocation(text);
+  }
+  renderList() {
+    if (this.props.searchLocationLoading) {
+      return (
+        <Spinner
+          style={{ height: responsiveHeight(25) }}
+          color='black'
+        />);
+    }
+    return (
+      <List
+      dataArray={this.props.suggestedLocation}
+        renderRow={(item) => {
+          return (
+            <TouchableWithoutFeedback onPress={Actions.mainScreen}>
+              <ListItem>
+                <Body>
+                  <Text>{item}</Text>
+                </Body>
+              </ListItem>
+            </TouchableWithoutFeedback>
+          );
+        }
+        }
+      />);
+   }
   render() {
-    const items = ['Mumbai', 'Pune', 'Chennai', 'Goa'];
+    console.log(this.props);
     const {
       containerStyle,
       headerStyle,
@@ -64,11 +96,11 @@ export default class WishlistScreen extends React.Component {
         >
         <Header searchBar rounded style={{ paddingTop: 0 }}>
           <Item>
-            <Input style={{ paddingLeft: responsiveWidth(3) }} placeholder="Search" />
+            <Input
+              onChangeText={this.onSearchTextChange.bind(this)}
+              style={{ paddingLeft: responsiveWidth(3) }} placeholder="Search"
+            />
           </Item>
-          <Button transparent>
-            <Icon name="ios-search" />
-          </Button>
         </Header>
         <ListItem>
           <Body>
@@ -82,21 +114,9 @@ export default class WishlistScreen extends React.Component {
           />
           </Right>
         </ListItem>
-        <List
-        dataArray={items}
-          renderRow={(item) => {
-            return (
-              <TouchableWithoutFeedback onPress={Actions.mainScreen}>
-                <ListItem>
-                  <Body>
-                    <Text>{item}</Text>
-                  </Body>
-                </ListItem>
-              </TouchableWithoutFeedback>
-            );
-          }
-          }
-        />
+        <View>
+          {this.renderList()}
+        </View>
       </Content>
     </Container>
      );
@@ -120,3 +140,21 @@ const styles = StyleSheet.create({
     width: variables.SCREEN_WIDTH * 0.6
   },
 });
+
+function mapStateToProps({ main }) {
+    const { location } = main;
+    return {
+        ...location
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        searchLocation: (text) => { return dispatch(searchLocation(text)); },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ChangeLocationScreen);

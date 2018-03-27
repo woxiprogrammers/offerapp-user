@@ -1,6 +1,9 @@
 import React from 'react';
 import { Scene, Router, Drawer, Stack, Overlay } from 'react-native-router-flux';
 import LoginScreen from './src/components/screens/authscreens/LoginScreen';
+import MobileVerifyScreen from './src/components/screens/authscreens/MobileVerifyScreen';
+import OtpVerifyScreen from './src/components/screens/authscreens/OtpVerifyScreen';
+import SignUpFillUpScreen from './src/components/screens/authscreens/SignUpFillUpScreen';
 import MainScreen from './src/components/screens/mainscreens/MainScreen';
 import ChangeLocationScreen from './src/components/screens/mainscreens/ChangeLocationScreen';
 import CategoryScreen from './src/components/screens/categoryscreens/CategoryScreen';
@@ -20,6 +23,9 @@ class RouterComponent extends React.Component {
           <Scene key="root">
           <Scene key="auth">
             <Scene hideNavBar key="loginScreen" component={LoginScreen} />
+            <Scene hideNavBar key="mobileVerifyScreen" component={MobileVerifyScreen} />
+            <Scene hideNavBar key="otpVerifyScreen" component={OtpVerifyScreen} />
+            <Scene hideNavBar key="signUpFillUpScreen" component={SignUpFillUpScreen} />
           </Scene>
             <Drawer
               hideNavBar

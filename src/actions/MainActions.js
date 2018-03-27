@@ -100,14 +100,18 @@ export const getSwipperFailure = (error) => {
 };
 
 
-export const getLocation = (/*token*/) => {
+export const getLocation = (/*token,*/latitude, longitude) => {
   return (dispatch) => {
     dispatch(getLocationRequest());
     // const userPath = '';
     axios({
       // url: `${URL}/${userPath}/?token=${token}`,
       url: 'http://www.mocky.io/v2/5ab8cb752c0000810f186197',
-      method: 'get',
+      method: 'post',
+      data: {
+        latitude,
+        longitude
+      }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
@@ -147,7 +151,7 @@ export const searchLocation = (/*token,*/text) => {
     axios({
       // url: `${URL}/${userPath}/?token=${token}`,
       url: 'http://www.mocky.io/v2/5ab9f7a33500005b0073a306',
-      method: 'get',
+      method: 'post',
       data: {
         searchText: text
       }

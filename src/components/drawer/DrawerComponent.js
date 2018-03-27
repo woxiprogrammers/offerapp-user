@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import {
   Container,
   Thumbnail,
@@ -22,6 +22,7 @@ import {
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
+import { Actions } from 'react-native-router-flux';
 import {
   // variables,
   // mixins,
@@ -113,7 +114,9 @@ export default class DrawerComponent extends React.Component {
           </View>
           </View>
           <View style={{ paddingTop: responsiveHeight(5), paddingLeft: responsiveWidth(5) }}>
-          <Text style={{ color: 'white' }}>Log Out</Text>
+            <TouchableOpacity onPress={Actions.loginScreen}>
+              <Text style={{ color: 'white' }}>Log Out</Text>
+            </TouchableOpacity>
           </View>
         </Content>
       </Container>

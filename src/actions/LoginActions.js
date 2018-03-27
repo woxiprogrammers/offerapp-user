@@ -15,13 +15,13 @@ export const loginUser = ({ user, password }) => {
   console.log('Logging In');
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });
-    const usersPath = 'api/customerlogin';
-    axios.post(`${URL}/${usersPath}/`, {
-    username: user,
+    const usersPath = 'login';
+    axios.post(`${URL}/${usersPath}`, {
+    mobile_no: user,
     password
   }).then(async (response) => {
-      const statusCode = response.data.StatusCode;
-      if (statusCode === 200) {
+      const status = response.status;
+      if (status === 200) {
         console.log('Password Correct!!!');
         const token = response.data.token;
         try {

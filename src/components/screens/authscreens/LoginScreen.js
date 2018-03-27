@@ -3,6 +3,7 @@ import { StyleSheet, ImageBackground } from 'react-native';
 import {
   Container,
   Content,
+  Spinner,
   Button,
   Input,
   Label,
@@ -12,6 +13,7 @@ import {
   View
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import {
   //button,
   colors,
@@ -19,9 +21,42 @@ import {
   variables
 } from '../../../styles';
 import backgroundImage from '../../../assets/images/BackgroundImage.png';
+import {
+  userChanged,
+  passwordChanged,
+  loginUser
+} from '../../../actions';
 
+ class LoginScreen extends Component {
+   onUserChange(text) {
+     this.props.userChanged(text);
+   }
 
- export default class LoginScreen extends Component {
+   onPasswordChange(text) {
+     this.props.passwordChanged(text);
+   }
+
+   onButtonPress() {
+     const { user, password } = this.props;
+     this.props.loginUser({ user, password });
+   }
+   renderButton() {
+     const { loginStyle, textStyle } = styles;
+     if (this.props.loginLoading) {
+       return (<Button style={loginStyle}>
+                <Spinner color='white' />
+               </Button>);
+     } else if (this.props.error) {
+       return (
+         <Button style={loginStyle}>
+           <Text style={textStyle}>LOG FAILED</Text>
+         </Button>);
+    }
+    return (
+      <Button style={loginStyle} onPress={this.onButtonPress.bind(this)}>
+        <Text style={textStyle}>LOG IN</Text>
+      </Button>);
+   }
    render() {
      const {
        backgroundImageStyle,
@@ -54,13 +89,20 @@ import backgroundImage from '../../../assets/images/BackgroundImage.png';
               <View style={itemViewStyle}>
                 <Item stackedLabel style={itemStyle} >
                   <Label style={textStyle}> UserName</Label>
-                  <Input />
+                  <Input
+                    onChangeText={this.onUserChange.bind(this)}
+                    value={this.props.user}
+                  />
                 </Item>
               </View>
               <View style={itemViewStyle}>
                 <Item stackedLabel style={itemStyle}>
                   <Label style={textStyle}> Password</Label>
-                  <Input />
+                  <Input
+                    secureTextEntry
+                    onChangeText={this.onPasswordChange.bind(this)}
+                    value={this.props.password}
+                  />
                 </Item>
               </View>
             </Form>
@@ -80,7 +122,7 @@ import backgroundImage from '../../../assets/images/BackgroundImage.png';
             </Text>
         </View>
         <View >
-          <Button style={signupStyle}>
+          <Button style={signupStyle} onPress={Actions.mobileVerifyScreen}>
             <Text style={textStyle}>SIGN UP</Text>
           </Button>
         </View>
@@ -149,3 +191,24 @@ backgroundImageStyle: {
   width: variables.SCREEN_WIDTH
 }
 });
+
+function mapStateToProps({ user }) {
+    return {
+        ...user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        userChanged: (text) => { return dispatch(userChanged(text)); },
+        passwordChanged: (text) => { return dispatch(passwordChanged(text)); },
+        loginUser: ({ user, password }) => {
+          return dispatch(loginUser({ user, password }));
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LoginScreen);

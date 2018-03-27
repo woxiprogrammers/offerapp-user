@@ -3,6 +3,6 @@ import LoginReducers from './LoginReducers';
 import MainReducers from './mainreducers/';
 
 export default combineReducers({
-  login: LoginReducers,
+  user: LoginReducers,
   main: MainReducers
 });

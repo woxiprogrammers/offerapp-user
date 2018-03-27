@@ -15,6 +15,7 @@ import {
   Text,
 } from 'native-base';
 import { connect } from 'react-redux';
+import { Location } from 'expo';
 import Swiper from 'react-native-swiper';
 import { Actions } from 'react-native-router-flux';
 import {
@@ -31,6 +32,8 @@ import {
 import SmallOfferCard from '../../modules/SmallOfferCard';
 import loading from '../../../assets/images/loading.gif';
 import { getLocation, getSwipper } from '../../../actions';
+
+const GEOLOCATION_OPTIONS = { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 };
 
 const Slide = props => {
   return (
@@ -59,8 +62,11 @@ class MainScreen extends React.Component {
     super(props);
     this.autoBind('loadHandle');
   }
-  componentWillMount() {
-    this.props.getLocation();
+  async componentWillMount() {
+    const location = await Location.getCurrentPositionAsync(GEOLOCATION_OPTIONS);
+    const latitude = location.coords.latitude;
+    const longitude = location.coords.longitude;
+    this.props.getLocation(latitude, longitude);
     this.props.getSwipper();
   }
 
@@ -86,10 +92,6 @@ class MainScreen extends React.Component {
           color='black'
         />);
     }
-    console.log('locationLoading is :');
-    console.log(this.props.locationLoading);
-    console.log('Image List is :');
-    console.log(this.props.imageList);
     return (
       <Swiper autoplay style={swiperStyle} >
         {
@@ -260,7 +262,9 @@ function mapStateToProps({ main }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getLocation: () => { return dispatch(getLocation()); },
+        getLocation: (latitude, longitude) => {
+          return dispatch(getLocation(latitude, longitude));
+        },
         getSwipper: () => { return dispatch(getSwipper()); },
     };
 }

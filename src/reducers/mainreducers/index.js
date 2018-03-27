@@ -6,5 +6,5 @@ import LocationReducers from './LocationReducers';
 export default combineReducers({
   topoffers: TopOffersReducers,
   swiper: SwipperReducers,
-  location: LocationReducers  
+  location: LocationReducers
 });
