@@ -65,19 +65,25 @@ export default class DrawerComponent extends React.Component {
           </TouchableWithoutFeedback>
 
           <View style={iconStyle}>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => { Actions.drawerClose(); Actions.groupListingScreen(); }}
+          >
             <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
               <Icon style={{ color: 'white' }} ios='ios-people' android="md-people" />
               <Text style={{ fontSize: responsiveFontSize(1.8), color: 'white' }}>Groups</Text>
             </View>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => { Actions.drawerClose(); Actions.wishlistScreen(); }}
+          >
             <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
               <Icon style={{ color: 'white' }} ios='ios-heart' android="md-heart" />
               <Text style={{ fontSize: responsiveFontSize(1.8), color: 'white' }}>Wish List</Text>
             </View>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => { Actions.drawerClose(); Actions.interestedScreen(); }}
+          >
             <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
               <Icon style={{ color: 'white' }} ios='ios-thumbs-up' android="md-thumbs-up" />
               <Text
@@ -93,7 +99,9 @@ export default class DrawerComponent extends React.Component {
             dataArray={items}
               renderRow={(item) => {
                 return (
-                  <TouchableWithoutFeedback>
+                  <TouchableWithoutFeedback
+                    onPress={() => { Actions.drawerClose(); Actions.categoryScreen(); }}
+                  >
                     <ListItem>
                       <Body>
                         <Text style={{ color: 'white' }}>{item}</Text>

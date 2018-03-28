@@ -15,8 +15,9 @@ export const loginUser = ({ user, password }) => {
   console.log('Logging In');
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });
-    const usersPath = 'login';
-    axios.post(`${URL}/${usersPath}`, {
+    const path = 'login';
+    const loginUserURL = `${URL}/${path}/`;
+    axios.post(loginUserURL, {
     mobile_no: user,
     password
   }).then(async (response) => {
@@ -31,7 +32,6 @@ export const loginUser = ({ user, password }) => {
         }
         loginUserSuccess(dispatch, token);
       } else {
-        console.log(response);
         loginUserFailed(dispatch);
       }
     }).catch((error) => {

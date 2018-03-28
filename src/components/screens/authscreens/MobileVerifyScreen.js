@@ -52,7 +52,7 @@ export default class MobileVerifyScreen extends React.Component {
           iosBarStyle='light-content'
         >
           <Left style={{ marginRight: -(variables.SCREEN_WIDTH / 4) }}>
-            <Button transparent>
+            <Button transparent onPress={Actions.pop}>
               <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
             </Button>
           </Left>

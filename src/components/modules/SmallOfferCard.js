@@ -5,15 +5,16 @@ import {
   // Body,
   Text,
   Left,
-  View,
+  // View,
   Card
 } from 'native-base';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import {
   // responsiveHeight,
-  responsiveWidth,
+  // responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
+import AHImage from 'react-native-auto-height-image';
 import {
   normalize,
   variables,
@@ -27,8 +28,15 @@ import {
        cardHeaderStyle,
        cardStyle,
      } = styles;
+     const {
+       offerId,
+       offerPic,
+       offerName,
+       sellerInfo,
+       // offerExpiry
+    } = this.props.offerDetails;
      return (
-       <TouchableOpacity>
+       <TouchableOpacity onPress={() => { console.log(`OfferId Clicked: ${offerId}`); }}>
         <Card style={cardStyle}>
           <CardItem style={cardHeaderStyle}>
           <Left
@@ -42,18 +50,21 @@ import {
               style={{
                 marginLeft: normalize.normalize(7),
                 alignSelf: 'flex-start',
-                fontSize: responsiveFontSize(3) }}
-            >Buy 2 Get 1 Free</Text>
+                fontSize: responsiveFontSize(2.8) }}
+            >{offerName}</Text>
             <Text
               style={{
                 marginLeft: normalize.normalize(7),
                 alignSelf: 'flex-start',
-                fontSize: responsiveFontSize(2) }}
-            >Adidas, Kothrud</Text>
+                fontSize: responsiveFontSize(1.9) }}
+            >{sellerInfo}</Text>
             </Left>
           </CardItem>
           <CardItem cardBody>
-            <View style={{ backgroundColor: '#C0CCDA' }} />
+            <AHImage
+              source={{ uri: offerPic }}
+              width={(variables.SCREEN_WIDTH * 0.45)}
+            />
           </CardItem>
         </Card>
        </TouchableOpacity>

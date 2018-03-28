@@ -48,7 +48,7 @@ export default class GroupListingScreen extends React.Component {
           iosBarStyle='light-content'
         >
           <Left style={{ flexDirection: 'row' }}>
-            <Button transparent onPress={Actions.mainScreen}>
+            <Button transparent onPress={Actions.pop}>
               <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
             </Button>
             <Button transparent style={{ padding: 0 }} onPress={Actions.drawerOpen}>

@@ -21,6 +21,7 @@ import {
   Icon,
   Body,
 } from 'native-base';
+import { Location } from 'expo';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {
@@ -33,14 +34,18 @@ import {
   // mixins,
   colors,
 } from '../../../styles';
-import { searchLocation } from '../../../actions';
+import { getLocation, searchLocation, setLocation } from '../../../actions';
+
+const GEOLOCATION_OPTIONS = { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 };
 
 class ChangeLocationScreen extends React.Component {
 
   onSearchTextChange(text) {
-    this.props.searchLocation(text);
+    const token = this.props.token;
+    this.props.searchLocation(token, text);
   }
   renderList() {
+    const { token } = this.props;
     if (this.props.searchLocationLoading) {
       return (
         <Spinner
@@ -53,7 +58,13 @@ class ChangeLocationScreen extends React.Component {
       dataArray={this.props.suggestedLocation}
         renderRow={(item) => {
           return (
-            <TouchableWithoutFeedback onPress={Actions.mainScreen}>
+            <TouchableWithoutFeedback
+              onPress={
+                async () => {
+                  await this.props.setLocation(token, item);
+                  Actions.push('mainScreen', { fromChangeLocation: true });
+              }}
+            >
               <ListItem>
                 <Body>
                   <Text>{item}</Text>
@@ -66,7 +77,7 @@ class ChangeLocationScreen extends React.Component {
       />);
    }
   render() {
-    console.log(this.props);
+    const { token, locationName } = this.props;
     const {
       containerStyle,
       headerStyle,
@@ -102,18 +113,31 @@ class ChangeLocationScreen extends React.Component {
             />
           </Item>
         </Header>
-        <ListItem>
-          <Body>
-            <Text>My Location</Text>
-          </Body>
-          <Right>
-          <Icon
-            style={{ color: 'black' }}
-            ios='ios-locate'
-            android="md-locate"
-          />
-          </Right>
-        </ListItem>
+        <TouchableWithoutFeedback
+          onPress={
+            async() => {
+              const location = await Location.getCurrentPositionAsync(GEOLOCATION_OPTIONS);
+              const latitude = location.coords.latitude;
+              const longitude = location.coords.longitude;
+              const coords = { latitude, longitude };
+              await this.props.getLocation(token, coords);
+              await this.props.setLocation(token, locationName);
+              Actions.push('mainScreen', { fromChangeLocation: true });
+          }}
+        >
+          <ListItem>
+            <Body>
+              <Text>My Location</Text>
+            </Body>
+            <Right>
+            <Icon
+              style={{ color: 'black' }}
+              ios='ios-locate'
+              android="md-locate"
+            />
+            </Right>
+          </ListItem>
+        </TouchableWithoutFeedback>
         <View>
           {this.renderList()}
         </View>
@@ -141,16 +165,22 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps({ main }) {
+function mapStateToProps({ main, user }) {
     const { location } = main;
+    const { token } = user;
     return {
-        ...location
+        ...location,
+        token
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        searchLocation: (text) => { return dispatch(searchLocation(text)); },
+        getLocation: (token, coords) => {
+          return dispatch(getLocation(token, coords));
+        },
+        searchLocation: (token, text) => { return dispatch(searchLocation(token, text)); },
+        setLocation: (token, text) => { return dispatch(setLocation(token, text)); },
     };
 }
 

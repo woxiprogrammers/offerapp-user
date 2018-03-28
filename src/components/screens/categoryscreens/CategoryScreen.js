@@ -52,7 +52,7 @@ export default class CategoryScreen extends Component {
           hasTabs
         >
           <Left style={{ flexDirection: 'row' }}>
-            <Button transparent onPress={Actions.mainScreen}>
+            <Button transparent onPress={Actions.pop}>
               <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
             </Button>
             <Button transparent onPress={Actions.drawerOpen}>

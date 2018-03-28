@@ -1,68 +1,74 @@
 import axios from 'axios';
 
 import {
-  // GET_TOP_OFFERS_REQUEST,
-  // GET_TOP_OFFERS_SUCCESS,
-  // GET_TOP_OFFERS_FAILURE,
+  GET_NEARBY_OFFERS_REQUEST,
+  GET_NEARBY_OFFERS_SUCCESS,
+  GET_NEARBY_OFFERS_FAILURE,
   GET_SWIPER_REQUEST,
   GET_SWIPER_SUCCESS,
   GET_SWIPER_FAILURE,
   GET_LOCATION_REQUEST,
   GET_LOCATION_SUCCESS,
   GET_LOCATION_FAILURE,
-  SEARCH_LOCATION_REQUEST,
-  SEARCH_LOCATION_SUCCESS,
-  SEARCH_LOCATION_FAILURE,
   // URL
 } from '../constants';
 
-// export const getTopOffers = (token) => {
-//   return (dispatch) => {
-//     dispatch(getTopOffersRequest());
-//     const userPath = '';
-//     axios({
-//       url: `${URL}/${userPath}/?token=${token}`,
-//       method: 'post',
-//     }).then((response) => {
-//       const status = response.status;
-//       if (status === 200) {
-//         dispatch(getTopOffersSuccess(response.data));
-//       }
-//     }).catch((error) => {
-//         dispatch(getTopOffersFailure(error));
-//     });
-//   };
-// };
-// export const getTopOffersSuccess = (response) => {
-//   const { records, pagination } = response;
-//   return {
-//     type: GET_TOP_OFFERS_SUCCESS,
-//     posts: records,
-//     pagination
-//   };
-// };
-//
-// export const getTopOffersRequest = () => {
-//   return {
-//     type: GET_TOP_OFFERS_REQUEST,
-//   };
-// };
-//
-// export const getTopOffersFailure = (error) => {
-//   return {
-//     type: GET_TOP_OFFERS_FAILURE,
-//     error
-//   };
-// };
-//
-export const getSwipper = (/*token*/) => {
+export const getNearbyOffers = (token, page, userLocation) => {
+  return (dispatch) => {
+    dispatch(getNearbyOffersRequest(page));
+    // const path = '';
+    axios({
+      url: 'http://www.mocky.io/v2/5abb7db42d000047009bdd30',
+      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      method: 'post',
+      data: {
+        userLocation
+      }
+    }).then((response) => {
+      const status = response.status;
+      if (status === 200) {
+        dispatch(getNearbyOffersSuccess(response.data));
+      }
+    }).catch((error) => {
+        dispatch(getNearbyOffersFailure(error));
+    });
+  };
+};
+export const getNearbyOffersSuccess = (response) => {
+  const { records, pagination } = response;
+  return {
+    type: GET_NEARBY_OFFERS_SUCCESS,
+    posts: records,
+    pagination
+  };
+};
+
+export const getNearbyOffersRequest = (page) => {
+  return {
+    type: GET_NEARBY_OFFERS_REQUEST,
+    page
+  };
+};
+
+export const getNearbyOffersFailure = (error) => {
+  return {
+    type: GET_NEARBY_OFFERS_FAILURE,
+    error
+  };
+};
+
+
+export const getSwipper = (token, userLocation) => {
   return (dispatch) => {
     dispatch(getSwipperRequest());
-    // const userPath = '';
+    // const path = '';
     axios({
-      // url: `${URL}/${userPath}/?token=${token}`,
+      // url: `${URL}/${path}/?token=${token}`,
       url: 'http://www.mocky.io/v2/5ab8cd272c00000e001861a7',
       method: 'post',
+      data: {
+        userLocation
+      }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
@@ -100,17 +106,16 @@ export const getSwipperFailure = (error) => {
 };
 
 
-export const getLocation = (/*token,*/latitude, longitude) => {
-  return (dispatch) => {
-    dispatch(getLocationRequest());
-    // const userPath = '';
-    axios({
-      // url: `${URL}/${userPath}/?token=${token}`,
-      url: 'http://www.mocky.io/v2/5ab8cb752c0000810f186197',
+export const getLocation = (token, coords) => {
+  return async (dispatch) => {
+    dispatch(getLocationRequest(coords));
+    // const path = 'getLocation';
+    await axios({
+      // url: `${URL}/${path}/?token=${token}`,
+      url: 'http://www.mocky.io/v2/5abb3eb22d000054009bdb41',
       method: 'post',
       data: {
-        latitude,
-        longitude
+        coords
       }
     }).then((response) => {
       const status = response.status;
@@ -123,66 +128,23 @@ export const getLocation = (/*token,*/latitude, longitude) => {
   };
 };
 export const getLocationSuccess = (response) => {
-  const { location } = response;
+  const { locationName } = response;
   return {
     type: GET_LOCATION_SUCCESS,
-    location
+    locationName
   };
 };
 
-export const getLocationRequest = () => {
+export const getLocationRequest = (coords) => {
   return {
     type: GET_LOCATION_REQUEST,
+    coords
   };
 };
 
 export const getLocationFailure = (error) => {
   return {
     type: GET_LOCATION_FAILURE,
-    error
-  };
-};
-
-
-export const searchLocation = (/*token,*/text) => {
-  return (dispatch) => {
-    dispatch(searchLocationRequest());
-    // const userPath = '';
-    axios({
-      // url: `${URL}/${userPath}/?token=${token}`,
-      url: 'http://www.mocky.io/v2/5ab9f7a33500005b0073a306',
-      method: 'post',
-      data: {
-        searchText: text
-      }
-    }).then((response) => {
-      const status = response.status;
-      if (status === 200) {
-        dispatch(searchLocationSuccess(response.data));
-      }
-    }).catch((error) => {
-        dispatch(searchLocationFailure(error));
-    });
-  };
-};
-
-export const searchLocationSuccess = (response) => {
-  const { suggestedLocation } = response;
-  return {
-    type: SEARCH_LOCATION_SUCCESS,
-    suggestedLocation
-  };
-};
-
-export const searchLocationRequest = () => {
-  return {
-    type: SEARCH_LOCATION_REQUEST,
-  };
-};
-
-export const searchLocationFailure = (error) => {
-  return {
-    type: SEARCH_LOCATION_FAILURE,
     error
   };
 };

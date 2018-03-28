@@ -66,7 +66,7 @@ import {
        contentStyle,
        headerStyle,
        signupStyle,
-       loginStyle,
+       // loginStyle,
        textStyle,
        itemStyle,
        formStyle,
@@ -108,9 +108,7 @@ import {
             </Form>
         </View>
         <View>
-          <Button style={loginStyle} onPress={Actions.mainScreen}>
-            <Text style={textStyle}>LOG IN</Text>
-          </Button>
+          {this.renderButton()}
         </View>
         <View style={passwordStyle}>
           <Text style={{ color: 'white', fontSize: variables.SCREEN_HEIGHT / 50 }}>

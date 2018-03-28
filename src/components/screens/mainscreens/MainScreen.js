@@ -1,10 +1,17 @@
 import React from 'react';
-import { StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  ScrollView,
+  ListView,
+  RefreshControl,
+  TouchableOpacity
+} from 'react-native';
 import {
   Container,
-  Header,
   Content,
   Spinner,
+  Header,
   Button,
   Right,
   Title,
@@ -30,8 +37,8 @@ import {
   colors,
 } from '../../../styles';
 import SmallOfferCard from '../../modules/SmallOfferCard';
-import loading from '../../../assets/images/loading.gif';
-import { getLocation, getSwipper } from '../../../actions';
+import swiperLoading from '../../../assets/images/loading.gif';
+import { getLocation, getSwipper, getNearbyOffers } from '../../../actions';
 
 const GEOLOCATION_OPTIONS = { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 };
 
@@ -49,7 +56,7 @@ const Slide = props => {
       />
       {
         !props.loaded && <View style={styles.loadingView}>
-          <Image style={styles.loadingImage} source={loading} />
+          <Image style={styles.loadingImage} source={swiperLoading} />
         </View>
       }
       </TouchableOpacity>
@@ -60,14 +67,58 @@ class MainScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.autoBind('loadHandle');
+    this.autoBind(
+      'loadHandle',
+      'renderSwiper',
+      'onEndReached',
+      'onRefresh',
+      'renderRow'
+    );
   }
   async componentWillMount() {
+    const { token } = this.props;
+    console.log('From Change Location! : ');
+    console.log(this.props.fromChangeLocation);
+    if (!this.props.fromChangeLocation) {
+    console.log('Getting Location !!??');
     const location = await Location.getCurrentPositionAsync(GEOLOCATION_OPTIONS);
     const latitude = location.coords.latitude;
     const longitude = location.coords.longitude;
-    this.props.getLocation(latitude, longitude);
-    this.props.getSwipper();
+    const coords = { latitude, longitude };
+    await this.props.getLocation(token, coords);
+    }
+    const { latitude, longitude } = this.props;
+    const locationName = this.props.locationName;
+    const userLocation = { locationName, latitude, longitude };
+    this.props.getSwipper(token, userLocation);
+  }
+  onEndReached() {
+    const {
+      locationName,
+      pagination,
+      longitude,
+      latitude,
+      token,
+    } = this.props;
+    const userLocation = { locationName, latitude, longitude };
+    const { page, perPage, pageCount, totalCount } = pagination;
+    const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
+    console.log('pagination is :');
+    console.log(pagination);
+    if (!pagination.paginationLoading && !lastPage) {
+      console.log('Not Last Page');
+      this.props.getNearbyOffers(token, page + 1, userLocation);
+    }
+  }
+  onRefresh() {
+    const {
+      locationName,
+      longitude,
+      latitude,
+      token,
+    } = this.props;
+    const userLocation = { locationName, latitude, longitude };
+    this.props.getNearbyOffers(token, 1, userLocation);
   }
 
   autoBind(...methods) {
@@ -82,6 +133,15 @@ class MainScreen extends React.Component {
       this.setState({
         loadQueue
       });
+  }
+  renderRow(offerDetails) {
+    if (offerDetails.type === 'Loading') {
+      return (
+        <LoadingIndicator loading={offerDetails.loading} />);
+    }
+      return (
+        <SmallOfferCard offerDetails={offerDetails} />
+      );
   }
   renderSwiper() {
     const { swiperStyle } = styles;
@@ -108,7 +168,8 @@ class MainScreen extends React.Component {
             );
         })}
       </Swiper>);
-   }
+  }
+
   render() {
     const {
       containerStyle,
@@ -117,6 +178,13 @@ class MainScreen extends React.Component {
       // swiperStyle,
       titleStyle
     } = styles;
+    const { posts, pagination, ds } = this.props;
+    const loading = {
+      type: 'Loading',
+      loading: pagination.paginationLoading
+    };
+    const nearbyoffers = ds.cloneWithRows([...posts, loading]);
+
     return (
       <Container style={containerStyle}>
         <Header
@@ -145,7 +213,7 @@ class MainScreen extends React.Component {
                   ios='ios-pin'
                   android="md-pin"
                 />
-                <Text style={{ fontSize: responsiveFontSize(3) }}> {this.props.location}</Text>
+                <Text style={{ fontSize: responsiveFontSize(3) }}> {this.props.locationName}</Text>
                 <Right>
                   <Button
                     transparent
@@ -179,16 +247,27 @@ class MainScreen extends React.Component {
                     paddingTop: normalize.normalize(9),
                     color: colors.white,
                     fontSize: responsiveFontSize(2.5) }}
-                >Top 5 Offers</Text>
+                >Offers Nearby Me</Text>
               </View>
               <ScrollView
                 showsHorizontalScrollIndicator={false}
                 horizontal
                 style={{ paddingLeft: 10 }}
               >
-                <SmallOfferCard />
-                <SmallOfferCard />
-                <SmallOfferCard />
+              <ListView
+                horizontal
+                enableEmptySections
+                automaticallyAdjustContentInsets={false}
+                dataSource={nearbyoffers}
+                renderRow={row => { return this.renderRow(row); }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={false}
+                    onRefresh={() => { return this.onRefresh(); }}
+                  />
+                }
+                onEndReached={() => { return this.onEndReached(); }}
+              />
               </ScrollView>
             </View>
           </View>
@@ -197,10 +276,27 @@ class MainScreen extends React.Component {
     );
   }
 }
+const LoadingIndicator = ({ loading }) => {
+ return (
+  loading ? (
+    <View style={styles.loadingStyle}>
+      <Spinner
+        style={{ height: responsiveHeight(25) }}
+        color='black'
+      />
+    </View>
+  ) : null
+);
+};
 const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: colors.white,
     marginTop: 20
+  },
+  loadingStyle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerStyle: {
     paddingTop: 0,
@@ -250,22 +346,27 @@ const styles = StyleSheet.create({
 });
 
 
-function mapStateToProps({ main }) {
-    const { topoffers, swiper, location } = main;
+function mapStateToProps({ main, user }) {
+    const { nearbyoffers, swiper, location } = main;
+    const { token } = user;
     return {
-        ...topoffers,
+        ...nearbyoffers,
         ...swiper,
-        ...location
+        ...location,
+        token
     };
 }
 
 
 function mapDispatchToProps(dispatch) {
     return {
-        getLocation: (latitude, longitude) => {
-          return dispatch(getLocation(latitude, longitude));
+        getLocation: (token, coords) => {
+          return dispatch(getLocation(token, coords));
         },
-        getSwipper: () => { return dispatch(getSwipper()); },
+        getNearbyOffers: (token, page, userLocation) => {
+          return dispatch(getNearbyOffers(token, page, userLocation));
+        },
+        getSwipper: (token, userLocation) => { return dispatch(getSwipper(token, userLocation)); },
     };
 }
 

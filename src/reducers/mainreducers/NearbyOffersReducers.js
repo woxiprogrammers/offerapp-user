@@ -1,8 +1,8 @@
 import { ListView } from 'react-native';
 import {
-  GET_TOP_OFFERS_REQUEST,
-  GET_TOP_OFFERS_SUCCESS,
-  GET_TOP_OFFERS_FAILURE
+  GET_NEARBY_OFFERS_REQUEST,
+  GET_NEARBY_OFFERS_SUCCESS,
+  GET_NEARBY_OFFERS_FAILURE
 } from '../../constants';
 
 const INITIAL_STATE = {
@@ -14,7 +14,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case GET_TOP_OFFERS_REQUEST:
+    case GET_NEARBY_OFFERS_REQUEST:
       return {
         ...state,
         pagination: {
@@ -22,7 +22,7 @@ export default (state = INITIAL_STATE, action) => {
           paginationLoading: true
         }
       };
-    case GET_TOP_OFFERS_SUCCESS: {
+    case GET_NEARBY_OFFERS_SUCCESS: {
       const { posts = [] } = action;
       return {
         ...state,
@@ -32,7 +32,7 @@ export default (state = INITIAL_STATE, action) => {
           paginationLoading: false
         }
       }; }
-    case GET_TOP_OFFERS_FAILURE:
+    case GET_NEARBY_OFFERS_FAILURE:
       return {
         ...state,
         pagination: {

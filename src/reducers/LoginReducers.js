@@ -8,8 +8,8 @@ import {
   } from '../constants';
 
 const INITIAL_STATE = {
-    user: '7744866241',
-    password: 'secret',
+    user: '1111111111',
+    password: 'superadmin',
     error: false,
     loginLoading: false,
     token: ''

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import TopOffersReducers from './TopOffersReducers';
+import NearbyOffersReducers from './NearbyOffersReducers';
 import SwipperReducers from './SwipperReducers';
 import LocationReducers from './LocationReducers';
 
 export default combineReducers({
-  topoffers: TopOffersReducers,
+  nearbyoffers: NearbyOffersReducers,
   swiper: SwipperReducers,
   location: LocationReducers
 });
