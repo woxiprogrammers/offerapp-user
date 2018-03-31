@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Container,
@@ -9,8 +10,9 @@ import {
   Button,
   Right,
   Title,
+  Text,
   Left,
-  // View,
+  View,
   Icon,
   Body,
 } from 'native-base';
@@ -28,13 +30,45 @@ import {
 import WishlistOfferCard from '../modules/WishlistOfferCard';
 
 export default class WishlistScreen extends React.Component {
-   render() {
-     const {
+  renderWishlistFeatures() {
+    return (
+      <View
+        style={{
+          width: responsiveWidth(95),
+          flexDirection: 'row',
+          height: responsiveHeight(8)
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            height: responsiveHeight(8),
+            paddingTop: responsiveHeight(2),
+            backgroundColor: '#D9E1F0',
+            width: responsiveWidth(47.5),
+          }}
+        >
+          <Text style={{ alignSelf: 'center' }}>Remove</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: responsiveHeight(8),
+            paddingTop: responsiveHeight(2),
+            backgroundColor: '#D0D8E6',
+            width: responsiveWidth(47.5),
+          }}
+        >
+          <Text style={{ alignSelf: 'center' }}>I am Interested</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  render() {
+    const {
       containerStyle,
       headerStyle,
       titleStyle
-     } = styles;
-     return (
+    } = styles;
+    return (
       <Container style={containerStyle}>
       <Header
         style={headerStyle}

@@ -10,7 +10,7 @@ import {
 } from 'native-base';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import {
-  // responsiveHeight,
+  responsiveHeight,
   // responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
@@ -27,10 +27,11 @@ import {
    render() {
      const {
        cardHeaderStyle,
+       cardBodyStyle,
        cardStyle,
      } = styles;
      const {
-       offerId,
+       // offerId,
        offerPic,
        offerName,
        sellerInfo,
@@ -61,10 +62,10 @@ import {
             >{sellerInfo}</Text>
             </Left>
           </CardItem>
-          <CardItem cardBody>
+          <CardItem cardBody style={cardBodyStyle}>
             <AHImage
               source={{ uri: offerPic }}
-              width={(variables.SCREEN_WIDTH * 0.45)}
+              width={responsiveHeight(20)}
             />
           </CardItem>
         </Card>
@@ -86,5 +87,10 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     paddingTop: 5,
     height: variables.SCREEN_HEIGHT * 0.1
+  },
+  cardBodyStyle: {
+    flex: 1,
+    paddingRight: 0,
+    paddingLeft: 0,
   },
 });

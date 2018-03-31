@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Image,
-  ScrollView
+  // Image,
+  // ScrollView,
+  TouchableOpacity
 } from 'react-native';
 import {
   Container,
@@ -30,9 +31,10 @@ import {
 } from '../../../styles';
 import GroupOfferCard from '../../modules/GroupOfferCard';
 
-export default class GroupScreen extends React.Component {
+export default class GroupScreen extends Component {
    render() {
      const {
+      leaveGroupStyle,
       containerStyle,
       headerStyle,
       titleStyle
@@ -66,6 +68,14 @@ export default class GroupScreen extends React.Component {
           <GroupOfferCard />
           <GroupOfferCard />
       </Content>
+      <View style={leaveGroupStyle}>
+      <TouchableOpacity
+        onPress={() => { Actions.pop(); }}
+        style={{ flex: 1, alignSelf: 'center' }}
+      >
+          <Text style={{ alignSelf: 'center' }}>Leave Group</Text>
+        </TouchableOpacity>
+      </View>
     </Container>
      );
    }
@@ -86,5 +96,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
     width: variables.SCREEN_WIDTH * 0.6
+  },
+  leaveGroupStyle: {
+    flexDirection: 'row',
+    height: responsiveHeight(10),
+    backgroundColor: colors.lightGray
   },
 });
