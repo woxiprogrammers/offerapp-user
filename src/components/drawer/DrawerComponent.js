@@ -1,5 +1,13 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  UIManager,
+  // LayoutAnimation,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import Collapsible from 'react-native-collapsible';
 import {
   Container,
   Thumbnail,
@@ -7,16 +15,17 @@ import {
   // Header,
   Content,
   // Spinner,
-  // Button,
+  Button,
   Right,
   // Title,
-  // Left,
-  View,
+  Left,
   List,
+  View,
   Icon,
-  Body,
+  // Body,
   Text,
 } from 'native-base';
+import { connect } from 'react-redux';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -28,16 +37,155 @@ import {
   // mixins,
   colors,
  } from '../../styles';
+ import { logoutUser } from '../../actions';
 
 
-export default class DrawerComponent extends React.Component {
+class DrawerComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    if (Platform.OS === 'android') {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+    this.state = {
+      subCategories: [
+        'Men\'s Fashion',
+        'Women\'s Fashion',
+        'Electronics',
+        'Foods',
+      ],
+      categories: [
+        'Men\'s Fashion',
+        'Women\'s Fashion',
+        'Electronics',
+        'Foods',
+        'Gym',
+        'Sports',
+        'Mobile & Accessories',
+        'Nightlife',
+      ],
+      menSubCategory: [
+        'Clothing',
+        'Footwear',
+        'Watches',
+        'Specs / Sunglasses',
+        'Grooming',
+      ],
+      womenSubCategory: [
+        'Clothing',
+        'Footwear',
+        'Watches',
+        'Specs / Sunglasses',
+        'Beauty'
+      ],
+      electronicsSubCategory: [
+        'Refrigerator',
+        'TV',
+        'AC & Cooler',
+        'Laptop & Tablet',
+        'Washing Machine'
+      ],
+      foodSubCategory: [
+        'Restaurants',
+        'Snack Center'
+      ],
+      collapsed: true,
+      categorySelected: 'none',
+      subCategorySelected: 'none'
+    };
+  }
+  // componentWillUpdate() {
+  //   LayoutAnimation.spring();
+  // }
+  toggleExpanded = () => {
+  this.setState({ collapsed: !this.state.collapsed });
+  }
+  renderArrow(category) {
+    const { subCategories } = this.state;
+    if (
+      category === subCategories[0] ||
+      category === subCategories[1] ||
+      category === subCategories[2] ||
+      category === subCategories[3]) {
+        return (
+          <View>
+          <Button
+            style={{ height: responsiveHeight(4) }}
+            onPress={() => {
+              console.log('Right Clicked');
+              this.toggleExpanded();
+              this.setState({ subCategorySelected: category });
+            }}
+          >
+          <Right>
+            <Icon
+              style={{ color: 'white' }}
+              ios='ios-arrow-down'
+              android="md-arrow-dropdown"
+            />
+          </Right>
+          </Button>
+          </View>
+        );
+      }
+    return null;
+  }
+  renderSubCategories(category) {
+    const {
+      subCategories,
+      menSubCategory,
+      womenSubCategory,
+      electronicsSubCategory,
+      foodSubCategory,
+      subCategorySelected
+    } = this.state;
+    let subCategory = null;
+    if (subCategorySelected === category) {
+      if (subCategorySelected === subCategories[0]) {
+        subCategory = menSubCategory;
+      } else if (subCategorySelected === subCategories[1]) {
+        subCategory = womenSubCategory;
+      } else if (subCategorySelected === subCategories[2]) {
+        subCategory = electronicsSubCategory;
+      } else if (subCategorySelected === subCategories[3]) {
+        subCategory = foodSubCategory;
+      }
+      return (
+        <View>
+          <Collapsible collapsed={this.state.collapsed} >
+          <List
+            dataArray={subCategory}
+              renderRow={(subcategory) => {
+                return (
+                  <ListItem>
+                    <TouchableWithoutFeedback
+                      onPress={() => {
+                        console.log('SubCategory: ');
+                        console.log(`${subCategorySelected}:${subcategory}`);
+                        Actions.drawerClose(); Actions.categoryScreen();
+                      }}
+                    >
+                    <Left>
+                      <Text style={{ color: 'white' }}>{subcategory}</Text>
+                    </Left>
+                    </TouchableWithoutFeedback>
+                  </ListItem>
+                );
+              }
+            }
+          />
+          </Collapsible>
+        </View>
+      );
+    }
+  }
   render() {
-    const items = ['Fashion', 'Electronics', 'Food', 'Footwear'];
+    const { categories } = this.state;
     const {
       categoriesListStyle,
       categoriesStyle,
       containerStyle,
       profileStyle,
+      categoryStyle,
       iconStyle
     } = styles;
     return (
@@ -95,34 +243,170 @@ export default class DrawerComponent extends React.Component {
           <View style={categoriesStyle}>
           <Text style={{ color: 'white', fontSize: responsiveFontSize(2) }}>Categories</Text>
           <View style={categoriesListStyle}>
-            <List
-            dataArray={items}
-              renderRow={(item) => {
-                return (
-                  <TouchableWithoutFeedback
-                    onPress={() => { Actions.drawerClose(); Actions.categoryScreen(); }}
-                  >
-                    <ListItem>
-                      <Body>
-                        <Text style={{ color: 'white' }}>{item}</Text>
-                      </Body>
-                      <Right>
-                        <Icon
-                          style={{ color: 'white' }}
-                          ios='ios-arrow-down'
-                          android="md-arrow-dropdown"
-                        />
-                      </Right>
-                    </ListItem>
+            <View style={categoryStyle}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    console.log(`Category: ${categories[0]}`);
+                    Actions.drawerClose(); Actions.categoryScreen();
+                  }}
+                >
+                  <Left>
+                    <Text style={{ color: 'white' }}>{categories[0]}</Text>
+                  </Left>
                   </TouchableWithoutFeedback>
-                );
-              }
-              }
-            />
+                  {this.renderArrow(categories[0])}
+              </View>
+              {this.renderSubCategories(categories[0])}
+            </View>
+            <View style={categoryStyle}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    console.log(`Category: ${categories[1]}`);
+                    Actions.drawerClose(); Actions.categoryScreen();
+                  }}
+                >
+                  <Left>
+                    <Text style={{ color: 'white' }}>{categories[1]}</Text>
+                  </Left>
+                  </TouchableWithoutFeedback>
+                  {this.renderArrow(categories[1])}
+              </View>
+              {this.renderSubCategories(categories[1])}
+            </View>
+            <View style={categoryStyle}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    console.log(`Category: ${categories[2]}`);
+                    Actions.drawerClose(); Actions.categoryScreen();
+                  }}
+                >
+                  <Left>
+                    <Text style={{ color: 'white' }}>{categories[2]}</Text>
+                  </Left>
+                  </TouchableWithoutFeedback>
+                  {this.renderArrow(categories[2])}
+              </View>
+              {this.renderSubCategories(categories[2])}
+            </View>
+            <View style={categoryStyle}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    console.log(`Category: ${categories[3]}`);
+                    Actions.drawerClose(); Actions.categoryScreen();
+                  }}
+                >
+                  <Left>
+                    <Text style={{ color: 'white' }}>{categories[3]}</Text>
+                  </Left>
+                  </TouchableWithoutFeedback>
+                  {this.renderArrow(categories[3])}
+              </View>
+              {this.renderSubCategories(categories[3])}
+            </View>
+            <View style={categoryStyle}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    console.log(`Category: ${categories[4]}`);
+                    Actions.drawerClose(); Actions.categoryScreen();
+                  }}
+                >
+                  <Left>
+                    <Text style={{ color: 'white' }}>{categories[4]}</Text>
+                  </Left>
+                  </TouchableWithoutFeedback>
+                  {this.renderArrow(categories[4])}
+              </View>
+              {this.renderSubCategories(categories[4])}
+            </View>
+            <View style={categoryStyle}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    console.log(`Category: ${categories[5]}`);
+                    Actions.drawerClose(); Actions.categoryScreen();
+                  }}
+                >
+                  <Left>
+                    <Text style={{ color: 'white' }}>{categories[5]}</Text>
+                  </Left>
+                  </TouchableWithoutFeedback>
+                  {this.renderArrow(categories[5])}
+              </View>
+              {this.renderSubCategories(categories[5])}
+            </View>
+            <View style={categoryStyle}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    console.log(`Category: ${categories[6]}`);
+                    Actions.drawerClose(); Actions.categoryScreen();
+                  }}
+                >
+                  <Left>
+                    <Text style={{ color: 'white' }}>{categories[6]}</Text>
+                  </Left>
+                  </TouchableWithoutFeedback>
+                  {this.renderArrow(categories[6])}
+              </View>
+              {this.renderSubCategories(categories[6])}
+            </View>
+            <View style={categoryStyle}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    console.log(`Category: ${categories[7]}`);
+                    Actions.drawerClose(); Actions.categoryScreen();
+                  }}
+                >
+                  <Left>
+                    <Text style={{ color: 'white' }}>{categories[7]}</Text>
+                  </Left>
+                  </TouchableWithoutFeedback>
+                  {this.renderArrow(categories[7])}
+              </View>
+              {this.renderSubCategories(categories[7])}
+            </View>
           </View>
           </View>
           <View style={{ paddingTop: responsiveHeight(5), paddingLeft: responsiveWidth(5) }}>
-            <TouchableOpacity onPress={Actions.loginScreen}>
+          <TouchableOpacity onPress={() => { this.props.logoutUser(); }} >
               <Text style={{ color: 'white' }}>Log Out</Text>
             </TouchableOpacity>
           </View>
@@ -152,7 +436,28 @@ const styles = StyleSheet.create({
     paddingLeft: responsiveWidth(5),
   },
   categoriesListStyle: {
-    marginLeft: responsiveWidth(-5)
-    }
+    paddingRight: responsiveWidth(5)
+  },
+  categoryStyle: {
+    paddingTop: responsiveHeight(2.5)
+  }
 
 });
+function mapStateToProps({ user }) {
+    return {
+        ...user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        logoutUser: () => {
+          return dispatch(logoutUser());
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DrawerComponent);

@@ -25,9 +25,10 @@ import { connect } from 'react-redux';
 import { Location } from 'expo';
 import Swiper from 'react-native-swiper';
 import { Actions } from 'react-native-router-flux';
+import MarqueeText from 'react-native-marquee';
 import {
   responsiveHeight,
-  // responsiveWidth,
+  responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
@@ -77,10 +78,7 @@ class MainScreen extends React.Component {
   }
   async componentWillMount() {
     const { token } = this.props;
-    console.log('From Change Location! : ');
-    console.log(this.props.fromChangeLocation);
     if (!this.props.fromChangeLocation) {
-    console.log('Getting Location !!??');
     const location = await Location.getCurrentPositionAsync(GEOLOCATION_OPTIONS);
     const latitude = location.coords.latitude;
     const longitude = location.coords.longitude;
@@ -103,10 +101,7 @@ class MainScreen extends React.Component {
     const userLocation = { locationName, latitude, longitude };
     const { page, perPage, pageCount, totalCount } = pagination;
     const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
-    console.log('pagination is :');
-    console.log(pagination);
     if (!pagination.paginationLoading && !lastPage) {
-      console.log('Not Last Page');
       this.props.getNearbyOffers(token, page + 1, userLocation);
     }
   }
@@ -209,11 +204,22 @@ class MainScreen extends React.Component {
               </View>
               <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                 <Icon
-                  style={{ color: 'black', fontSize: responsiveFontSize(4) }}
+                  style={{
+                    paddingRight: responsiveWidth(2),
+                    color: 'black',
+                    fontSize: responsiveFontSize(4) }}
                   ios='ios-pin'
                   android="md-pin"
                 />
-                <Text style={{ fontSize: responsiveFontSize(3) }}> {this.props.locationName}</Text>
+                <MarqueeText
+                  style={{
+                    fontSize: responsiveFontSize(3) }}
+                  duration={4000}
+                  marqueeOnStart
+                  loop
+                  marqueeDelay={1000}
+                  marqueeResetDelay={1000}
+                >{this.props.locationName}</MarqueeText>
                 <Right>
                   <Button
                     transparent
@@ -281,8 +287,8 @@ const LoadingIndicator = ({ loading }) => {
   loading ? (
     <View style={styles.loadingStyle}>
       <Spinner
-        style={{ height: responsiveHeight(25) }}
-        color='black'
+        style={{ paddingLeft: responsiveWidth(45), height: responsiveHeight(25) }}
+        color='white'
       />
     </View>
   ) : null

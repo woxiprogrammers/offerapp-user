@@ -5,28 +5,27 @@ import {
 } from 'react-native';
 import {
   Container,
-  ListItem,
-  Content,
-  Header,
-  Button,
-  Right,
-  Title,
-  Left,
-  List,
+  // ListItem,
+  // Content,
+  // Header,
+  // Button,
+  // Right,
+  // Title,
+  // Left,
+  // List,
   View,
-  Icon,
-  Body,
-  Text,
+  // Icon,
+  // Body,
+  // Text,
 } from 'native-base';
 import { MapView, Location } from 'expo';
-import { Actions } from 'react-native-router-flux';
+// import { Actions } from 'react-native-router-flux';
 import {
   responsiveHeight,
   responsiveWidth,
-  responsiveFontSize
+  // responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  normalize,
   variables,
   // mixins,
   colors,
@@ -39,34 +38,34 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
 
- function randomColor() {
-   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
- }
+function randomColor() {
+ return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+}
 
- export default class MapTab extends React.Component {
-   constructor(props) {
-     super(props);
-     this.state = {
-       region: null,
-       markers: [
+export default class MapTab extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      region: null,
+      markers: [
+        {
+          coordinate: { latitude: 18.507461, longitude: 73.805785 },
+          key: id++,
+          color: randomColor()
+        },
+        {
+          coordinate: { latitude: 18.551284, longitude: 73.774316 },
+          key: id++,
+          color: randomColor()
+        },
          {
-           coordinate: { latitude: 18.507461, longitude: 73.805785 },
-           key: id++,
-           color: randomColor()
-         },
-         {
-           coordinate: { latitude: 18.551284, longitude: 73.774316 },
-           key: id++,
-           color: randomColor()
-         },
-         {
-           coordinate: { latitude: 18.458852, longitude: 73.855840 },
-           key: id++,
-           color: randomColor()
-         }
-       ],
-     };
-   }
+          coordinate: { latitude: 18.458852, longitude: 73.855840 },
+          key: id++,
+          color: randomColor()
+        }
+      ],
+    };
+  }
    //this.setState({ location, region });
    async componentWillMount() {
      // Location.watchPositionAsync(GEOLOCATION_OPTIONS, this.locationChanged);

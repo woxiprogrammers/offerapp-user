@@ -14,6 +14,7 @@ import GroupScreen from './src/components/screens/groupscreens/GroupScreen';
 import WishlistScreen from './src/components/screens/WishlistScreen';
 import InterestedScreen from './src/components/screens/interestedscreens/InterestedScreen';
 import DrawerComponent from './src/components/drawer/DrawerComponent';
+import OfferDetailScreen from './src/components/screens/offerdetailscreens/OfferDetailSceen';
 
 class RouterComponent extends React.Component {
   render() {
@@ -41,6 +42,7 @@ class RouterComponent extends React.Component {
                     component={MainScreen}
                   />
                   <Scene hideNavBar key="changeLocationScreen" component={ChangeLocationScreen} />
+                  <Scene hideNavBar key="offerDetailScreen" component={OfferDetailScreen} />
                   <Scene hideNavBar key="categoryScreen" component={CategoryScreen} />
                   <Scene hideNavBar key="filterScreen" component={FilterScreen} />
                   <Scene hideNavBar key="sortByScreen" component={SortByScreen} />

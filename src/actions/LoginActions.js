@@ -62,7 +62,7 @@ export const logoutUser = () => {
       type: LOGOUT_USER
     });
     await AsyncStorage.removeItem('token');
-    //Actions.loginMain({ type: 'reset' });
+    Actions.auth({ type: 'reset' });
   };
 };
 

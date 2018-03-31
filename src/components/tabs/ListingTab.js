@@ -1,41 +1,43 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Image,
-  ScrollView
+  // Image,
+  // TouchableHighlight
 } from 'react-native';
 import {
   Container,
   Content,
-  Header,
-  Button,
-  Right,
-  Title,
-  Left,
-  View,
-  Icon,
-  Body,
-  Text,
+  // Header,
+  // Button,
+  // Right,
+  // Title,
+  // Left,
+  // View,
+  // Icon,
+  // Body,
+  // Text,
 } from 'native-base';
 // import { Actions } from 'react-native-router-flux';
 import {
   responsiveHeight,
   responsiveWidth,
-  responsiveFontSize
+  // responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  variables,
+  // variables,
   // mixins,
   colors,
  } from '../../styles';
 import ListingOfferCard from '../modules/ListingOfferCard';
 
-export default class ListingTab extends React.Component {
-   render() {
-     const {
-       containerStyle
-     } = styles;
-     return (
+
+export default class ListingTab extends Component {
+
+  render() {
+    const {
+      containerStyle
+    } = styles;
+    return (
       <Container style={containerStyle}>
         <Content
           showsVerticalScrollIndicator={false}
@@ -54,5 +56,9 @@ export default class ListingTab extends React.Component {
 const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: colors.white,
+  },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -14,6 +14,7 @@ import {
   // responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
+import { Actions } from 'react-native-router-flux';
 import AHImage from 'react-native-auto-height-image';
 import {
   normalize,
@@ -36,7 +37,7 @@ import {
        // offerExpiry
     } = this.props.offerDetails;
      return (
-       <TouchableOpacity onPress={() => { console.log(`OfferId Clicked: ${offerId}`); }}>
+       <TouchableOpacity onPress={() => { Actions.offerDetailScreen(); }}>
         <Card style={cardStyle}>
           <CardItem style={cardHeaderStyle}>
           <Left

@@ -41,7 +41,7 @@ export default class WishlistScreen extends React.Component {
         iosBarStyle='light-content'
       >
         <Left style={{ flexDirection: 'row' }}>
-          <Button transparent onPress={Actions.pop}>
+          <Button transparent onPress={Actions.mainScreen}>
             <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
           </Button>
           <Button transparent style={{ padding: 0 }} onPress={Actions.drawerOpen}>

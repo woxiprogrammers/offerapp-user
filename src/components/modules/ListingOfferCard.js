@@ -26,6 +26,7 @@ import {
 
  export default class ListingOfferCard extends Component {
    render() {
+     console.log(this.props);
      const {
        cardHeaderStyle,
        cardBodyStyle,
@@ -56,7 +57,10 @@ import {
             >Adidas, Kothrud</Text>
             </Left>
             <Right>
-              <Button transparent style={{ paddingRight: responsiveWidth(3) }}>
+              <Button
+                onPress={() => { return this.props.popupDialog; }}
+                transparent style={{ paddingRight: responsiveWidth(3) }}
+              >
                 <Icon
                   style={{ color: 'black', fontSize: responsiveFontSize(4) }}
                   ios='ios-locate'
