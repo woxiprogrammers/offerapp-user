@@ -10,7 +10,7 @@ import {
   GET_LOCATION_REQUEST,
   GET_LOCATION_SUCCESS,
   GET_LOCATION_FAILURE,
-  // URL
+  URL
 } from '../constants';
 
 export const getNearbyOffers = (token, page, userLocation) => {
@@ -109,10 +109,13 @@ export const getSwipperFailure = (error) => {
 export const getLocation = (token, coords) => {
   return async (dispatch) => {
     dispatch(getLocationRequest(coords));
-    // const path = 'getLocation';
+    console.log(coords);
+    const path = 'customer/getlocation';
+    console.log('Getting Location: ');
+    console.log(`${URL}/${path}/?token=${token}`);
     await axios({
-      // url: `${URL}/${path}/?token=${token}`,
-      url: 'http://www.mocky.io/v2/5abb3eb22d000054009bdb41',
+      // url: 'http://www.mocky.io/v2/5abb3eb22d000054009bdb41',
+      url: `${URL}/${path}/?token=${token}`,
       method: 'post',
       data: {
         coords
@@ -120,6 +123,7 @@ export const getLocation = (token, coords) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
+        console.log(response.data);
         dispatch(getLocationSuccess(response.data));
       }
     }).catch((error) => {

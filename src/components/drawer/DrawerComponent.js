@@ -230,7 +230,7 @@ class DrawerComponent extends React.Component {
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={() => { Actions.drawerClose(); Actions.interestedScreen(); }}
+            onPress={() => { Actions.drawerClose(); Actions.push('interestedScreen'); }}
           >
             <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
               <Icon style={{ color: 'white' }} ios='ios-thumbs-up' android="md-thumbs-up" />

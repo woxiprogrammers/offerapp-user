@@ -11,7 +11,7 @@ import FilterScreen from './src/components/screens/categoryscreens/FilterScreen'
 import SortByScreen from './src/components/screens/categoryscreens/SortByScreen';
 import GroupListingScreen from './src/components/screens/groupscreens/GroupListingScreen';
 import GroupScreen from './src/components/screens/groupscreens/GroupScreen';
-import WishlistScreen from './src/components/screens/WishlistScreen';
+import WishlistScreen from './src/components/screens/wishlistscreens/WishlistScreen';
 import InterestedScreen from './src/components/screens/interestedscreens/InterestedScreen';
 import DrawerComponent from './src/components/drawer/DrawerComponent';
 import OfferDetailScreen from './src/components/screens/offerdetailscreens/OfferDetailSceen';

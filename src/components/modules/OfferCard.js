@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
   CardItem,
-  Button,
+  // Button,
   Right,
   // Body,
-  Icon,
+  // Icon,
   Text,
   Left,
   // View,
@@ -24,15 +24,24 @@ import {
   colors,
  } from '../../styles';
 
- export default class ListingOfferCard extends Component {
+ export default class OfferCard extends Component {
    render() {
      const {
        cardHeaderStyle,
        cardBodyStyle,
        cardStyle,
      } = styles;
+     const {
+       offerId,
+       offerPic,
+       offerName,
+       sellerInfo,
+       // offerExpiry
+    } = this.props.offerDetails;
      return (
-       <TouchableOpacity>
+       <TouchableOpacity
+        onPress={() => { console.log(`OfferId: ${offerId}`); }}
+       >
         <Card style={cardStyle}>
           <CardItem style={cardHeaderStyle}>
           <Left
@@ -47,30 +56,19 @@ import {
                 marginLeft: normalize.normalize(7),
                 alignSelf: 'flex-start',
                 fontSize: responsiveFontSize(3) }}
-            >Buy 2 Get 1 Free</Text>
+            >{offerName}</Text>
             <Text
               style={{
                 marginLeft: normalize.normalize(7),
                 alignSelf: 'flex-start',
                 fontSize: responsiveFontSize(2) }}
-            >Adidas, Kothrud</Text>
+            >{sellerInfo}</Text>
             </Left>
-            <Right>
-              <Button
-                onPress={() => { return this.props.popupDialog; }}
-                transparent style={{ paddingRight: responsiveWidth(3) }}
-              >
-                <Icon
-                  style={{ color: 'black', fontSize: responsiveFontSize(4) }}
-                  ios='ios-locate'
-                  android="md-locate"
-                />
-              </Button>
-            </Right>
+            <Right />
           </CardItem>
           <CardItem cardBody style={cardBodyStyle}>
             <AHImage
-              source={{ uri: 'http://offers.droom.in/wp-content/uploads/2016/08/offer-page.jpg' }}
+              source={{ uri: offerPic }}
               width={responsiveWidth(95)}
             />
           </CardItem>

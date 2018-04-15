@@ -213,7 +213,8 @@ class MainScreen extends React.Component {
                 />
                 <MarqueeText
                   style={{
-                    fontSize: responsiveFontSize(3) }}
+                    fontSize: responsiveFontSize(3),
+                    width: responsiveWidth(65) }}
                   duration={4000}
                   marqueeOnStart
                   loop

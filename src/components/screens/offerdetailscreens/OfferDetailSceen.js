@@ -62,7 +62,7 @@ let id = 0;
 function randomColor() {
  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }
- export default class OfferDetailScreen extends React.Component {
+export default class OfferDetailScreen extends React.Component {
 
   constructor(props) {
     super(props);

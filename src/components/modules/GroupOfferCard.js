@@ -31,8 +31,18 @@ import {
        cardBodyStyle,
        cardStyle,
      } = styles;
+     const {
+       offerId,
+       offerPic,
+       offerName,
+       sellerInfo,
+       // offerExpiry
+    } = this.props.offerDetails;
      return (
-       <TouchableOpacity style={{ marginBottom: responsiveHeight(-0.5) }}>
+       <TouchableOpacity
+        onPress={() => { console.log(`OfferId: ${offerId}`); }}
+        style={{ marginBottom: responsiveHeight(-0.5) }}
+       >
         <Card style={cardStyle}>
           <CardItem style={cardHeaderStyle}>
           <Left
@@ -47,18 +57,18 @@ import {
                 marginLeft: normalize.normalize(7),
                 alignSelf: 'flex-start',
                 fontSize: responsiveFontSize(3) }}
-            >Buy 2 Get 1 Free</Text>
+            >{offerName}</Text>
             <Text
               style={{
                 marginLeft: normalize.normalize(7),
                 alignSelf: 'flex-start',
                 fontSize: responsiveFontSize(2) }}
-            >Adidas, Kothrud</Text>
+            >{sellerInfo}</Text>
             </Left>
           </CardItem>
           <CardItem cardBody style={cardBodyStyle}>
             <AHImage
-              source={{ uri: 'http://offers.droom.in/wp-content/uploads/2016/08/offer-page.jpg' }}
+              source={{ uri: offerPic }}
               width={responsiveWidth(95)}
             />
           </CardItem>

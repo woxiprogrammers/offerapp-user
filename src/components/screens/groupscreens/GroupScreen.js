@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   // Image,
-  // ScrollView,
+  FlatList,
   TouchableOpacity
 } from 'react-native';
 import {
   Container,
   Content,
   Header,
+  Spinner,
   Button,
   Right,
   Title,
@@ -18,6 +19,7 @@ import {
   Body,
   Text,
 } from 'native-base';
+import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {
   responsiveHeight,
@@ -29,24 +31,106 @@ import {
   // mixins,
   colors,
 } from '../../../styles';
-import GroupOfferCard from '../../modules/GroupOfferCard';
+import OfferCard from '../../modules/OfferCard';
+import { getGroupOffers, leaveGroup } from '../../../actions';
 
-export default class GroupScreen extends Component {
-   render() {
-     const {
+class GroupScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.autoBind(
+      'onEndReached',
+      'onRefresh',
+      'renderRow',
+      'renderLeaveGroup'
+    );
+  }
+  componentWillMount() {
+    const {
+      token,
+      userId,
+      groupId
+    } = this.props;
+    console.log('Mounting GroupScreen');
+    this.props.getGroupOffers(token, 1, userId, groupId);
+  }
+  onEndReached() {
+    const {
+      pagination,
+      token,
+      userId,
+      groupId
+    } = this.props;
+    const { page, perPage, pageCount, totalCount } = pagination;
+    const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
+    if (!pagination.groupOffersLoading && !lastPage) {
+      this.props.getGroupOffers(token, page + 1, userId, groupId);
+    }
+  }
+  onRefresh() {
+    const {
+      token,
+      userId,
+      groupId
+    } = this.props;
+    this.props.getGroupOffers(token, 1, userId, groupId);
+  }
+
+  autoBind(...methods) {
+      methods.forEach(method => {
+        this[method] = this[method].bind(this);
+        return this[method];
+      });
+  }
+  keyExtractor = (item, index) => { return index; };
+  leaveGroupPressed() {
+    const { token, userId, groupId } = this.props;
+    this.props.leaveGroup({ token, userId, groupId });
+  }
+  renderRow(offerDetails) {
+    // console.log('Rendering Row');
+    // console.log(offerDetails);
+    const { item } = offerDetails;
+    const { pagination } = this.props;
+    if (pagination.groupOffersLoading) {
+      return (
+        <LoadingIndicator loading={pagination.groupOffersLoading} />);
+    }
+      return (
+        <OfferCard offerDetails={item} />
+      );
+  }
+  renderLeaveGroup() {
+    if (this.props.leaveGroupLoading) {
+      return (
+        <View style={styles.loadingStyle}>
+          <Spinner color="black" />
+        </View>);
+    }
+    return (
+      <TouchableOpacity
+        onPress={() => { this.leaveGroupPressed(); }}
+        style={{ flex: 1, alignSelf: 'center' }}
+      >
+          <Text style={{ alignSelf: 'center' }}>Leave Group</Text>
+      </TouchableOpacity>
+    );
+  }
+  render() {
+    const {
       leaveGroupStyle,
       containerStyle,
       headerStyle,
       titleStyle
-     } = styles;
-     return (
+    } = styles;
+    const { groupOffers } = this.props;
+    return (
       <Container style={containerStyle}>
       <Header
         style={headerStyle}
         iosBarStyle='light-content'
       >
         <Left style={{ flexDirection: 'row' }}>
-          <Button transparent onPress={Actions.groupListingScreen}>
+          <Button transparent onPress={Actions.pop}>
             <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
           </Button>
           <Button transparent style={{ padding: 0 }} onPress={Actions.drawerOpen}>
@@ -64,22 +148,36 @@ export default class GroupScreen extends Component {
             paddingTop: responsiveHeight(1),
             paddingLeft: responsiveWidth(2.5) }}
         >
-          <GroupOfferCard />
-          <GroupOfferCard />
-          <GroupOfferCard />
+        <FlatList
+          automaticallyAdjustContentInsets={false}
+          data={groupOffers}
+          refreshing={false}
+          renderItem={this.renderRow}
+          keyExtractor={this.keyExtractor}
+          onRefresh={() => { return this.onRefresh(); }}
+          onEndReached={() => { return this.onEndReached(); }}
+        />
       </Content>
       <View style={leaveGroupStyle}>
-      <TouchableOpacity
-        onPress={() => { Actions.pop(); }}
-        style={{ flex: 1, alignSelf: 'center' }}
-      >
-          <Text style={{ alignSelf: 'center' }}>Leave Group</Text>
-        </TouchableOpacity>
+      {this.renderLeaveGroup()}
       </View>
     </Container>
      );
    }
  }
+
+const LoadingIndicator = ({ loading }) => {
+  return (
+    loading ? (
+      <View style={styles.loadingStyle}>
+        <Spinner
+        // style={{ height: responsiveHeight(25) }}
+        color='black'
+        />
+      </View>
+    ) : null
+  );
+};
 const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: colors.white,
@@ -102,4 +200,33 @@ const styles = StyleSheet.create({
     height: responsiveHeight(10),
     backgroundColor: colors.lightGray
   },
+  loadingStyle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
+
+function mapStateToProps({ groups, user }) {
+    const { group } = groups;
+    const { token } = user;
+    return {
+        ...group,
+        token
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        getGroupOffers: (token, page, userId, groupId) => {
+          return dispatch(getGroupOffers(token, page, userId, groupId));
+        },
+        leaveGroup: (token, userId, groupId) => {
+          return dispatch(leaveGroup(token, userId, groupId));
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(GroupScreen);
