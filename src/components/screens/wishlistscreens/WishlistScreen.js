@@ -56,6 +56,7 @@ class WishlistScreen extends React.Component {
       'renderRow',
       'refreshFlatlist',
       'showScaleAnimationDialog',
+      'renderInterested',
       'renderDialogContent',
       'renderWishlistOptions'
     );
@@ -152,6 +153,25 @@ class WishlistScreen extends React.Component {
         >
           <Text style={{ alignSelf: 'center' }}>Remove</Text>
         </TouchableOpacity>
+        {this.renderInterested(item)}
+      </View>
+    );
+  }
+  renderInterested(item) {
+    const {
+      addedToInterested,
+    } = this.props;
+    if (addedToInterested) {
+      return (
+        <TouchableOpacity
+          onPress={() => { Actions.push('interestedScreen'); }}
+          style={{ flex: 1, alignSelf: 'center' }}
+        >
+          <Text style={{ alignSelf: 'center' }}>Go to Interested</Text>
+        </TouchableOpacity>
+      );
+    }
+      return (
         <TouchableOpacity
           onPress={() => {
             this.setState({ selectedInterestedOffer: item });
@@ -166,8 +186,7 @@ class WishlistScreen extends React.Component {
         >
           <Text style={{ alignSelf: 'center' }}>I am Interested</Text>
         </TouchableOpacity>
-      </View>
-    );
+      );
   }
   renderRow(offerDetails) {
     // console.log('Rendering Row');

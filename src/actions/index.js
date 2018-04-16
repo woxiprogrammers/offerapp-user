@@ -5,3 +5,4 @@ export * from './GroupActions';
 export * from './WishListActions';
 export * from './InterestedActions';
 export * from './OfferActions';
+export * from './CategoryActions';

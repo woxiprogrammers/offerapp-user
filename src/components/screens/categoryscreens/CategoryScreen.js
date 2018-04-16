@@ -78,6 +78,20 @@ export default class CategoryScreen extends Component {
                 </TabHeading>}
             >
               <ListingTab />
+              <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
+              <TouchableOpacity
+                onPress={() => { Actions.push('sortByScreen'); }}
+                style={{ flex: 1, alignSelf: 'center' }}
+              >
+                  <Text style={{ alignSelf: 'center' }}>Sort By</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => { Actions.push('filterScreen'); }}
+                  style={{ flex: 1, alignSelf: 'center' }}
+                >
+                  <Text style={{ alignSelf: 'center' }}>Filter</Text>
+                </TouchableOpacity>
+              </View>
             </Tab>
             <Tab
               heading={
@@ -87,6 +101,14 @@ export default class CategoryScreen extends Component {
                 </TabHeading>}
             >
               <MapTab />
+              <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
+                <TouchableOpacity
+                  onPress={() => { Actions.push('filterScreen'); }}
+                  style={{ flex: 1, alignSelf: 'center' }}
+                >
+                  <Text style={{ alignSelf: 'center' }}>Filter</Text>
+                </TouchableOpacity>
+              </View>
             </Tab>
             <Tab
               heading={
@@ -96,22 +118,16 @@ export default class CategoryScreen extends Component {
                 </TabHeading>}
             >
                 <ARTAb />
+                <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
+                  <TouchableOpacity
+                    onPress={() => { Actions.push('filterScreen'); }}
+                    style={{ flex: 1, alignSelf: 'center' }}
+                  >
+                    <Text style={{ alignSelf: 'center' }}>Filter</Text>
+                  </TouchableOpacity>
+                </View>
             </Tab>
           </Tabs>
-        </View>
-        <View style={{ flexDirection: 'row', height: responsiveHeight(7) }}>
-        <TouchableOpacity
-          onPress={() => { Actions.push('sortByScreen'); }}
-          style={{ flex: 1, alignSelf: 'center' }}
-        >
-            <Text style={{ alignSelf: 'center' }}>Sort By</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => { Actions.push('filterScreen'); }}
-            style={{ flex: 1, alignSelf: 'center' }}
-          >
-            <Text style={{ alignSelf: 'center' }}>Filter</Text>
-          </TouchableOpacity>
         </View>
        </Container>
      );
