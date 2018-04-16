@@ -4,6 +4,7 @@ import MainReducers from './mainreducers';
 import GroupsReducers from './groupsreducers';
 import WishListReducers from './wishlistreducers';
 import InterestedReducers from './interestedreducers';
+import OfferReducers from './OfferReducers';
 
 export default combineReducers({
   user: LoginReducers,
@@ -11,5 +12,5 @@ export default combineReducers({
   groups: GroupsReducers,
   wishlist: WishListReducers,
   interested: InterestedReducers,
-  
+  offer: OfferReducers,
 });

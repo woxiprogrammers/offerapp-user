@@ -140,7 +140,7 @@ class MainScreen extends React.Component {
   }
   renderSwiper() {
     const { swiperStyle } = styles;
-    if (this.props.locationLoading) {
+    if (this.props.swiperLoading) {
       return (
         <Spinner
           style={{ height: responsiveHeight(25) }}

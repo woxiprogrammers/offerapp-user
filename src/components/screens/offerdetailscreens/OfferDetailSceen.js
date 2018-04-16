@@ -2,7 +2,8 @@ import React from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
-  Image
+  Image,
+  Picker
 } from 'react-native';
 import {
   Container,
@@ -18,6 +19,7 @@ import {
   Icon,
   Body,
 } from 'native-base';
+import { connect } from 'react-redux';
 import { MapView, } from 'expo';
 import Swiper from 'react-native-swiper';
 import { Actions } from 'react-native-router-flux';
@@ -31,7 +33,9 @@ import PopupDialog, {
   DialogButton,
   ScaleAnimation,
 } from 'react-native-popup-dialog';
+import { phonecall } from 'react-native-communications';
 import swiperLoading from '../../../assets/images/loading.gif';
+import { getOfferDetails, getOfferSwipper, addToWishList, addToInterested } from '../../../actions';
 import {
   variables,
   // mixins,
@@ -39,18 +43,19 @@ import {
  } from '../../../styles';
 
 const Slide = props => {
- return (<View style={styles.slide}>
-    <Image
-      onLoad={props.loadHandle.bind(null, props.i)}
-      style={styles.image}
-      source={{ uri: props.uri }}
-    />
-   {
-     !props.loaded && <View style={styles.loadingView}>
-       <Image style={styles.loadingImage} source={swiperLoading} />
-     </View>
-   }
- </View>);
+ return (
+   <View style={styles.slide}>
+      <Image
+        onLoad={props.loadHandle.bind(null, props.i)}
+        style={styles.image}
+        source={{ uri: props.uri }}
+      />
+    {
+      !props.loaded && <View style={styles.loadingView}>
+        <Image style={styles.loadingImage} source={swiperLoading} />
+      </View>
+    }
+   </View>);
 };
 const scaleAnimation = new ScaleAnimation();
 
@@ -62,44 +67,53 @@ let id = 0;
 function randomColor() {
  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }
-export default class OfferDetailScreen extends React.Component {
+class OfferDetailScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      imgList: [
-        'https://gitlab.pro/yuji/demo/uploads/2d5122a2504e5cbdf01f4fcf85f2594b/Mwb8VWH.jpg',
-        'https://gitlab.pro/yuji/demo/uploads/4421f77012d43a0b4e7cfbe1144aac7c/XFVzKhq.jpg',
-        'https://gitlab.pro/yuji/demo/uploads/576ef91941b0bda5761dde6914dae9f0/kD3eeHe.jpg'
-      ],
-      loadQueue: [0, 0, 0],
-      region: {
-        latitude: 18.551284,
-        longitude: 73.774316,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
-      marker: {
-          coordinate: { latitude: 18.551284, longitude: 73.774316 },
-          key: id++,
-          color: randomColor()
-        },
-    };
-    this.loadHandle = this.loadHandle.bind(this);
+    this.state = ({
+      selectedTime: '30 min.',
+    });
+    this.autoBind(
+      'loadHandle',
+      'renderSwiper',
+      'renderMapView',
+      'renderWishList',
+      'renderInterested'
+    );
   }
-  showScaleAnimationDialog = () => {
-    this.scaleAnimationDialog.show();
+  async componentWillMount() {
+    const {
+      token,
+      offerId,
+      // userId
+    } = this.props;
+    console.log('Mounting OfferDetailScreen');
+    await this.props.getOfferDetails(token, offerId, 12345);
+    this.props.getOfferSwipper(token, offerId);
+  }
+  showMapDialog = () => {
+    this.mapDialog.show();
+  }
+  showInterestedDialog = () => {
+    this.interestedDialog.show();
+  }
+  autoBind(...methods) {
+      methods.forEach(method => {
+        this[method] = this[method].bind(this);
+        return this[method];
+      });
   }
   loadHandle(i) {
-    const loadQueue = this.state.loadQueue;
+    const loadQueue = this.props.loadQueue;
     loadQueue[i] = 1;
     this.setState({
       loadQueue
     });
-}
+  }
   renderSwiper() {
     const { swiperStyle } = styles;
-    if (this.props.locationLoading) {
+    if (this.props.offerSwiperLoading) {
       return (
         <Spinner
           style={{ height: responsiveHeight(25) }}
@@ -108,33 +122,171 @@ export default class OfferDetailScreen extends React.Component {
     }
     return (
       <Swiper style={swiperStyle}>
-      {
-        this.state.imgList.map((item, i) => {
-          return (
-          <Slide
-            loadHandle={this.loadHandle}
-            loaded={!!this.state.loadQueue[i]}
-            uri={item}
-            i={i}
-            key={i}
-          />);
-          })
-        }
-        </Swiper>);
+        {
+          this.props.imageList.map((item, i) => {
+            return (
+              <Slide
+                loadHandle={this.loadHandle}
+                loaded={!!this.props.loadQueue[i]}
+                uri={item}
+                i={i}
+                key={i}
+              />
+              );
+        })}
+      </Swiper>);
   }
-
+  renderWishList() {
+    const {
+      addToWishListLoading,
+      addedToWishList,
+      token,
+      // userId,
+      offerId
+    } = this.props;
+    if (addedToWishList) {
+      return (
+        <TouchableOpacity
+          onPress={() => { Actions.push('wishlistScreen'); }}
+          style={{ flex: 1, alignSelf: 'center' }}
+        >
+          <Text style={{ alignSelf: 'center' }}>Go to Wish List</Text>
+        </TouchableOpacity>
+      );
+    } else if (addToWishListLoading) {
+      return (
+        <View style={styles.loadingStyle}>
+          <Spinner color="black" />
+        </View>
+      );
+    }
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            this.props.addToWishList(token, offerId, 12345);
+            Actions.push('wishlistScreen');
+          }}
+          style={{ flex: 1, alignSelf: 'center' }}
+        >
+          <Text style={{ alignSelf: 'center' }}>Add to Wish List</Text>
+        </TouchableOpacity>
+      );
+  }
+  renderInterested() {
+    const {
+      addToInterestedLoading,
+      addedToInterested,
+    } = this.props;
+    if (addedToInterested) {
+      return (
+        <TouchableOpacity
+          onPress={() => { Actions.push('interestedScreen'); }}
+          style={{ flex: 1, alignSelf: 'center' }}
+        >
+          <Text style={{ alignSelf: 'center' }}>Go to Interested</Text>
+        </TouchableOpacity>
+      );
+    } else if (addToInterestedLoading) {
+      return (
+        <View style={styles.loadingStyle}>
+          <Spinner color="black" />
+        </View>
+      );
+    }
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            this.showInterestedDialog();
+          }}
+          style={{ flex: 1, alignSelf: 'center' }}
+        >
+          <Text style={{ alignSelf: 'center' }}>I am Interested</Text>
+        </TouchableOpacity>
+      );
+  }
+  renderInterestedDialog() {
+    const {
+      dialogInterestedView,
+      pickerStyle,
+    } = styles;
+    const { sendInterestedOfferLoading } = this.props;
+    if (sendInterestedOfferLoading) {
+      return (<LoadingIndicator loading={sendInterestedOfferLoading} />);
+    }
+      return (
+      <View style={dialogInterestedView}>
+          <Text>Time to Reach : </Text>
+          <Picker
+            style={pickerStyle}
+            mode='dropdown'
+            selectedValue={this.state.selectedTime}
+            onValueChange={(itemValue) => { return this.setState({ selectedTime: itemValue }); }}
+          >
+            <Picker.Item label="30 min." value="30 min." />
+            <Picker.Item label="1 hr." value="1 hr." />
+            <Picker.Item label="2 hrs." value="2 hrs." />
+            <Picker.Item label="3 hrs." value="3 hrs." />
+          </Picker>
+        </View>
+      );
+  }
+  renderMapView() {
+    if (this.props.offerLoading) {
+      return (
+        <Spinner
+          style={{ height: responsiveHeight(25) }}
+          color='black'
+        />);
+    }
+      const { mapStyle } = styles;
+      const { offerLatitude, offerLongitude } = this.props;
+      const region = {
+        latitude: offerLatitude,
+        longitude: offerLongitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      };
+      const marker = {
+        coordinate: { latitude: offerLatitude, longitude: offerLongitude },
+        key: id++,
+        color: randomColor()
+      };
+      return (
+        <MapView
+          showsUserLocation
+          provider={this.props.provider}
+          style={mapStyle}
+          initialRegion={region}
+        >
+          <MapView.Marker
+            key={marker.key}
+            coordinate={marker.coordinate}
+            pinColor={marker.color}
+          />
+        </MapView>);
+  }
   render() {
      const {
       offerDescriptionStyle,
-      dialogContentView,
+      dialogMapView,
       offerStyle,
       containerStyle,
       headerStyle,
       titleStyle,
-      mapStyle,
+      // mapStyle,
      } = styles;
-     const { marker } = this.state;
-     return (
+     const {
+       offerId,
+       token,
+       offerName,
+       sellerInfo,
+       sellerNumber,
+       offerDescription,
+       sellerAddress,
+       offerExpiry
+    } = this.props;
+    const { selectedTime } = this.state;
+    return (
       <Container style={containerStyle}>
       <Header
         style={headerStyle}
@@ -162,54 +314,72 @@ export default class OfferDetailScreen extends React.Component {
             height={responsiveHeight(50)}
             dialogStyle={{ marginTop: responsiveHeight(-30) }}
             ref={(popupDialog) => {
-              this.scaleAnimationDialog = popupDialog;
+              this.mapDialog = popupDialog;
             }}
             dialogAnimation={scaleAnimation}
-            dialogTitle={<DialogTitle title="Adidas Store, Kothrud" />}
+            dialogTitle={<DialogTitle title={sellerInfo} />}
             actions={[
               <DialogButton
                 textContainerStyle={{ height: responsiveHeight(5) }}
                 text="Close"
                 onPress={() => {
-                  this.scaleAnimationDialog.dismiss();
+                  this.mapDialog.dismiss();
                 }}
-                key="button-1"
+                key="close"
               />,
             ]}
           >
-          <View style={dialogContentView}>
-            <MapView
-              showsUserLocation
-              provider={this.props.provider}
-              style={mapStyle}
-              initialRegion={this.state.region}
-            >
-              <MapView.Marker
-                key={marker.key}
-                coordinate={marker.coordinate}
-                pinColor={marker.color}
-              />
-            </MapView>
+          <View style={dialogMapView}>
+            {this.renderMapView()}
           </View>
+          </PopupDialog>
+          <PopupDialog
+            width={responsiveWidth(90)}
+            height={responsiveHeight(50)}
+            dialogStyle={{ marginTop: responsiveHeight(-30) }}
+            ref={(popupDialog) => {
+              this.interestedDialog = popupDialog;
+            }}
+            dialogAnimation={scaleAnimation}
+            dialogTitle={<DialogTitle title={sellerInfo} />}
+            actions={[
+              <DialogButton
+                textContainerStyle={{ height: responsiveHeight(5) }}
+                text="Submit"
+                onPress={async () => {
+                  await this.props.addToInterested(
+                    token,
+                    offerId,
+                    12345,
+                    selectedTime);
+                  this.interestedDialog.dismiss();
+                  Actions.interestedScreen();
+                }}
+                key="submit"
+              />,
+            ]}
+          >
+            {this.renderInterestedDialog()}
           </PopupDialog>
           <View>
             {this.renderSwiper()}
           </View>
           <View style={offerStyle}>
             <View style={{ width: responsiveWidth(65) }}>
-            <Text style={{ fontSize: responsiveFontSize(4) }}>BUY 1 GET 1 Free</Text>
-            <Text style={{ fontSize: responsiveFontSize(2.5) }}>Adidas Store, Kothrud</Text>
+            <Text style={{ fontSize: responsiveFontSize(3.8) }}>{offerName}</Text>
+            <Text style={{ fontSize: responsiveFontSize(2.5) }}>{sellerInfo}</Text>
             <Text
               style={{ fontSize: responsiveFontSize(1.7) }}
-            >17, Near Krishma Complex, Late GA Kulkarni Path, Kothrud, Pune</Text>
+            >{sellerAddress}</Text>
             <Text
               style={{
                 paddingTop: responsiveHeight(1),
                 fontSize: responsiveFontSize(1.7)
               }}
-            >Offer Validity : 7 th July, 2017</Text>
+            >Offer Validity : {offerExpiry}</Text>
             </View>
             <View style={{ alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => { return phonecall(sellerNumber, true); }}>
               <Icon
                 style={{
                   fontSize: responsiveFontSize(5),
@@ -218,6 +388,7 @@ export default class OfferDetailScreen extends React.Component {
                 ios='ios-call'
                 android="md-call"
               />
+              </TouchableOpacity>
               <View style={{ paddingTop: responsiveHeight(2) }}>
               <Button
                 style={{
@@ -226,7 +397,7 @@ export default class OfferDetailScreen extends React.Component {
                   justifyContent: 'center',
                   backgroundColor: '#47525E'
                 }}
-                onPress={this.showScaleAnimationDialog}
+                onPress={this.showMapDialog}
               ><Text
                 style={{
                   paddingLeft: responsiveWidth(1),
@@ -240,8 +411,7 @@ export default class OfferDetailScreen extends React.Component {
           <View style={{ backgroundColor: '#47525E', height: responsiveHeight(1) }} />
           <View style={offerDescriptionStyle}>
             <Text style={{ fontSize: responsiveFontSize(1.7) }}>
-            Get 5% cashback when you pay with Freecharge on Razorpay
-            merchants Maximum cashback of Rs 50 Offer is valid once per user
+            {offerDescription}
             </Text>
           </View>
       </Content>
@@ -252,23 +422,26 @@ export default class OfferDetailScreen extends React.Component {
           height: responsiveHeight(10)
         }}
       >
-      <TouchableOpacity
-        onPress={() => { Actions.push('wishlistScreen'); }}
-        style={{ flex: 1, alignSelf: 'center' }}
-      >
-          <Text style={{ alignSelf: 'center' }}>Add to Wish List</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => { Actions.push('interestedScreen'); }}
-          style={{ flex: 1, alignSelf: 'center' }}
-        >
-          <Text style={{ alignSelf: 'center' }}>I am Interested</Text>
-        </TouchableOpacity>
+        {this.renderWishList()}
+        {this.renderInterested()}
       </View>
     </Container>
      );
    }
  }
+
+ const LoadingIndicator = ({ loading }) => {
+   return (
+     loading ? (
+       <View style={styles.loadingStyle}>
+         <Spinner
+         // style={{ height: responsiveHeight(25) }}
+         color='black'
+         />
+       </View>
+     ) : null
+   );
+ };
 const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: colors.white,
@@ -292,7 +465,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingLeft: responsiveWidth(5),
     paddingRight: responsiveWidth(5),
-    paddingTop: responsiveHeight(1)
+    paddingTop: responsiveHeight(1.5)
   },
   offerDescriptionStyle: {
     height: responsiveHeight(30),
@@ -328,7 +501,24 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60
   },
-  dialogContentView: {
+  dialogMapView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dialogInterestedView: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pickerStyle: {
+    //backgroundColor: colors.lightGrayTransparent,
+    width: variables.SCREEN_WIDTH * 0.3,
+      marginTop: 10,
+      paddingBottom: 10,
+  },
+  loadingStyle: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -337,3 +527,33 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 });
+
+function mapStateToProps({ offer, user }) {
+    const { token, userId } = user;
+    return {
+        ...offer,
+        token,
+        userId
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        getOfferDetails: (token, offerId, userId) => {
+          return dispatch(getOfferDetails(token, offerId, userId));
+        },
+        getOfferSwipper: (token, offerId) => {
+          return dispatch(getOfferSwipper(token, offerId));
+        },
+        addToWishList: (token, offerId, userId) => {
+          return dispatch(addToWishList(token, offerId, userId));
+        },
+        addToInterested: (token, offerId, userId, selectedTime) => {
+          return dispatch(addToInterested(token, offerId, userId, selectedTime));
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(OfferDetailScreen);
