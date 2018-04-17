@@ -15,6 +15,7 @@ import WishlistScreen from './src/components/screens/wishlistscreens/WishlistScr
 import InterestedScreen from './src/components/screens/interestedscreens/InterestedScreen';
 import DrawerComponent from './src/components/drawer/DrawerComponent';
 import OfferDetailScreen from './src/components/screens/offerdetailscreens/OfferDetailSceen';
+import ProfileEditScreen from './src/components/screens/profilescreens/ProfileEditScreen';
 
 class RouterComponent extends React.Component {
   render() {
@@ -50,6 +51,7 @@ class RouterComponent extends React.Component {
                   <Scene hideNavBar key="groupScreen" component={GroupScreen} />
                   <Scene hideNavBar key="wishlistScreen" component={WishlistScreen} />
                   <Scene hideNavBar key="interestedScreen" component={InterestedScreen} />
+                  <Scene hideNavBar key="profileEditScreen" component={ProfileEditScreen} />
                 </Stack>
               </Scene>
             </Drawer>

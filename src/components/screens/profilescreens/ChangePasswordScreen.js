@@ -83,8 +83,8 @@ export default class ChangePasswordScreen extends React.Component {
         </ImageBackground>
       </View>
       );
-      }
-      }
+  }
+}
 
 
 const styles = StyleSheet.create({

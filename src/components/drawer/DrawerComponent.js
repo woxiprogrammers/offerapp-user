@@ -185,11 +185,13 @@ class DrawerComponent extends React.Component {
     return (
       <Container style={containerStyle}>
         <Content>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => { Actions.drawerClose(); Actions.profileEditScreen(); }}
+          >
             <View style={profileStyle}>
               <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
                 <Text
-                style={{ fontSize: responsiveFontSize(3), color: 'white' }}
+                  style={{ fontSize: responsiveFontSize(3), color: 'white' }}
                 >
                   Hello, Annu</Text>
                 <Text
