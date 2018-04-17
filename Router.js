@@ -16,6 +16,7 @@ import InterestedScreen from './src/components/screens/interestedscreens/Interes
 import DrawerComponent from './src/components/drawer/DrawerComponent';
 import OfferDetailScreen from './src/components/screens/offerdetailscreens/OfferDetailSceen';
 import ProfileEditScreen from './src/components/screens/profilescreens/ProfileEditScreen';
+import ChangePasswordScreen from './src/components/screens/profilescreens/ChangePasswordScreen';
 
 class RouterComponent extends React.Component {
   render() {
@@ -52,6 +53,7 @@ class RouterComponent extends React.Component {
                   <Scene hideNavBar key="wishlistScreen" component={WishlistScreen} />
                   <Scene hideNavBar key="interestedScreen" component={InterestedScreen} />
                   <Scene hideNavBar key="profileEditScreen" component={ProfileEditScreen} />
+                  <Scene hideNavBar key="changePasswordScreen" component={ChangePasswordScreen} />
                 </Stack>
               </Scene>
             </Drawer>

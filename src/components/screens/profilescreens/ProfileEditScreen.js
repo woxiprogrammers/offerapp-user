@@ -1,23 +1,21 @@
 import React from 'react';
-import { StyleSheet, ImageBackground } from 'react-native';
+import { StyleSheet, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import {
   Thumbnail,
   Container,
-  CheckBox,
   Content,
   Header,
   Button,
   Right,
-  Title,
   Input,
+  Title,
   Label,
   Form,
   Item,
   Left,
   View,
   Icon,
-  Body,
-  Text,
+  Body
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import {
@@ -36,14 +34,13 @@ export default class ProfileEditScreen extends React.Component {
   render() {
     const {
       backgroundImageStyle,
+      viewEmailItemStyle,
       viewFirstNameStyle,
       viewLastNameStyle,
       containerStyle,
       viewItemStyle,
-      signUpStyle,
       contentStyle,
       headerStyle,
-      acceptStyle,
       formStyle,
       titleStyle
     } = styles;
@@ -59,16 +56,29 @@ export default class ProfileEditScreen extends React.Component {
             style={headerStyle}
             iosBarStyle='light-content'
           >
-          <Left style={{ marginRight: -(responsiveWidth(30)) }}>
-            <Button transparent onPress={Actions.pop}>
-              <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={titleStyle}>Sign Up Screen</Title>
-          </Body>
-          <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
-        </Header>
+            <Left style={{ flexDirection: 'row' }}>
+              <Button transparent onPress={() => { Actions.popTo('mainScreen'); }}>
+                <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
+              </Button>
+              <Button transparent onPress={Actions.drawerOpen}>
+                <Icon style={{ color: 'white' }} ios='ios-menu' android="md-menu" />
+              </Button>
+            </Left>
+            <Body>
+              <Title style={titleStyle}>Profile Edit</Title>
+            </Body>
+            <Right>
+              <Button transparent>
+                <Icon
+                style={{
+                  color: 'white',
+                  fontSize: responsiveFontSize(5) }}
+                 ios='ios-checkmark'
+                  android="md-checkmark"
+                />
+              </Button>
+            </Right>
+          </Header>
         <Content contentContainerStyle={contentStyle}>
           <View style={{ marginTop: 20 }}>
             <Thumbnail
@@ -81,38 +91,35 @@ export default class ProfileEditScreen extends React.Component {
               <View style={{ flexDirection: 'row' }}>
                 <View style={viewFirstNameStyle}>
                   <Item stackedLabel>
-                    <Label> First Name</Label>
+                    <Label>First Name</Label>
                     <Input />
                   </Item>
                 </View>
                 <View style={viewLastNameStyle}>
                   <Item stackedLabel>
-                    <Label> Last Name</Label>
+                    <Label>Last Name</Label>
                     <Input />
                   </Item>
                 </View>
               </View>
-              <View style={viewItemStyle}>
+              <View style={viewEmailItemStyle}>
                 <Item stackedLabel >
-                  <Label> Email Address</Label>
+                  <Label>Email Address</Label>
                   <Input />
                 </Item>
               </View>
               <View style={viewItemStyle}>
-                <Item stackedLabel >
-                  <Label> Password</Label>
-                  <Input />
+                <Item>
+                  <Label>Change Mobile Number</Label>
                 </Item>
               </View>
-              <View style={acceptStyle}>
-                <CheckBox checked={false} />
-                <Text>    Accept the terms and conditions</Text>
+              <TouchableWithoutFeedback onPress={() => { Actions.changePasswordScreen(); }} >
+              <View style={viewItemStyle}>
+                <Item >
+                  <Label>Change Password</Label>
+                </Item>
               </View>
-              <View>
-                <Button style={signUpStyle}>
-                  <Text>Sign Up</Text>
-                </Button>
-              </View>
+              </TouchableWithoutFeedback>
             </Form>
           </View>
         </Content>
@@ -133,36 +140,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.headerColor,
     paddingTop: 0
   },
-  thumbnailStyle: {
-    backgroundColor: colors.lightGray,
-    marginTop: 10
-  },
   titleStyle: {
-    fontSize: responsiveFontSize(3),
-    width: responsiveWidth(100),
-    justifyContent: 'center',
-    color: colors.white,
     fontWeight: 'bold',
+    color: colors.white,
     textAlign: 'center',
+    fontSize: responsiveFontSize(3),
+    width: responsiveWidth(60)
   },
   contentStyle: {
     backgroundColor: colors.GrayTransparent,
     alignItems: 'center',
     flex: 1
   },
-  textStyle: {
-    fontSize: responsiveFontSize(2.5),
-    marginTop: responsiveHeight(20),
-    color: colors.Gray,
-     textAlign: 'center',
-  },
   backgroundImageStyle: {
     height: responsiveHeight(100),
     width: responsiveWidth(100)
-  },
-  signUpStyle: {
-    backgroundColor: colors.headerColor,
-    marginTop: responsiveHeight(5)
   },
 formStyle: {
   width: responsiveWidth(100),
@@ -170,34 +162,40 @@ formStyle: {
   marginTop: 20,
   flex: 1,
 },
-viewItemStyle: {
+viewEmailItemStyle: {
   backgroundColor: '#D4D4D4',
   width: responsiveWidth(100),
   height: responsiveHeight(12),
   justifyContent: 'center',
   marginTop: 10,
-  paddingBottom: responsiveHeight(2)
+  paddingBottom: responsiveHeight(2),
+  paddingLeft: responsiveWidth(2)
+},
+viewItemStyle: {
+  backgroundColor: '#D4D4D4',
+  width: responsiveWidth(100),
+  height: responsiveHeight(7),
+  marginTop: 10,
+  paddingLeft: responsiveWidth(2),
+  alignItems: 'center',
+  flexDirection: 'row'
 },
 viewFirstNameStyle: {
   marginRight: responsiveWidth(3),
   height: responsiveHeight(12),
   backgroundColor: '#D4D4D4',
   flex: 1,
-  paddingBottom: responsiveHeight(2)
+  paddingBottom: responsiveHeight(2),
+  paddingLeft: responsiveWidth(2)
+
 },
 viewLastNameStyle: {
   height: responsiveHeight(12),
   backgroundColor: '#D4D4D4',
   flex: 1,
-  paddingBottom: responsiveHeight(2)
-},
-acceptStyle: {
-  marginTop: responsiveHeight(3),
-  height: responsiveHeight(5),
-  width: responsiveWidth(100),
-  backgroundColor: '#D4D4D4',
-  flexDirection: 'row',
-  alignItems: 'center'
+  paddingBottom: responsiveHeight(2),
+  paddingLeft: responsiveWidth(2)
+
 }
 
 });

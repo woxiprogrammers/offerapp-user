@@ -3,28 +3,29 @@ import { StyleSheet, ImageBackground } from 'react-native';
 import {
   Container,
   Content,
-  Button,
-  Input,
   Header,
+  Button,
   Right,
-  Label,
+  Input,
   Title,
-  Body,
+  Label,
   Form,
   Item,
-  Icon,
   Left,
-  View
+  View,
+  Icon,
+  Body
 } from 'native-base';
-//import { Actions } from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
-//import { connect } from 'react-redux';
 import {
-  colors
+  //variables,
+  // mixins,
+  colors,
 } from '../../../styles';
 import backgroundImage from '../../../assets/images/BackgroundImage.png';
 
@@ -32,14 +33,12 @@ export default class ChangePasswordScreen extends React.Component {
   render() {
     const {
       backgroundImageStyle,
+      viewEmailItemStyle,
       containerStyle,
-      itemViewStyle,
       contentStyle,
       headerStyle,
-      titleStyle,
-      textStyle,
-      itemStyle,
-      formStyle
+      formStyle,
+      titleStyle
     } = styles;
 
     return (
@@ -48,13 +47,13 @@ export default class ChangePasswordScreen extends React.Component {
           style={backgroundImageStyle}
           source={backgroundImage}
         >
-          <Container style={containerStyle}>
+        <Container style={containerStyle}>
           <Header
-          style={headerStyle}
-          iosBarStyle='light-content'
+            style={headerStyle}
+            iosBarStyle='light-content'
           >
-            <Left style={{ marginRight: -(responsiveWidth(30)) }}>
-              <Button transparent>
+            <Left style={{ flexDirection: 'row' }}>
+              <Button transparent onPress={() => { Actions.pop(); }}>
                 <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
               </Button>
             </Left>
@@ -63,69 +62,76 @@ export default class ChangePasswordScreen extends React.Component {
             </Body>
             <Right style={{ marginLeft: -(responsiveWidth(25)) }}>
               <Button transparent>
-                <Icon style={{ color: 'white' }} ios='ios-checkmark' android="md-checkmark" />
+                <Icon
+                  style={{ color: 'white' }}
+                  ios='ios-checkmark-outline'
+                  android="md-checkmark"
+                />
               </Button>
             </Right>
           </Header>
-              <Content contentContainerStyle={contentStyle}>
-                <View style={formStyle}>
-                  <Form>
-                    <View style={itemViewStyle}>
-                      <Item stackedLabel style={itemStyle} >
-                        <Label style={textStyle}> Password</Label>
-                          <Input />
-                      </Item>
-                    </View>
-                  </Form>
-                </View>
-              </Content>
-          </Container>
-        </ImageBackground>
-      </View>
-      );
+        <Content contentContainerStyle={contentStyle}>
+          <View >
+            <Form style={formStyle}>
+              <View style={viewEmailItemStyle}>
+                <Item stackedLabel >
+                  <Label>Password</Label>
+                  <Input />
+                </Item>
+              </View>
+             </Form>
+          </View>
+        </Content>
+      </Container>
+      </ImageBackground>
+    </View>
+    );
   }
 }
-
-
 const styles = StyleSheet.create({
   containerStyle: {
+    backgroundColor: colors.lightGrayTransparent,
+    marginTop: 20,
+    flex: 1
+  },
+  headerStyle: {
+    borderBottomColor: colors.headerColor,
+    backgroundColor: colors.headerColor,
+    paddingTop: 0
+  },
+
+  titleStyle: {
+    fontWeight: 'bold',
+    color: colors.white,
+    textAlign: 'center',
+    fontSize: responsiveFontSize(3),
+    width: responsiveWidth(60)
+  },
+  contentStyle: {
+    backgroundColor: colors.GrayTransparent,
     alignItems: 'center',
-    alignSelf: 'center',
-    flex: 1,
-    paddingTop: responsiveHeight(10)
-   },
-   contentStyle: {
-     alignItems: 'center',
-   },
-   formStyle: {
-     width: responsiveWidth(85),
-     marginTop: responsiveHeight(10),
-   },
-   titleStyle: {
-     width: responsiveWidth(100),
-     color: colors.white,
-     textAlign: 'center',
-     fontWeight: 'bold',
-     fontSize: responsiveFontSize(3),
-   },
-   itemViewStyle: {
-     backgroundColor: colors.lightGrayTransparent,
-     marginTop: 10,
-     paddingBottom: 10
-   },
-   itemStyle: {
-     width: responsiveWidth(80.75),
-     alignSelf: 'center',
-   },
-   headerStyle: {
-    color: 'white',
-    fontSize: responsiveFontSize(6.6)
-   },
- textStyle: {
-  fontSize: responsiveFontSize(2.2)
+    flex: 1
+  },
+  backgroundImageStyle: {
+    height: responsiveHeight(100),
+    width: responsiveWidth(100)
+  },
+
+formStyle: {
+  width: responsiveWidth(100),
+  alignItems: 'center',
+  marginTop: 20,
+  flex: 1,
 },
-backgroundImageStyle: {
-  height: responsiveHeight(100),
-  width: responsiveWidth(100)
+viewEmailItemStyle: {
+  backgroundColor: '#D4D4D4',
+  width: responsiveWidth(100),
+  height: responsiveHeight(12),
+  justifyContent: 'center',
+  marginTop: 10,
+  paddingBottom: responsiveHeight(2),
+  paddingLeft: responsiveWidth(2)
 }
+
+
 });
