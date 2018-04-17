@@ -113,7 +113,7 @@ export default class SortByScreen extends React.Component {
         </Content>
         <View style={sortByButtonStyle}>
           <TouchableOpacity
-            onPress={() => { Actions.popTo('categoryScreen'); }}
+            onPress={() => { Actions.popTo('categoryScreen', { initialPage: 0 }); }}
             style={{ flex: 1, alignSelf: 'center' }}
           >
             <Text style={{ alignSelf: 'center' }}>Sort By</Text>

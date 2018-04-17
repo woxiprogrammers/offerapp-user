@@ -37,6 +37,7 @@ import OfferCard from '../modules/OfferCard';
 class ListingTab extends Component {
   constructor(props) {
     super(props);
+    // const { listingViewCategoryOffers, distance, typeSelected } = this.props;
     this.autoBind(
       'onEndReached',
       'onRefresh',

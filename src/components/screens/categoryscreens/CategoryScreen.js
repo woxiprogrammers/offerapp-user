@@ -44,6 +44,9 @@ export default class CategoryScreen extends Component {
       headerStyle,
       titleStyle
     } = styles;
+    const { initialPage = 1 } = this.props;
+    console.log('Initial Page :');
+    console.log(initialPage);
     return (
       <Container style={containerStyle}>
         <Header
@@ -69,7 +72,7 @@ export default class CategoryScreen extends Component {
           </Right>
         </Header>
         <View style={{ flex: 1 }}>
-          <Tabs initialPage={1} locked>
+          <Tabs initialPage={initialPage} locked>
             <Tab
               heading={
                 <TabHeading style={{ backgroundColor: '#EFF2F7' }}>

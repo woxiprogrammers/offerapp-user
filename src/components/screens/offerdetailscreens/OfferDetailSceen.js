@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
   offerStyle: {
     backgroundColor: colors.lightGray,
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
   },
   pickerStyle: {
     //backgroundColor: colors.lightGrayTransparent,
-    width: variables.SCREEN_WIDTH * 0.3,
+    width: responsiveWidth(30),
       marginTop: 10,
       paddingBottom: 10,
   },

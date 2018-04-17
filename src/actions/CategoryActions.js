@@ -31,12 +31,17 @@ export const getListViewCategory = (
     }
     dispatch(getListViewCategoryRequest(page));
     // const path = '';
+    console.log('Getting List View CategoryScreen');
     axios({
       url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
       // url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
-        categorySelected
+        categorySelected,
+        sortSelected,
+        distance,
+        typeSelected,
+        coords,
       }
     }).then((response) => {
       const status = response.status;
