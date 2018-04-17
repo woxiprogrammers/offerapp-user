@@ -33,7 +33,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import {
   normalize,
-  variables,
+  //variables,
   // mixins,
   colors,
 } from '../../../styles';
@@ -243,7 +243,7 @@ class MainScreen extends React.Component {
             <View
               style={{
                 backgroundColor: '#1C2A3A',
-                height: variables.SCREEN_HEIGHT * 0.4,
+                height: responsiveHeight(40),
                 marginTop: normalize.normalize(5),
                 paddingBottom: normalize.normalize(10) }}
             >
@@ -315,16 +315,16 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
   locationStyle: {
-    height: variables.SCREEN_HEIGHT * 0.1,
+    height: responsiveHeight(10),
     backgroundColor: '#EFF2F7',
     paddingLeft: 10,
     paddingTop: normalize.normalize(2)
   },
   swiperStyle: {
-    height: variables.SCREEN_HEIGHT * 0.25
+    height: responsiveHeight(25)
   },
   slide: {
     flex: 1,
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   image: {
-    width: variables.SCREEN_WIDTH,
+    width: responsiveWidth(100),
     flex: 1,
     backgroundColor: 'transparent'
   },

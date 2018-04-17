@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ImageBackground } from 'react-native';
 import {
   Container,
   Content,
   Header,
   Button,
   Right,
+  Input,
   Title,
-  Label,
   Form,
   Item,
   Left,
@@ -15,134 +15,153 @@ import {
   Icon,
   Body,
   Text,
-
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import {
-  variables,
-  // mixins,
-  colors,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize
+} from 'react-native-responsive-dimensions';
+import {
+  //variables,
+  colors
 } from '../../../styles';
+import backgroundImage from '../../../assets/images/BackgroundImage.png';
+
 
 export default class OtpVerifyScreen extends React.Component {
   render() {
     const {
+      backgroundImageStyle,
       containerStyle,
       verifyOtpStyle,
       itemViewStyle,
       contentStyle,
       headerStyle,
+      titleStyle,
       itemStyle,
       formStyle,
       textStyle,
-      titleStyle,
       editStyle
     } = styles;
     return (
-
-      <Container style={containerStyle}>
-        <Header
-          style={headerStyle}
-          iosBarStyle='light-content'
+      <View>
+        <ImageBackground
+         style={backgroundImageStyle}
+         source={backgroundImage}
         >
-          <Left style={{ marginRight: -(variables.SCREEN_WIDTH / 4) }}>
-            <Button transparent onPress={Actions.pop}>
-              <Icon style={{ color: colors.white }} ios='ios-arrow-back' android="md-arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={titleStyle}>Sign Up-Step 2</Title>
-          </Body>
-          <Right style={{ marginLeft: -(variables.SCREEN_WIDTH / 4) }} />
-        </Header>
-        <Content contentContainerStyle={contentStyle}>
-        <View>
-          <Text style={textStyle}>Enter the OTP sent to</Text>
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={textStyle}> XXXXXXXXXX</Text>
-          <Button transparent style={editStyle} >
-              <Icon
-                style={{ color: colors.darkGrayTransparent }}
-                ios='ios-create-outline' android="md-create"
-              />
-          </Button>
+        <Container style={containerStyle}>
+          <Header
+            style={headerStyle}
+            iosBarStyle='light-content'
+          >
+            <Left style={{ marginRight: -(responsiveWidth(30)) }}>
+              <Button transparent onPress={Actions.pop}>
+                <Icon
+                style={{ color: colors.white }}
+                ios='ios-arrow-back'
+                android="md-arrow-back"
+                />
+              </Button>
+            </Left>
+            <Body>
+              <Title style={titleStyle}>Sign Up-Step 2</Title>
+            </Body>
+            <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
+          </Header>
+          <Content contentContainerStyle={contentStyle}>
+            <View>
+              <Text style={textStyle}>Enter the OTP sent to</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={textStyle}> XXXXXXXXXX</Text>
+              <Button transparent style={editStyle} >
+                  <Icon
+                    style={{ color: colors.darkGrayTransparent }}
+                    ios='ios-create-outline' android="md-create"
+                  />
+              </Button>
+            </View>
+            <View>
+              <Form style={formStyle}>
+                <View style={itemViewStyle}>
+                  <Item stackedLabel style={itemStyle} >
+                    {/*<Label> Enter OTP</Label>*/}
+                    <Input />
+                  </Item>
+                </View>
+              </Form>
+            </View>
+            <View>
+              <Button style={verifyOtpStyle} onPress={Actions.signUpFillUpScreen}>
+                <Text>VERIFY OTP</Text>
+              </Button>
+            </View>
+          </Content>
+        </Container>
+      </ImageBackground>
       </View>
-      <View>
-        <Form style={formStyle}>
-          <View style={itemViewStyle}>
-            <Item floatingLabel style={itemStyle} >
-              <Label style={textStyle}> Enter OTP</Label>
-            </Item>
-          </View>
-        </Form>
-      </View>
-      <View>
-        <Button style={verifyOtpStyle} onPress={Actions.signUpFillUpScreen}>
-          <Text>VERIFY OTP</Text>
-        </Button>
-        </View>
-        </Content>
-      </Container>
     );
   }
 }
 const styles = StyleSheet.create({
-  containerStyle: {
-    flex: 1,
-    marginTop: 20,
-    backgroundColor: colors.grayTransparent
-  },
-  headerStyle: {
-    paddingTop: 0,
-    backgroundColor: colors.headerColor,
-    borderBottomColor: colors.headerColor
-  },
-  editStyle: {
-    marginTop: 25
-  },
-  titleStyle: {
-    fontWeight: 'bold',
-    color: colors.white,
-    textAlign: 'center',
-    fontSize: 18,
-    width: variables.LOGIN_BUTTON_WIDTH,
-  },
-  contentStyle: {
-    alignItems: 'center',
-    backgroundColor: colors.lightGrayTransparent
-  },
-  textStyle: {
-    color: colors.darkGray,
-     textAlign: 'center',
-     fontSize: variables.SCREEN_HEIGHT / 30,
-     marginTop: variables.SCREEN_HEIGHT / 20
-  },
-  verifyOtpStyle: {
-    backgroundColor: colors.darkGrayMoreTransparent,
-    marginTop: variables.SCREEN_HEIGHT / 10
-  },
-
-  formStyle: {
-    alignItems: 'center',
-    //width: variables.LOGIN_BUTTON_WIDTH,
-    marginTop: variables.SCREEN_HEIGHT / 10,
-    //flexDirection: 'row',
-     backgroundColor: colors.lightGrayTransparent,
-  },
-  itemViewStyle: {
-    //backgroundColor: colors.lightGrayTransparent,
-    marginTop: 9,
-    alignItems: 'center',
-    paddingBottom: 10,
-    width: variables.SCREEN_WIDTH * 0.7,
-    flexDirection: 'row',
-  },
-  itemStyle: {
-    width: variables.LOGIN_BUTTON_WIDTH * 0.6,
-    alignSelf: 'center',
-    flex: 1,
-    marginTop: -variables.SCREEN_HEIGHT / 30
-  },
+containerStyle: {
+  marginTop: 20,
+  flex: 1
+},
+headerStyle: {
+  backgroundColor: colors.headerColor,
+  borderBottomColor: colors.headerColor,
+  paddingTop: 0
+},
+editStyle: {
+  marginTop: 25
+},
+titleStyle: {
+  fontSize: responsiveFontSize(3),
+  width: responsiveWidth(100),
+  justifyContent: 'center',
+  fontWeight: 'bold',
+  color: colors.white,
+  textAlign: 'center'
+},
+contentStyle: {
+  backgroundColor: colors.lightGrayTransparent,
+  alignItems: 'center',
+  flex: 1,
+},
+textStyle: {
+  fontSize: responsiveHeight(3.5),
+  marginTop: responsiveHeight(5),
+  color: colors.darkGray,
+  textAlign: 'center',
+},
+verifyOtpStyle: {
+  backgroundColor: colors.headerColor,
+  marginTop: responsiveHeight(10),
+},
+backgroundImageStyle: {
+  height: responsiveHeight(100),
+  width: responsiveWidth(100)
+},
+formStyle: {
+  backgroundColor: colors.lightGrayTransparent,
+  marginTop: responsiveHeight(10),
+  width: responsiveWidth(50),
+  alignItems: 'center',
+  paddingBottom: responsiveHeight(2)
+},
+itemViewStyle: {
+  height: responsiveHeight(10),
+  width: responsiveWidth(40),
+  alignItems: 'center',
+  flexDirection: 'row',
+  marginTop: 9,
+},
+itemStyle: {
+  marginTop: responsiveHeight(-3.5),
+  alignSelf: 'center',
+  flex: 1,
+}
 
 });

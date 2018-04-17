@@ -27,7 +27,7 @@ import {
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  variables,
+  //variables,
   // mixins,
   colors,
 } from '../../../styles';
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
   sortByStyle: {
   },

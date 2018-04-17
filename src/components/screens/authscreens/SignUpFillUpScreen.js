@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ImageBackground } from 'react-native';
 import {
   Thumbnail,
   Container,
@@ -9,6 +9,7 @@ import {
   Button,
   Right,
   Title,
+  Input,
   Label,
   Form,
   Item,
@@ -21,33 +22,45 @@ import {
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import {
-  variables,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize
+} from 'react-native-responsive-dimensions';
+import {
+  //variables,
   // mixins,
   colors,
 } from '../../../styles';
+import backgroundImage from '../../../assets/images/BackgroundImage.png';
 
 export default class SignUpFillUpScreen extends React.Component {
   render() {
     const {
+      backgroundImageStyle,
+      viewFirstNameStyle,
+      viewLastNameStyle,
       containerStyle,
-      thumbnailStyle,
-      verifyOtpStyle,
-      itemViewStyle,
+      viewItemStyle,
+      signUpStyle,
       contentStyle,
       headerStyle,
-      itemStyle,
+      acceptStyle,
       formStyle,
-      textStyle,
       titleStyle
     } = styles;
 
     return (
-      <Container style={containerStyle}>
-        <Header
-          style={headerStyle}
-          iosBarStyle='light-content'
+      <View>
+        <ImageBackground
+          style={backgroundImageStyle}
+          source={backgroundImage}
         >
-          <Left style={{ marginRight: -(variables.SCREEN_WIDTH / 4) }}>
+        <Container style={containerStyle}>
+          <Header
+            style={headerStyle}
+            iosBarStyle='light-content'
+          >
+          <Left style={{ marginRight: -(responsiveWidth(30)) }}>
             <Button transparent onPress={Actions.pop}>
               <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
             </Button>
@@ -55,102 +68,137 @@ export default class SignUpFillUpScreen extends React.Component {
           <Body>
             <Title style={titleStyle}>Sign Up Screen</Title>
           </Body>
-          <Right style={{ marginLeft: -(variables.SCREEN_WIDTH / 4) }} />
+          <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
         </Header>
         <Content contentContainerStyle={contentStyle}>
-        <View>
-           <Thumbnail
-           circle
-           style={thumbnailStyle}
-           // source={person}
-           />
-           </View>
-           <View>
-           <Form style={formStyle}>
-             <View style={itemViewStyle}>
-               <Item stackedLabel style={itemStyle} >
-               <View>
-                 <Label style={textStyle}> First Name</Label>
-                 <Label style={textStyle}> Last Name</Label>
-                 </View>
-               </Item>
-             </View>
-             <View style={itemViewStyle}>
-               <Item stackedLabel style={itemStyle} >
-                 <Label style={textStyle}> Email Address</Label>
-               </Item>
-             </View>
-             <View style={itemViewStyle}>
-               <Item stackedLabel style={itemStyle} >
-                 <Label style={textStyle}> Password</Label>
-               </Item>
-             </View>
-             <View style={{ flexDirection: 'column' }}>
-             <CheckBox checked={false} />
-             <Text>Accept the terms and conditions</Text>
-             </View>
-           </Form>
-        </View>
+          <View style={{ marginTop: 20 }}>
+            <Thumbnail
+              large
+              source={{ uri: 'http://s3.amazonaws.com/cdn.roosterteeth.com/default/md/user_profile_male.jpg' }}
+            />
+          </View>
+          <View >
+            <Form style={formStyle}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={viewFirstNameStyle}>
+                  <Item stackedLabel>
+                    <Label> First Name</Label>
+                    <Input />
+                  </Item>
+                </View>
+                <View style={viewLastNameStyle}>
+                  <Item stackedLabel>
+                    <Label> Last Name</Label>
+                    <Input />
+                  </Item>
+                </View>
+              </View>
+              <View style={viewItemStyle}>
+                <Item stackedLabel >
+                  <Label> Email Address</Label>
+                  <Input />
+                </Item>
+              </View>
+              <View style={viewItemStyle}>
+                <Item stackedLabel >
+                  <Label> Password</Label>
+                  <Input />
+                </Item>
+              </View>
+              <View style={acceptStyle}>
+                <CheckBox checked={false} />
+                <Text>    Accept the terms and conditions</Text>
+              </View>
+              <View>
+                <Button style={signUpStyle}>
+                  <Text>Sign Up</Text>
+                </Button>
+              </View>
+            </Form>
+          </View>
         </Content>
       </Container>
+      </ImageBackground>
+    </View>
     );
   }
 }
 const styles = StyleSheet.create({
   containerStyle: {
+    backgroundColor: colors.lightGrayTransparent,
     marginTop: 20,
-      backgroundColor: colors.grayTransparent
+    flex: 1
   },
   headerStyle: {
-    paddingTop: 0,
+    borderBottomColor: colors.headerColor,
     backgroundColor: colors.headerColor,
-    borderBottomColor: colors.headerColor
+    paddingTop: 0
   },
   thumbnailStyle: {
     backgroundColor: colors.lightGray,
     marginTop: 10
   },
   titleStyle: {
-    fontWeight: 'bold',
+    fontSize: responsiveFontSize(3),
+    width: responsiveWidth(100),
+    justifyContent: 'center',
     color: colors.white,
+    fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 18,
-    width: variables.LOGIN_BUTTON_WIDTH,
   },
   contentStyle: {
+    backgroundColor: colors.GrayTransparent,
     alignItems: 'center',
-      backgroundColor: colors.lightGrayTransparent
+    flex: 1
   },
   textStyle: {
-    color: colors.darkGray,
+    fontSize: responsiveFontSize(2.5),
+    marginTop: responsiveHeight(20),
+    color: colors.Gray,
      textAlign: 'center',
-     fontSize: variables.SCREEN_HEIGHT / 30,
-     marginTop: variables.SCREEN_HEIGHT / 20
   },
-  verifyOtpStyle: {
-
-     backgroundColor: colors.darkGrayMoreTransparent,
-     marginTop: variables.SCREEN_HEIGHT / 10
+  backgroundImageStyle: {
+    height: responsiveHeight(100),
+    width: responsiveWidth(100)
   },
-
-  formStyle: {
-    alignItems: 'center',
-    width: variables.LOGIN_BUTTON_WIDTH,
-     marginTop: variables.SCREEN_HEIGHT / 10,
-     //flexDirection: 'row',
-     backgroundColor: colors.lightGrayTransparent,
+  signUpStyle: {
+    backgroundColor: colors.headerColor,
+    marginTop: responsiveHeight(5)
   },
-  itemViewStyle: {
-    //backgroundColor: colors.lightGrayTransparent,
-    //marginTop: 9,
-    paddingBottom: 10,
-    width: variables.SCREEN_WIDTH * 0.7,
-    //flexDirection: 'row',
-  },
-  itemStyle: {
-    width: variables.LOGIN_BUTTON_WIDTH * 0.6,
-    alignSelf: 'center',
-    marginTop: -variables.SCREEN_HEIGHT / 30
-  },
+formStyle: {
+  width: responsiveWidth(100),
+  alignItems: 'center',
+  marginTop: 20,
+  flex: 1,
+},
+viewItemStyle: {
+  backgroundColor: '#D4D4D4',
+  width: responsiveWidth(100),
+  height: responsiveHeight(12),
+  justifyContent: 'center',
+  marginTop: 10,
+  paddingBottom: responsiveHeight(2)
+},
+viewFirstNameStyle: {
+  marginRight: responsiveWidth(3),
+  height: responsiveHeight(12),
+  backgroundColor: '#D4D4D4',
+  flex: 1,
+  paddingBottom: responsiveHeight(2)
+},
+viewLastNameStyle: {
+  height: responsiveHeight(12),
+  backgroundColor: '#D4D4D4',
+  flex: 1,
+  paddingBottom: responsiveHeight(2)
+},
+acceptStyle: {
+  marginTop: responsiveHeight(3),
+  height: responsiveHeight(5),
+  width: responsiveWidth(100),
+  backgroundColor: '#D4D4D4',
+  flexDirection: 'row',
+  alignItems: 'center'
+}
 
 });

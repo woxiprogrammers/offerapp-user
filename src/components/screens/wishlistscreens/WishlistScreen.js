@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet,
   TouchableOpacity,
+  LayoutAnimation,
+  StyleSheet,
   FlatList,
   UIManager,
   Platform,
-  LayoutAnimation,
   Picker
 } from 'react-native';
 import {
@@ -35,8 +35,6 @@ import PopupDialog, {
   ScaleAnimation,
 } from 'react-native-popup-dialog';
 import {
-  variables,
-  // mixins,
   colors,
 } from '../../../styles';
 import OfferCard from '../../modules/OfferCard';
@@ -334,7 +332,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
   loadingStyle: {
     flex: 1,
@@ -349,7 +347,7 @@ const styles = StyleSheet.create({
   },
   pickerStyle: {
     //backgroundColor: colors.lightGrayTransparent,
-    width: variables.SCREEN_WIDTH * 0.3,
+    width: responsiveWidth(30),
       marginTop: 10,
       paddingBottom: 10,
   },

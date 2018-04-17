@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  FlatList,
-  // Image,
-  // TouchableHighlight
+  FlatList
 } from 'react-native';
 import {
   Container,
   Content,
   Spinner,
-  // Header,
-  // Button,
-  // Right,
-  // Title,
-  // Left,
-  View,
-  // Icon,
-  // Body,
-  // Text,
+  View
 } from 'native-base';
 // import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
