@@ -13,14 +13,12 @@ import {
 import AHImage from 'react-native-auto-height-image';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import {
-  // responsiveHeight,
+  responsiveHeight,
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
   normalize,
-  variables,
-  // mixins,
   colors,
  } from '../../styles';
 
@@ -35,25 +33,27 @@ import {
        <TouchableOpacity>
         <Card style={cardStyle}>
           <CardItem style={cardHeaderStyle}>
-          <Left
-            style={{
-              alignSelf: 'flex-start',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-             }}
-          >
-            <Text
+            <Left
               style={{
-                marginLeft: normalize.normalize(7),
                 alignSelf: 'flex-start',
-                fontSize: responsiveFontSize(3) }}
-            >Buy 2 Get 1 Free</Text>
-            <Text
-              style={{
-                marginLeft: normalize.normalize(7),
-                alignSelf: 'flex-start',
-                fontSize: responsiveFontSize(2) }}
-            >Adidas, Kothrud</Text>
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+               }}
+            >
+              <Text
+                style={{
+                  marginLeft: normalize.normalize(7),
+                  alignSelf: 'flex-start',
+                  fontSize: responsiveFontSize(3) }}
+              >Buy 2 Get 1 Free
+              </Text>
+              <Text
+                style={{
+                  marginLeft: normalize.normalize(7),
+                  alignSelf: 'flex-start',
+                  fontSize: responsiveFontSize(2) }}
+              >Adidas, Kothrud
+              </Text>
             </Left>
             <Right>
               <Button
@@ -85,14 +85,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 0,
     marginRight: 10,
-    width: (variables.SCREEN_WIDTH * 0.95)
+    width: responsiveWidth(95)
   },
   cardHeaderStyle: {
     backgroundColor: colors.smallOfferCardHeader,
     paddingRight: 0,
     paddingLeft: 0,
     paddingTop: 5,
-    height: variables.SCREEN_HEIGHT * 0.1
+    height: responsiveHeight(10)
   },
   cardBodyStyle: {
     flex: 1,

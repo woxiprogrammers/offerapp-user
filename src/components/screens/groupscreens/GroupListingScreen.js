@@ -1,8 +1,7 @@
 import React from 'react';
 import {
-  StyleSheet,
-  // Image,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  StyleSheet  
 } from 'react-native';
 import {
   Container,
@@ -24,13 +23,10 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {
   responsiveHeight,
-  // responsiveWidth,
+  responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  // normalize,
-  variables,
-  // mixins,
   colors,
 } from '../../../styles';
 import { getGroupList } from '../../../actions';
@@ -144,7 +140,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  StyleSheet,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  StyleSheet  
 } from 'react-native';
 import {
   Container,
@@ -30,8 +30,6 @@ import {
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  variables,
-  // mixins,
   colors,
 } from '../../../styles';
 import { getLocation, searchLocation, setLocation } from '../../../actions';
@@ -161,7 +159,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
 });
 

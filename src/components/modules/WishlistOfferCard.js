@@ -1,14 +1,7 @@
 import React from 'react';
 import {
-  CardItem,
-  Button,
-  Right,
-  // Body,
-  Icon,
   Text,
-  Left,
   View,
-  Card
 } from 'native-base';
 import {
   TouchableOpacity,
@@ -19,11 +12,6 @@ import {
   responsiveWidth,
   // responsiveFontSize
 } from 'react-native-responsive-dimensions';
-import {
-  variables,
-  // mixins,
-  colors,
-} from '../../styles';
 import OfferCard from './OfferCard';
 
 export default class WishlistOfferCard extends React.Component {

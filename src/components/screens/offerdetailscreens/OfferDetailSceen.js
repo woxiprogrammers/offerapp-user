@@ -37,7 +37,7 @@ import { phonecall } from 'react-native-communications';
 import swiperLoading from '../../../assets/images/loading.gif';
 import { getOfferDetails, getOfferSwipper, addToWishList, addToInterested } from '../../../actions';
 import {
-  variables,
+  //variables,
   // mixins,
   colors,
  } from '../../../styles';
@@ -59,7 +59,7 @@ const Slide = props => {
 };
 const scaleAnimation = new ScaleAnimation();
 
-const ASPECT_RATIO = variables.SCREEN_WIDTH / variables.SCREEN_HEIGHT;
+const ASPECT_RATIO = responsiveWidth(100) / responsiveHeight(100);
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
@@ -268,22 +268,21 @@ class OfferDetailScreen extends React.Component {
   render() {
      const {
       offerDescriptionStyle,
-      dialogMapView,
-      offerStyle,
       containerStyle,
+      dialogMapView,
       headerStyle,
       titleStyle,
-      // mapStyle,
+      offerStyle,
      } = styles;
      const {
-       offerId,
-       token,
-       offerName,
-       sellerInfo,
-       sellerNumber,
        offerDescription,
        sellerAddress,
-       offerExpiry
+       sellerNumber,
+       offerExpiry,
+       sellerInfo,
+       offerName,
+       offerId,
+       token,
     } = this.props;
     const { selectedTime } = this.state;
     return (
@@ -457,7 +456,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
   offerStyle: {
     backgroundColor: colors.lightGray,
@@ -475,7 +474,7 @@ const styles = StyleSheet.create({
     paddingTop: responsiveHeight(1)
   },
   swiperStyle: {
-    height: variables.SCREEN_HEIGHT * 0.25
+    height: responsiveHeight(25)
   },
   slide: {
     flex: 1,
@@ -483,7 +482,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   image: {
-    width: variables.SCREEN_WIDTH,
+    width: responsiveWidth(100),
     flex: 1,
     backgroundColor: 'transparent'
   },
@@ -514,7 +513,7 @@ const styles = StyleSheet.create({
   },
   pickerStyle: {
     //backgroundColor: colors.lightGrayTransparent,
-    width: variables.SCREEN_WIDTH * 0.3,
+    width: responsiveWidth(30),
       marginTop: 10,
       paddingBottom: 10,
   },

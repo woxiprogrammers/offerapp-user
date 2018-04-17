@@ -5,18 +5,7 @@ import {
 } from 'react-native';
 import {
   Container,
-  // ListItem,
-  // Content,
-  // Header,
-  // Button,
-  // Right,
-  // Title,
-  // Left,
-  // List,
-  View,
-  // Icon,
-  // Body,
-  // Text,
+  View
 } from 'native-base';
 import { MapView, Location } from 'expo';
 // import { Actions } from 'react-native-router-flux';
@@ -26,14 +15,14 @@ import {
   // responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  variables,
+//  variables,
   // mixins,
   colors,
  } from '../../styles';
 import MapOfferCard from '../modules/MapOfferCard';
 
 const GEOLOCATION_OPTIONS = { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 };
-const ASPECT_RATIO = variables.SCREEN_WIDTH / variables.SCREEN_HEIGHT;
+const ASPECT_RATIO = responsiveWidth(100) / responsiveHeight(100);
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;

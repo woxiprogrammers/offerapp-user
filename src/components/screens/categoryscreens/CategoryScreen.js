@@ -25,11 +25,11 @@ import {
 import { Actions } from 'react-native-router-flux';
 import {
   responsiveHeight,
-  // responsiveWidth,
+  responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  variables,
+  //variables,
   // mixins,
   colors,
 } from '../../../styles';
@@ -148,6 +148,6 @@ export default class CategoryScreen extends Component {
      color: colors.white,
      textAlign: 'center',
      fontSize: responsiveFontSize(3),
-     width: variables.SCREEN_WIDTH * 0.6
+     width: responsiveWidth(60)
    },
  });

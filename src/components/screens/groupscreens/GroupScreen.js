@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import {
+  TouchableOpacity,
   StyleSheet,
-  // Image,
-  FlatList,
-  TouchableOpacity
+  FlatList
 } from 'react-native';
 import {
   Container,
@@ -27,8 +26,6 @@ import {
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  variables,
-  // mixins,
   colors,
 } from '../../../styles';
 import OfferCard from '../../modules/OfferCard';
@@ -193,7 +190,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
   leaveGroupStyle: {
     flexDirection: 'row',
