@@ -1,5 +1,7 @@
 import {
-  SET_CATEGORY
+  SET_CATEGORY,
+  UPDATE_SORT_BY,
+  UPDATE_FILTER,
 } from '../../constants';
 
 const INITIAL_STATE = {
@@ -16,6 +18,19 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         categorySelected: action.categorySelected
       };
+    case UPDATE_SORT_BY: {
+      return {
+        ...state,
+        sortSelected: action.sortSelected
+      };
+    }
+    case UPDATE_FILTER: {
+      return {
+        ...state,
+        distance: action.distance,
+        typeSelected: action.typeSelected
+      };
+    }
     default:
       return state;
   }

@@ -22,6 +22,7 @@ import {
   Body,
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -32,14 +33,19 @@ import {
   // mixins,
   colors,
 } from '../../../styles';
+import { updateFilter } from '../../../actions';
 
-export default class FilterScreen extends React.Component {
+class FilterScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { distance: 1, typeSelected: 'all' };
   }
   setType(text) {
     this.setState({ typeSelected: text });
+  }
+  filterPressed = () => {
+    const { distance, typeSelected } = this.state;
+    this.props.updateFilter({ distance, typeSelected });
   }
   render() {
     const {
@@ -51,6 +57,7 @@ export default class FilterScreen extends React.Component {
       titleStyle
     } = styles;
     const { typeSelected } = this.state;
+    const { initialPage } = this.props;
     return (
       <Container style={containerStyle}>
       <Header
@@ -161,7 +168,10 @@ export default class FilterScreen extends React.Component {
         </Content>
         <View style={filterButtonStyle}>
         <TouchableOpacity
-          onPress={() => { Actions.pop(); }}
+          onPress={() => {
+            this.filterPressed();
+            Actions.push('categoryScreen', { initialPage });
+          }}
           style={{ flex: 1, alignSelf: 'center' }}
         >
             <Text style={{ alignSelf: 'center' }}>Filter</Text>
@@ -211,3 +221,17 @@ const styles = StyleSheet.create({
     width: responsiveWidth(60)
   },
 });
+function mapStateToProps() {
+    return {};
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        updateFilter: ({ distance, typeSelected }) => {
+          return dispatch(updateFilter({ distance, typeSelected }));
+        },
+    };
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FilterScreen);

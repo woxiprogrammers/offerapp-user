@@ -89,7 +89,7 @@ export default class CategoryScreen extends Component {
                   <Text style={{ alignSelf: 'center' }}>Sort By</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => { Actions.push('filterScreen'); }}
+                  onPress={() => { Actions.push('filterScreen', { initialPage: 0 }); }}
                   style={{ flex: 1, alignSelf: 'center' }}
                 >
                   <Text style={{ alignSelf: 'center' }}>Filter</Text>
@@ -106,7 +106,7 @@ export default class CategoryScreen extends Component {
               <MapTab />
               <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
                 <TouchableOpacity
-                  onPress={() => { Actions.push('filterScreen'); }}
+                  onPress={() => { Actions.push('filterScreen', { initialPage: 1 }); }}
                   style={{ flex: 1, alignSelf: 'center' }}
                 >
                   <Text style={{ alignSelf: 'center' }}>Filter</Text>
@@ -123,7 +123,7 @@ export default class CategoryScreen extends Component {
                 <ARTAb />
                 <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
                   <TouchableOpacity
-                    onPress={() => { Actions.push('filterScreen'); }}
+                    onPress={() => { Actions.push('filterScreen', { initialPage: 2 }); }}
                     style={{ flex: 1, alignSelf: 'center' }}
                   >
                     <Text style={{ alignSelf: 'center' }}>Filter</Text>

@@ -110,7 +110,7 @@ export const getLocation = (token, coords) => {
   return async (dispatch) => {
     dispatch(getLocationRequest(coords));
     console.log(coords);
-    const path = 'customer/getlocation';
+    const path = 'customer/location/get';
     console.log('Getting Location: ');
     console.log(`${URL}/${path}/?token=${token}`);
     await axios({

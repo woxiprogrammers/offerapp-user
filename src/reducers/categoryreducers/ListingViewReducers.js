@@ -6,13 +6,14 @@ import {
 } from '../../constants';
 
 const INITIAL_STATE = {
-  pagination: { listingViewCategoryOffersLoading: false },
+  pagination: { page: 1, listingViewCategoryOffersLoading: false },
   listingViewCategoryOffers: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case LISTING_VIEW_CATEGORY_RESET:
+    case LISTING_VIEW_CATEGORY_RESET: {
+      console.log('Clearing list');
       return {
         ...state,
         listingViewCategoryOffers: [],
@@ -21,6 +22,7 @@ export default (state = INITIAL_STATE, action) => {
           listingViewCategoryOffersLoading: true
         }
       };
+    }
     case GET_LISTING_VIEW_CATEGORY_REQUEST:
       return {
         ...state,

@@ -27,7 +27,6 @@ import OfferCard from '../modules/OfferCard';
 class ListingTab extends Component {
   constructor(props) {
     super(props);
-    // const { listingViewCategoryOffers, distance, typeSelected } = this.props;
     this.autoBind(
       'onEndReached',
       'onRefresh',
@@ -42,17 +41,19 @@ class ListingTab extends Component {
       distance,
       typeSelected,
       coords,
+      pagination
     } = this.props;
+    const { page } = pagination;
     console.log('Mounting Listing Tab');
-    this.props.getListViewCategory(
+    this.props.getListViewCategory({
       token,
       categorySelected,
       sortSelected,
       distance,
       typeSelected,
       coords,
-      1
-    );
+      page
+    });
   }
   onEndReached() {
     const {
@@ -125,9 +126,6 @@ class ListingTab extends Component {
       containerStyle
     } = styles;
     const { listingViewCategoryOffers } = this.props;
-    console.log('======================================================');
-    console.log(this.props);
-    console.log('======================================================');
     return (
       <Container style={containerStyle}>
         <Content

@@ -35,7 +35,7 @@ import PopupDialog, {
 } from 'react-native-popup-dialog';
 import { phonecall } from 'react-native-communications';
 import swiperLoading from '../../../assets/images/loading.gif';
-import { getOfferDetails, getOfferSwipper, addToWishList, addToInterested } from '../../../actions';
+import { getOfferDetails, addToWishList, addToInterested } from '../../../actions';
 import {
   //variables,
   // mixins,
@@ -90,7 +90,6 @@ class OfferDetailScreen extends React.Component {
     } = this.props;
     console.log('Mounting OfferDetailScreen');
     await this.props.getOfferDetails(token, offerId, 12345);
-    this.props.getOfferSwipper(token, offerId);
   }
   showMapDialog = () => {
     this.mapDialog.show();
@@ -539,9 +538,6 @@ function mapDispatchToProps(dispatch) {
     return {
         getOfferDetails: (token, offerId, userId) => {
           return dispatch(getOfferDetails(token, offerId, userId));
-        },
-        getOfferSwipper: (token, offerId) => {
-          return dispatch(getOfferSwipper(token, offerId));
         },
         addToWishList: (token, offerId, userId) => {
           return dispatch(addToWishList(token, offerId, userId));

@@ -25,8 +25,17 @@ import {
        cardBodyStyle,
        cardStyle,
      } = styles;
+     const {
+       offerId,
+       offerName,
+       sellerInfo,
+       offerAddress,
+       offerDistance,
+       // offerExpiry
+    } = this.props.offerDetails;
      return (
         <TouchableOpacity
+          onPress={() => { console.log(`OfferId: ${offerId}`); }}
           style={{
             backgroundColor: '#1E2D3E',
             height: responsiveHeight(16.5),
@@ -46,14 +55,14 @@ import {
                   marginLeft: normalize.normalize(7),
                   alignSelf: 'flex-start',
                   fontSize: responsiveFontSize(3) }}
-              >Buy 2 Get 1 Free</Text>
+              >{offerName}</Text>
               <Text
                 style={{
                   marginLeft: normalize.normalize(7),
                   marginTop: responsiveHeight(0.1),
                   alignSelf: 'flex-start',
                   fontSize: responsiveFontSize(2) }}
-              >Adidas, Kothrud</Text>
+              >{sellerInfo}</Text>
               <Text
                 style={{
                   marginLeft: normalize.normalize(7),
@@ -62,7 +71,7 @@ import {
                   fontSize: responsiveFontSize(1.5),
                   width: responsiveWidth(75),
                   textAlign: 'left' }}
-              >Shop No: 2, Next to Woodland Shop, Dahanukar A, Dahanukar Colony, Kothrud</Text>
+              >{offerAddress}</Text>
               </Left>
               <View>
                 <Right>
@@ -72,7 +81,7 @@ import {
                       marginTop: responsiveHeight(0),
                       alignSelf: 'flex-end',
                       fontSize: responsiveFontSize(2) }}
-                  >0.6 Km</Text>
+                  >{offerDistance} Km</Text>
                 </Right>
               </View>
           </CardItem>

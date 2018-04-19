@@ -21,6 +21,7 @@ import {
   Body,
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -31,14 +32,15 @@ import {
   // mixins,
   colors,
 } from '../../../styles';
+import { updateSortBy } from '../../../actions';
 
-export default class SortByScreen extends React.Component {
-  constructor(props) {
-   super(props);
-   this.state = { sortSelected: 'nearestFirst' };
-  }
+class SortByScreen extends React.Component {
+  // constructor(props) {
+  //  super(props);
+  //  this.state = { sortSelected: 'nearestFirst' };
+  // }
   setSort(text) {
-    this.setState({ sortSelected: text });
+    this.props.updateSortBy({ sortSelected: text });
   }
   render() {
     const {
@@ -48,7 +50,7 @@ export default class SortByScreen extends React.Component {
       headerStyle,
       titleStyle
     } = styles;
-    const { sortSelected } = this.state;
+    const { sortSelected } = this.props;
     return (
       <Container style={containerStyle}>
       <Header
@@ -113,7 +115,7 @@ export default class SortByScreen extends React.Component {
         </Content>
         <View style={sortByButtonStyle}>
           <TouchableOpacity
-            onPress={() => { Actions.popTo('categoryScreen', { initialPage: 0 }); }}
+            onPress={() => { Actions.push('categoryScreen', { initialPage: 0 }); }}
             style={{ flex: 1, alignSelf: 'center' }}
           >
             <Text style={{ alignSelf: 'center' }}>Sort By</Text>
@@ -148,3 +150,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightGray
   },
 });
+function mapStateToProps({ categories }) {
+    const { category } = categories;
+    return {
+        ...category
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        updateSortBy: ({ sortSelected: text }) => {
+          return dispatch(updateSortBy({ sortSelected: text }));
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SortByScreen);
