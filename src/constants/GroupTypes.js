@@ -1,0 +1,10 @@
+export const GET_GROUP_LIST_REQUEST = 'get_group_list_request';
+export const GET_GROUP_LIST_SUCCESS = 'get_group_list_success';
+export const GET_GROUP_LIST_FAILURE = 'get_group_list_failure';
+export const GET_GROUP_OFFERS_REQUEST = 'get_group_offers_request';
+export const GET_GROUP_OFFERS_SUCCESS = 'get_group_offers_success';
+export const GET_GROUP_OFFERS_FAILURE = 'get_group_offers_failure';
+export const LEAVE_GROUP_REQUEST = 'leave_group_request';
+export const LEAVE_GROUP_SUCCESS = 'leave_group_success';
+export const LEAVE_GROUP_FAILURE = 'leave_group_failure';
+export const GROUP_OFFERS_RESET = 'group_offers_reset';

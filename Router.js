@@ -11,10 +11,14 @@ import FilterScreen from './src/components/screens/categoryscreens/FilterScreen'
 import SortByScreen from './src/components/screens/categoryscreens/SortByScreen';
 import GroupListingScreen from './src/components/screens/groupscreens/GroupListingScreen';
 import GroupScreen from './src/components/screens/groupscreens/GroupScreen';
-import WishlistScreen from './src/components/screens/WishlistScreen';
+import WishlistScreen from './src/components/screens/wishlistscreens/WishlistScreen';
 import InterestedScreen from './src/components/screens/interestedscreens/InterestedScreen';
 import DrawerComponent from './src/components/drawer/DrawerComponent';
 import OfferDetailScreen from './src/components/screens/offerdetailscreens/OfferDetailSceen';
+import ProfileEditScreen from './src/components/screens/profilescreens/ProfileEditScreen';
+import ChangePasswordScreen from './src/components/screens/profilescreens/ChangePasswordScreen';
+import ARScreen from './src/components/screens/arscreens/ARScreen';
+import ARFilterScreen from './src/components/screens/arscreens/ARFilterScreen';
 
 class RouterComponent extends React.Component {
   render() {
@@ -41,6 +45,8 @@ class RouterComponent extends React.Component {
                     key="mainScreen"
                     component={MainScreen}
                   />
+                  <Scene hideNavBar key="arScreen" component={ARScreen} />
+                  <Scene hideNavBar key="arFilterScreen" component={ARFilterScreen} />
                   <Scene hideNavBar key="changeLocationScreen" component={ChangeLocationScreen} />
                   <Scene hideNavBar key="offerDetailScreen" component={OfferDetailScreen} />
                   <Scene hideNavBar key="categoryScreen" component={CategoryScreen} />
@@ -50,6 +56,8 @@ class RouterComponent extends React.Component {
                   <Scene hideNavBar key="groupScreen" component={GroupScreen} />
                   <Scene hideNavBar key="wishlistScreen" component={WishlistScreen} />
                   <Scene hideNavBar key="interestedScreen" component={InterestedScreen} />
+                  <Scene hideNavBar key="profileEditScreen" component={ProfileEditScreen} />
+                  <Scene hideNavBar key="changePasswordScreen" component={ChangePasswordScreen} />
                 </Stack>
               </Scene>
             </Drawer>

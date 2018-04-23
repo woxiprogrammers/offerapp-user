@@ -1,4 +1,4 @@
-import React from 'react';
+  import React from 'react';
 import Expo from 'expo';
 import Roboto from 'native-base/Fonts/Roboto.ttf';
 import RobotoMedium from 'native-base/Fonts/Roboto_medium.ttf';
@@ -23,6 +23,7 @@ export default class App extends React.Component {
       this.setState({ isReady: true });
   }
   render() {
+    // console.disableYellowBox = true;
     if (this.state.isReady) {
       return (
         <Provider store={store}>

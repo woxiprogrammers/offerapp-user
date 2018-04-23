@@ -1,14 +1,7 @@
 import React from 'react';
 import {
-  CardItem,
-  Button,
-  Right,
-  // Body,
-  Icon,
   Text,
-  Left,
   View,
-  Card
 } from 'native-base';
 import {
   TouchableOpacity,
@@ -17,21 +10,16 @@ import {
 import {
   responsiveHeight,
   responsiveWidth,
-  responsiveFontSize
+  // responsiveFontSize
 } from 'react-native-responsive-dimensions';
-import {
-  variables,
-  // mixins,
-  colors,
-} from '../../styles';
-import GroupOfferCard from './GroupOfferCard';
+import OfferCard from './OfferCard';
 
 export default class WishlistOfferCard extends React.Component {
   render() {
     // const {} = styles;
     return (
       <View>
-        <GroupOfferCard />
+        <OfferCard />
         <View
           style={{
             width: responsiveWidth(95),

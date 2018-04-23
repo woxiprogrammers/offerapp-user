@@ -33,7 +33,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import {
   normalize,
-  variables,
+  //variables,
   // mixins,
   colors,
 } from '../../../styles';
@@ -140,7 +140,7 @@ class MainScreen extends React.Component {
   }
   renderSwiper() {
     const { swiperStyle } = styles;
-    if (this.props.locationLoading) {
+    if (this.props.swiperLoading) {
       return (
         <Spinner
           style={{ height: responsiveHeight(25) }}
@@ -179,7 +179,11 @@ class MainScreen extends React.Component {
       loading: pagination.paginationLoading
     };
     const nearbyoffers = ds.cloneWithRows([...posts, loading]);
-
+    const { locationName } = this.props;
+    let locationNameMain = locationName;
+    if (locationNameMain === '') {
+      locationNameMain = 'You are Somewhere';
+    }
     return (
       <Container style={containerStyle}>
         <Header
@@ -194,7 +198,14 @@ class MainScreen extends React.Component {
           <Body>
             <Title style={titleStyle}>MAIN SCREEN</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button
+              onPress={() => { Actions.push('arScreen'); }}
+              transparent
+            >
+              <Icon style={{ color: 'white' }} name="eye" />
+            </Button>
+          </Right>
         </Header>
         <Content style={{ paddingTop: normalize.normalize(5) }}>
           <View style={{ flex: 1 }}>
@@ -213,13 +224,14 @@ class MainScreen extends React.Component {
                 />
                 <MarqueeText
                   style={{
-                    fontSize: responsiveFontSize(3) }}
+                    fontSize: responsiveFontSize(3),
+                    width: responsiveWidth(65) }}
                   duration={4000}
                   marqueeOnStart
                   loop
                   marqueeDelay={1000}
                   marqueeResetDelay={1000}
-                >{this.props.locationName}</MarqueeText>
+                >{locationNameMain}</MarqueeText>
                 <Right>
                   <Button
                     transparent
@@ -242,7 +254,7 @@ class MainScreen extends React.Component {
             <View
               style={{
                 backgroundColor: '#1C2A3A',
-                height: variables.SCREEN_HEIGHT * 0.4,
+                height: responsiveHeight(40),
                 marginTop: normalize.normalize(5),
                 paddingBottom: normalize.normalize(10) }}
             >
@@ -314,16 +326,16 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
   locationStyle: {
-    height: variables.SCREEN_HEIGHT * 0.1,
+    height: responsiveHeight(10),
     backgroundColor: '#EFF2F7',
     paddingLeft: 10,
     paddingTop: normalize.normalize(2)
   },
   swiperStyle: {
-    height: variables.SCREEN_HEIGHT * 0.25
+    height: responsiveHeight(25)
   },
   slide: {
     flex: 1,
@@ -331,7 +343,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   image: {
-    width: variables.SCREEN_WIDTH,
+    width: responsiveWidth(100),
     flex: 1,
     backgroundColor: 'transparent'
   },

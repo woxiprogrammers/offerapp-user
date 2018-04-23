@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import {
+  Gyroscope
+} from 'expo';
+import {
   StyleSheet,
   // Image,
   // ScrollView,
@@ -25,17 +28,17 @@ import {
 import { Actions } from 'react-native-router-flux';
 import {
   responsiveHeight,
-  // responsiveWidth,
+  responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  variables,
+  //variables,
   // mixins,
   colors,
 } from '../../../styles';
 import ListingTab from '../../tabs/ListingTab';
 import MapTab from '../../tabs/MapTab';
-import ARTAb from '../../tabs/ARTab';
+// import ARTAb from '../../tabs/ARTab';
 
 export default class CategoryScreen extends Component {
   render() {
@@ -44,6 +47,9 @@ export default class CategoryScreen extends Component {
       headerStyle,
       titleStyle
     } = styles;
+    const { initialPage = 1 } = this.props;
+    console.log('Initial Page :');
+    console.log(initialPage);
     return (
       <Container style={containerStyle}>
         <Header
@@ -69,7 +75,18 @@ export default class CategoryScreen extends Component {
           </Right>
         </Header>
         <View style={{ flex: 1 }}>
-          <Tabs initialPage={1} locked>
+          <Tabs
+          initialPage={initialPage}
+          locked
+          onChangeTab={({ i }) => {
+            console.log('Index is :');
+            console.log(i);
+            if (i !== 2) {
+              console.log('Removing All Listeners');
+              Gyroscope.removeAllListeners();
+            }
+          }}
+          >
             <Tab
               heading={
                 <TabHeading style={{ backgroundColor: '#EFF2F7' }}>
@@ -78,6 +95,20 @@ export default class CategoryScreen extends Component {
                 </TabHeading>}
             >
               <ListingTab />
+              <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
+              <TouchableOpacity
+                onPress={() => { Actions.push('sortByScreen'); }}
+                style={{ flex: 1, alignSelf: 'center' }}
+              >
+                  <Text style={{ alignSelf: 'center' }}>Sort By</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => { Actions.push('filterScreen', { initialPage: 0 }); }}
+                  style={{ flex: 1, alignSelf: 'center' }}
+                >
+                  <Text style={{ alignSelf: 'center' }}>Filter</Text>
+                </TouchableOpacity>
+              </View>
             </Tab>
             <Tab
               heading={
@@ -87,8 +118,16 @@ export default class CategoryScreen extends Component {
                 </TabHeading>}
             >
               <MapTab />
+              <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
+                <TouchableOpacity
+                  onPress={() => { Actions.push('filterScreen', { initialPage: 1 }); }}
+                  style={{ flex: 1, alignSelf: 'center' }}
+                >
+                  <Text style={{ alignSelf: 'center' }}>Filter</Text>
+                </TouchableOpacity>
+              </View>
             </Tab>
-            <Tab
+            {/*<Tab
               heading={
                 <TabHeading style={{ backgroundColor: '#EFF2F7' }}>
                   <Icon name="eye" />
@@ -96,22 +135,16 @@ export default class CategoryScreen extends Component {
                 </TabHeading>}
             >
                 <ARTAb />
-            </Tab>
+                <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
+                  <TouchableOpacity
+                    onPress={() => { Actions.push('filterScreen', { initialPage: 2 }); }}
+                    style={{ flex: 1, alignSelf: 'center' }}
+                  >
+                    <Text style={{ alignSelf: 'center' }}>Filter</Text>
+                  </TouchableOpacity>
+                </View>
+            </Tab>*/}
           </Tabs>
-        </View>
-        <View style={{ flexDirection: 'row', height: responsiveHeight(7) }}>
-        <TouchableOpacity
-          onPress={() => { Actions.push('sortByScreen'); }}
-          style={{ flex: 1, alignSelf: 'center' }}
-        >
-            <Text style={{ alignSelf: 'center' }}>Sort By</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => { Actions.push('filterScreen'); }}
-            style={{ flex: 1, alignSelf: 'center' }}
-          >
-            <Text style={{ alignSelf: 'center' }}>Filter</Text>
-          </TouchableOpacity>
         </View>
        </Container>
      );
@@ -132,6 +165,6 @@ export default class CategoryScreen extends Component {
      color: colors.white,
      textAlign: 'center',
      fontSize: responsiveFontSize(3),
-     width: variables.SCREEN_WIDTH * 0.6
+     width: responsiveWidth(60)
    },
  });

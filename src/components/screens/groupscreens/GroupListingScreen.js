@@ -1,41 +1,85 @@
 import React from 'react';
 import {
-  StyleSheet,
-  // Image,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  StyleSheet
 } from 'react-native';
 import {
   Container,
   ListItem,
   Header,
   Content,
+  Spinner,
   Button,
   Right,
   Title,
   Left,
   List,
-  // View,
+  View,
   Icon,
   Body,
   Text,
 } from 'native-base';
+import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {
-  // responsiveHeight,
-  // responsiveWidth,
+  responsiveHeight,
+  responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import {
-  // normalize,
-  variables,
-  // mixins,
   colors,
 } from '../../../styles';
+import { getGroupList } from '../../../actions';
 
-export default class GroupListingScreen extends React.Component {
-
+class GroupListingScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.autoBind(
+      'renderRow'
+    );
+  }
+  componentWillMount() {
+    const { token } = this.props;
+    this.props.getGroupList(token);
+  }
+  autoBind(...methods) {
+      methods.forEach(method => {
+        this[method] = this[method].bind(this);
+        return this[method];
+      });
+  }
+  renderRow(groupDetails) {
+    const { groupId, groupName } = groupDetails;
+    const { groupListLoading } = this.props;
+    if (groupListLoading) {
+      return (
+        <View style={styles.loadingStyle}>
+          <Spinner
+            style={{ height: responsiveHeight(25) }}
+            color='black'
+          />
+        </View>);
+    }
+      return (
+        <TouchableWithoutFeedback
+          onPress={() => {
+            console.log(`Group: ${groupId}`);
+            Actions.push('groupScreen', { groupId });
+          }}
+        >
+          <ListItem>
+            <Body>
+              <Text>{groupName}</Text>
+            </Body>
+            <Right style={{ alignItems: 'flex-end' }}>
+              <Icon name="arrow-forward" />
+            </Right>
+          </ListItem>
+        </TouchableWithoutFeedback>
+      );
+  }
   render() {
-    const items = ['Group Adidas', 'Group Puma', 'Group Peter England', 'Group Pizzahut'];
+    const { groupList } = this.props;
     const {
       containerStyle,
       headerStyle,
@@ -48,7 +92,7 @@ export default class GroupListingScreen extends React.Component {
           iosBarStyle='light-content'
         >
           <Left style={{ flexDirection: 'row' }}>
-            <Button transparent onPress={Actions.mainScreen}>
+            <Button transparent onPress={() => { Actions.popTo('mainScreen'); }}>
               <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
             </Button>
             <Button transparent style={{ padding: 0 }} onPress={Actions.drawerOpen}>
@@ -62,21 +106,12 @@ export default class GroupListingScreen extends React.Component {
         </Header>
         <Content>
           <List
-          dataArray={items}
-            renderRow={(item) => {
-              return (
-              <TouchableWithoutFeedback onPress={Actions.groupScreen}>
-                <ListItem>
-                  <Body>
-                    <Text>{item}</Text>
-                  </Body>
-                  <Right style={{ alignItems: 'flex-end' }}>
-                    <Icon name="arrow-forward" />
-                  </Right>
-                </ListItem>
-              </TouchableWithoutFeedback>
-              );
-            }
+            dataArray={groupList}
+            renderRow={(group) => {
+                // console.log('Group: ');
+                // console.log(group);
+                return (this.renderRow(group));
+              }
             }
           />
         </Content>
@@ -94,11 +129,38 @@ const styles = StyleSheet.create({
     backgroundColor: colors.headerColor,
     borderBottomColor: colors.headerColor
   },
+  loadingStyle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'black'
+  },
   titleStyle: {
     fontWeight: 'bold',
     color: colors.white,
     textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: variables.SCREEN_WIDTH * 0.6
+    width: responsiveWidth(60)
   },
 });
+
+function mapStateToProps({ user, groups }) {
+    const { grouplist } = groups;
+    const { token } = user;
+    return {
+        ...grouplist,
+        token
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        getGroupList: (token) => {
+          return dispatch(getGroupList(token));
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(GroupListingScreen);

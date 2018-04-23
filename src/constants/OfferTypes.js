@@ -1,0 +1,12 @@
+export const GET_OFFER_DETAILS_REQUEST = 'get_offer_details_request';
+export const GET_OFFER_DETAILS_SUCCESS = 'get_offer_details_success';
+export const GET_OFFER_DETAILS_FAILURE = 'get_offer_details_failure';
+export const GET_OFFER_SWIPER_REQUEST = 'get_offer_swiper_request';
+export const GET_OFFER_SWIPER_SUCCESS = 'get_offer_swiper_success';
+export const GET_OFFER_SWIPER_FAILURE = 'get_offer_swiper_failure';
+export const ADD_TO_WISHLIST_REQUEST = 'add_to_wishlist_request';
+export const ADD_TO_WISHLIST_SUCCESS = 'add_to_wishlist_success';
+export const ADD_TO_WISHLIST_FAILURE = 'add_to_wishlist_failure';
+export const ADD_TO_INTERESTED_REQUEST = 'add_to_INTERESTED_request';
+export const ADD_TO_INTERESTED_SUCCESS = 'add_to_INTERESTED_success';
+export const ADD_TO_INTERESTED_FAILURE = 'add_to_INTERESTED_failure';
