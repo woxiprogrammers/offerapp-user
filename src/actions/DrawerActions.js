@@ -40,16 +40,17 @@ export const getCategoriesRequest = () => {
   };
 };
 
-export const updateShowCategory = (category) => {
-  return {
-    type: UPDATE_SHOW_CATEGORY,
-    category
-  };
-};
-
 export const getCategoriesFailure = (error) => {
   return {
     type: GET_CATEGORIES_FAILURE,
     error
+  };
+};
+
+
+export const updateShowCategory = (category) => {
+  return {
+    type: UPDATE_SHOW_CATEGORY,
+    category
   };
 };

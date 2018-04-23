@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Slider,
   TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  FlatList
 } from 'react-native';
 import {
   Container,
@@ -11,11 +12,12 @@ import {
   ListItem,
   Header,
   Button,
+  Spinner,
   Right,
   Radio,
   Title,
   Left,
-  List,
+  // List,
   Text,
   View,
   Icon,
@@ -33,19 +35,69 @@ import {
   // mixins,
   colors,
 } from '../../../styles';
-import { updateFilter } from '../../../actions';
+import { updateFilter, getOfferTypes, updateOfferTypes, updateDistance } from '../../../actions';
 
 class FilterScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { distance: 1, typeSelected: 'all' };
+  componentWillMount() {
+    const { token } = this.props;
+    this.props.getOfferTypes({ token });
   }
   setType(text) {
-    this.setState({ typeSelected: text });
+    const typeSelected = text;
+    this.props.updateOfferTypes(typeSelected);
   }
   filterPressed = () => {
-    const { distance, typeSelected } = this.state;
+    const { distance, typeSelected } = this.props;
     this.props.updateFilter({ distance, typeSelected });
+  }
+  keyExtractor = (item, index) => { return index; };
+  renderOfferTypes() {
+    const { typeSelected, offerTypesLoading, offerTypes } = this.props;
+    if (offerTypesLoading) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Spinner color="black" />
+        </View>
+      );
+    }
+    return (
+      <FlatList
+        data={offerTypes}
+        keyExtractor={this.keyExtractor}
+        extraData={this.props.typeSelected}
+        renderItem={(offerItem) => {
+          const { name, slug } = offerItem.item;
+          return (
+            <TouchableWithoutFeedback
+              onPress={() => {
+              console.log(`Setting type: ${slug}`);
+              this.setType(slug);
+              console.log('typeSelected:');
+              console.log(typeSelected);
+              console.log('Slug is:');
+              console.log(slug);
+              }}
+            >
+              <ListItem>
+                <Body>
+                  <Text>{name}</Text>
+                </Body>
+                <Right>
+                  <Radio selected={typeSelected === slug} />
+                </Right>
+              </ListItem>
+            </TouchableWithoutFeedback>
+          );
+          }
+        }
+      />
+    );
   }
   render() {
     const {
@@ -56,7 +108,7 @@ class FilterScreen extends React.Component {
       sliderStyle,
       titleStyle
     } = styles;
-    const { typeSelected } = this.state;
+    const { typeSelected } = this.props;
     const { initialPage } = this.props;
     return (
       <Container style={containerStyle}>
@@ -93,15 +145,20 @@ class FilterScreen extends React.Component {
               <Text>Offer Distance</Text>
             </Left>
             <Right>
-              <Text>{this.state.distance} Km</Text>
+              <Text>{this.props.distance} Km</Text>
             </Right>
           </View>
           <Slider
            step={1}
            minimumValue={1}
            maximumValue={5}
-           value={this.state.distance}
-           onSlidingComplete={(val) => { this.setState({ distance: val }); }}
+           value={this.props.distance}
+           onSlidingComplete={
+             (val) => {
+               const distance = val;
+               this.props.updateDistance(distance);
+             }
+           }
           />
           <View
             style={{
@@ -122,7 +179,6 @@ class FilterScreen extends React.Component {
         </View>
         <View style={offerTypeStyle}>
         <Text>Offer Type</Text>
-          <List>
           <TouchableWithoutFeedback onPress={() => { this.setType('all'); }}>
             <ListItem>
               <Body>
@@ -133,37 +189,7 @@ class FilterScreen extends React.Component {
               </Right>
             </ListItem>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => { this.setType('buyGet'); }}>
-            <ListItem>
-              <Body>
-                <Text>BUY X GET Y</Text>
-              </Body>
-              <Right>
-                <Radio selected={typeSelected === 'buyGet'} />
-              </Right>
-            </ListItem>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => { this.setType('flat'); }}>
-            <ListItem>
-              <Body>
-                <Text>Flat %</Text>
-              </Body>
-              <Right>
-                <Radio selected={typeSelected === 'flat'} />
-              </Right>
-            </ListItem>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => { this.setType('upto'); }}>
-            <ListItem>
-              <Body>
-                <Text>Upto %</Text>
-              </Body>
-              <Right>
-                <Radio selected={typeSelected === 'upto'} />
-              </Right>
-            </ListItem>
-          </TouchableWithoutFeedback>
-          </List>
+          {this.renderOfferTypes()}
         </View>
         </Content>
         <View style={filterButtonStyle}>
@@ -221,13 +247,27 @@ const styles = StyleSheet.create({
     width: responsiveWidth(60)
   },
 });
-function mapStateToProps() {
-    return {};
+function mapStateToProps({ categories, user }) {
+  const { category } = categories;
+  const { token } = user;
+  return {
+    ...category,
+     token
+  };
 }
 function mapDispatchToProps(dispatch) {
     return {
         updateFilter: ({ distance, typeSelected }) => {
           return dispatch(updateFilter({ distance, typeSelected }));
+        },
+        updateOfferTypes: (typeSelected) => {
+          return dispatch(updateOfferTypes(typeSelected));
+        },
+        updateDistance: (distance) => {
+          return dispatch(updateDistance(distance));
+        },
+        getOfferTypes: ({ token }) => {
+          return dispatch(getOfferTypes({ token }));
         },
     };
 }

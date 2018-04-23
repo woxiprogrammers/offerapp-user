@@ -4,6 +4,8 @@ import {
   SET_CATEGORY,
   UPDATE_SORT_BY,
   UPDATE_FILTER,
+  UPDATE_OFFER_TYPES,
+  UPDATE_DISTANCE,
   LISTING_VIEW_CATEGORY_RESET,
   MAP_VIEW_CATEGORY_RESET,
   AR_VIEW_CATEGORY_RESET,
@@ -16,6 +18,9 @@ import {
   GET_AR_VIEW_CATEGORY_REQUEST,
   GET_AR_VIEW_CATEGORY_SUCCESS,
   GET_AR_VIEW_CATEGORY_FAILURE,
+  GET_OFFER_TYPES_REQUEST,
+  GET_OFFER_TYPES_SUCCESS,
+  GET_OFFER_TYPES_FAILURE,
   URL,
 } from '../constants';
 
@@ -38,7 +43,18 @@ export const updateFilter = ({ distance, typeSelected }) => {
     typeSelected
   };
 };
-
+export const updateOfferTypes = (typeSelected) => {
+  return {
+    type: UPDATE_OFFER_TYPES,
+    typeSelected
+  };
+};
+export const updateDistance = (distance) => {
+  return {
+    type: UPDATE_DISTANCE,
+    distance
+  };
+};
 export const getListViewCategory = ({
   token,
   categorySelected,
@@ -212,6 +228,47 @@ export const getARViewCategoryRequest = (page) => {
 export const getARViewCategoryFailure = (error) => {
   return {
     type: GET_AR_VIEW_CATEGORY_FAILURE,
+    error
+  };
+};
+
+export const getOfferTypes = ({ token }) => {
+  return (dispatch) => {
+    dispatch(getOfferTypesRequest());
+    const path = 'customer/offer/types/listing';
+    console.log('Getting Offer Types');
+    console.log(`${URL}/${path}/?token=${token}`);
+    axios({
+      url: `${URL}/${path}/?token=${token}`,
+      // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',
+      method: 'get'
+    }).then((response) => {
+      const status = response.status;
+      if (status === 200) {
+        dispatch(getOfferTypesSuccess(response.data.data));
+      }
+    }).catch((error) => {
+        dispatch(getOfferTypesFailure(error));
+    });
+  };
+};
+export const getOfferTypesSuccess = (response) => {
+  const offerTypes = response.offerTypes;
+  return {
+    type: GET_OFFER_TYPES_SUCCESS,
+    offerTypes
+  };
+};
+
+export const getOfferTypesRequest = () => {
+  return {
+    type: GET_OFFER_TYPES_REQUEST,
+  };
+};
+
+export const getOfferTypesFailure = (error) => {
+  return {
+    type: GET_OFFER_TYPES_FAILURE,
     error
   };
 };

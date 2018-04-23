@@ -193,7 +193,6 @@ class DrawerComponent extends React.Component {
       <FlatList
         automaticallyAdjustContentInsets={false}
         data={showCategory}
-        refreshing
         renderItem={this.renderRow}
         keyExtractor={this.keyExtractor}
       />
