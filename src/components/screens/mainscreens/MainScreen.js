@@ -179,7 +179,11 @@ class MainScreen extends React.Component {
       loading: pagination.paginationLoading
     };
     const nearbyoffers = ds.cloneWithRows([...posts, loading]);
-
+    const { locationName } = this.props;
+    let locationNameMain = locationName;
+    if (locationNameMain === '') {
+      locationNameMain = 'You are Somewhere';
+    }
     return (
       <Container style={containerStyle}>
         <Header
@@ -194,7 +198,14 @@ class MainScreen extends React.Component {
           <Body>
             <Title style={titleStyle}>MAIN SCREEN</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button
+              onPress={() => { Actions.push('arScreen'); }}
+              transparent
+            >
+              <Icon style={{ color: 'white' }} name="eye" />
+            </Button>
+          </Right>
         </Header>
         <Content style={{ paddingTop: normalize.normalize(5) }}>
           <View style={{ flex: 1 }}>
@@ -220,7 +231,7 @@ class MainScreen extends React.Component {
                   loop
                   marqueeDelay={1000}
                   marqueeResetDelay={1000}
-                >{this.props.locationName}</MarqueeText>
+                >{locationNameMain}</MarqueeText>
                 <Right>
                   <Button
                     transparent

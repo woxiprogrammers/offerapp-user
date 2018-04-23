@@ -11,35 +11,34 @@ import {
   LEAVE_GROUP_REQUEST,
   LEAVE_GROUP_SUCCESS,
   LEAVE_GROUP_FAILURE,
-  // URL
+  GROUP_OFFERS_RESET,
+  URL
 } from '../constants';
 
-export const getGroupList = (token, userId) => {
+export const getGroupList = (token) => {
   return (dispatch) => {
     dispatch(getGroupListRequest());
-    // const path = '';
-    console.log('Getting Group List');
+    const path = 'customer/group/list';
+    // console.log('Getting Group List');
+    // console.log(`${URL}/${path}/?token=${token}`);
     axios({
-      url: 'http://www.mocky.io/v2/5abfeaeb2c00004f00c3ceba',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
-      method: 'post',
-      data: {
-        userId
-      }
+      // url: 'http://www.mocky.io/v2/5adc0ef13100005500233bff',
+      url: `${URL}/${path}/?token=${token}`,
+      method: 'get'
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        dispatch(getGroupListSuccess(response.data));
+        console.log('Group list Success');
+        dispatch(getGroupListSuccess(response.data.data));
       }
     }).catch((error) => {
+        console.log(error);
         dispatch(getGroupListFailure(error));
     });
   };
 };
 export const getGroupListSuccess = (response) => {
   const { records } = response;
-  // console.log('Records are :');
-  // console.log(records);
   return {
     type: GET_GROUP_LIST_SUCCESS,
     groupList: records,
@@ -59,22 +58,30 @@ export const getGroupListFailure = (error) => {
   };
 };
 
-export const getGroupOffers = (token, page, userId, groupId) => {
+export const getGroupOffers = ({ token, page, groupId }) => {
   return (dispatch) => {
+    if (page === 1) {
+      dispatch({
+        type: GROUP_OFFERS_RESET
+      });
+    }
     dispatch(getGroupOffersRequest(page));
-    // const path = '';
+    const path = 'customer/group/offers';
+    console.log('Getting Group Offers :');
+    console.log(`${URL}/${path}/?token=${token}&page=${page}`);
+    // console.log('groupId:');
+    // console.log(groupId);
     axios({
-      url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: 'http://www.mocky.io/v2/5adc135c3100005d00233c00',
+      url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
-        userId,
         groupId
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        dispatch(getGroupOffersSuccess(response.data));
+        dispatch(getGroupOffersSuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getGroupOffersFailure(error));
@@ -104,17 +111,18 @@ export const getGroupOffersFailure = (error) => {
   };
 };
 
-export const leaveGroup = (token, userId, groupId) => {
+export const leaveGroup = ({ token, groupId }) => {
   console.log('Leaving Group!');
   return (dispatch) => {
     dispatch(leaveGroupRequest());
-    // const path = '';
+    const path = 'customer/group/remove';
+    console.log('Leaving Group :');
+    console.log(`${URL}/${path}/?token=${token}`);
     axios({
-      // url: `${URL}/${path}/?token=${token}`,
-      url: 'http://www.mocky.io/v2/5ab9f7a33500005b0073a306',
+      url: `${URL}/${path}/?token=${token}`,
+      // url: 'http://www.mocky.io/v2/5ab9f7a33500005b0073a306',
       method: 'post',
       data: {
-        userId,
         groupId
       }
     }).then((response) => {

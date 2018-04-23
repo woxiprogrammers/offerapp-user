@@ -17,6 +17,7 @@ import {
   normalize,
   colors,
  } from '../../styles';
+ import { IMAGEURL } from '../../constants';
 
  export default class OfferCard extends Component {
    render() {
@@ -62,7 +63,7 @@ import {
           </CardItem>
           <CardItem cardBody style={cardBodyStyle}>
             <AHImage
-              source={{ uri: offerPic }}
+              source={{ uri: `${IMAGEURL}${offerPic}` }}
               width={responsiveWidth(95)}
             />
           </CardItem>

@@ -44,32 +44,33 @@ class GroupScreen extends Component {
   componentWillMount() {
     const {
       token,
-      userId,
       groupId
     } = this.props;
+    const page = 1;
     console.log('Mounting GroupScreen');
-    this.props.getGroupOffers(token, 1, userId, groupId);
+    this.props.getGroupOffers({ token, page, groupId });
   }
   onEndReached() {
     const {
       pagination,
       token,
-      userId,
       groupId
     } = this.props;
-    const { page, perPage, pageCount, totalCount } = pagination;
+    const { perPage, pageCount, totalCount } = pagination;
+    let { page } = pagination;
     const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
     if (!pagination.groupOffersLoading && !lastPage) {
-      this.props.getGroupOffers(token, page + 1, userId, groupId);
+      page += 1;
+      this.props.getGroupOffers({ token, page, groupId });
     }
   }
   onRefresh() {
     const {
       token,
-      userId,
       groupId
     } = this.props;
-    this.props.getGroupOffers(token, 1, userId, groupId);
+    const page = 1;
+    this.props.getGroupOffers({ token, page, groupId });
   }
 
   autoBind(...methods) {
@@ -80,8 +81,8 @@ class GroupScreen extends Component {
   }
   keyExtractor = (item, index) => { return index; };
   leaveGroupPressed() {
-    const { token, userId, groupId } = this.props;
-    this.props.leaveGroup({ token, userId, groupId });
+    const { token, groupId } = this.props;
+    this.props.leaveGroup({ token, groupId });
   }
   renderRow(offerDetails) {
     // console.log('Rendering Row');
@@ -214,11 +215,11 @@ function mapStateToProps({ groups, user }) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getGroupOffers: (token, page, userId, groupId) => {
-          return dispatch(getGroupOffers(token, page, userId, groupId));
+        getGroupOffers: ({ token, page, groupId }) => {
+          return dispatch(getGroupOffers({ token, page, groupId }));
         },
-        leaveGroup: (token, userId, groupId) => {
-          return dispatch(leaveGroup(token, userId, groupId));
+        leaveGroup: ({ token, groupId }) => {
+          return dispatch(leaveGroup({ token, groupId }));
         },
     };
 }

@@ -29,10 +29,7 @@ const ASPECT_RATIO = responsiveWidth(100) / responsiveHeight(100);
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 // let id = 0;
-//
-function randomColor() {
- return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-}
+
 
 class MapTab extends Component {
   constructor(props) {
@@ -117,6 +114,9 @@ class MapTab extends Component {
       page
     });
   }
+  randomColor = () => {
+   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+  }
   autoBind(...methods) {
       methods.forEach(method => {
         this[method] = this[method].bind(this);
@@ -161,7 +161,7 @@ class MapTab extends Component {
                   <MapView.Marker
                     key={marker.key}
                     coordinate={marker.coordinate}
-                    pinColor={randomColor()}
+                    pinColor={this.randomColor()}
                     onPress={() => {
                       Actions.push('offerDetailScreen', { offerId: marker.offerId });
                     }}

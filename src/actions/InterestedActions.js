@@ -9,10 +9,10 @@ import {
   SEND_INTERESTED_OFFER_SUCCESS,
   SEND_INTERESTED_OFFER_FAILURE,
   INTERESTED_OFFERS_RESET,
-  // URL
+  URL
 } from '../constants';
 
-export const getInterestedOffers = (token, page, userId) => {
+export const getInterestedOffers = ({ token, page }) => {
   return (dispatch) => {
     if (page === 1) {
       dispatch({
@@ -20,18 +20,21 @@ export const getInterestedOffers = (token, page, userId) => {
       });
     }
     dispatch(getInterestedOffersRequest(page));
-    // const path = '';
+    const path = 'customer/offer/interested/listing';
+    const offerStatus = 'interested';
+    console.log('Getting Interested Offers :');
+    console.log(`${URL}/${path}/?token=${token}&page=${page}`);
     axios({
-      url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
+      url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
-        userId
+        offerStatus
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        dispatch(getInterestedOffersSuccess(response.data));
+        dispatch(getInterestedOffersSuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getInterestedOffersFailure(error));

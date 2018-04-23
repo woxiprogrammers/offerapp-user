@@ -59,29 +59,30 @@ class InterestedScreen extends React.Component {
   componentWillMount() {
     const {
       token,
-      userId,
     } = this.props;
     console.log('Mounting InterestedScreen');
-    this.props.getInterestedOffers(token, 1, userId);
+    const page = 1;
+    this.props.getInterestedOffers({ token, page });
   }
   onEndReached() {
     const {
       pagination,
       token,
-      userId,
     } = this.props;
-    const { page, perPage, pageCount, totalCount } = pagination;
+    const { perPage, pageCount, totalCount } = pagination;
+    let { page } = pagination;
     const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
     if (!pagination.interestedOffersLoading && !lastPage) {
-      this.props.getInterestedOffers(token, page + 1, userId);
+      page += 1;
+      this.props.getInterestedOffers({ token, page });
     }
   }
   onRefresh() {
     const {
       token,
-      userId,
     } = this.props;
-    this.props.getInterestedOffers(token, 1, userId);
+    const page = 1;
+    this.props.getInterestedOffers({ token, page });
   }
   showScaleAnimationDialog = () => {
     this.scaleAnimationDialog.show();
@@ -157,7 +158,7 @@ class InterestedScreen extends React.Component {
         </Text>
         <Item>
           <Label>
-            # {selectedGrabOffer.offerExpiry}
+            # {selectedGrabOffer.grabCode}
           </Label>
         </Item>
       </View>
@@ -281,8 +282,8 @@ function mapStateToProps({ interested, user }) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getInterestedOffers: (token, page, userId) => {
-          return dispatch(getInterestedOffers(token, page, userId));
+        getInterestedOffers: ({ token, page }) => {
+          return dispatch(getInterestedOffers({ token, page }));
         },
     };
 }

@@ -8,11 +8,12 @@ import {
   } from '../constants';
 
 const INITIAL_STATE = {
-    user: '1111111111',
-    password: 'superadmin',
+    user: '5555555555',
+    password: 'tejas',
     error: false,
     loginLoading: false,
-    token: ''
+    token: '',
+    userData: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -25,7 +26,8 @@ export default (state = INITIAL_STATE, action) => {
         return {
           ...state,
           ...INITIAL_STATE,
-          token: action.payload
+          token: action.token,
+          userData: action.userData
         };
       case LOGOUT_USER:
           return {

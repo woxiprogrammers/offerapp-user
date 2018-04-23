@@ -111,8 +111,8 @@ export const getLocation = (token, coords) => {
     dispatch(getLocationRequest(coords));
     console.log(coords);
     const path = 'customer/location/get';
-    console.log('Getting Location: ');
-    console.log(`${URL}/${path}/?token=${token}`);
+    // console.log('Getting Location: ');
+    // console.log(`${URL}/${path}/?token=${token}`);
     await axios({
       // url: 'http://www.mocky.io/v2/5abb3eb22d000054009bdb41',
       url: `${URL}/${path}/?token=${token}`,
@@ -123,8 +123,8 @@ export const getLocation = (token, coords) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        console.log(response.data);
-        dispatch(getLocationSuccess(response.data));
+        // console.log(response.data);
+        dispatch(getLocationSuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getLocationFailure(error));

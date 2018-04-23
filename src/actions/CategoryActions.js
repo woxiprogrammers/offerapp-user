@@ -16,6 +16,7 @@ import {
   GET_AR_VIEW_CATEGORY_REQUEST,
   GET_AR_VIEW_CATEGORY_SUCCESS,
   GET_AR_VIEW_CATEGORY_FAILURE,
+  URL,
 } from '../constants';
 
 export const setCategory = (categorySelected) => {
@@ -42,7 +43,7 @@ export const updateFilter = ({ distance, typeSelected }) => {
 };
 
 export const getListViewCategory = ({
-  //token,
+  token,
   categorySelected,
   sortSelected,
   distance,
@@ -56,17 +57,17 @@ export const getListViewCategory = ({
       });
     }
     dispatch(getListViewCategoryRequest(page));
-    // const path = '';
+    const path = 'customer/offer/nearby/listing';
     console.log('Getting List View CategoryScreen');
     axios({
-      url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
+      url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
         categorySelected,
         sortSelected,
         distance,
-        typeSelected,
+        offerTypeSlug: typeSelected,
         coords,
       }
     }).then((response) => {
@@ -184,7 +185,7 @@ export const getARViewCategory = ({
         categorySelected,
         distance,
         typeSelected,
-        coords,
+        coords
       }
     }).then((response) => {
       const status = response.status;
@@ -198,10 +199,6 @@ export const getARViewCategory = ({
 };
 export const getARViewCategorySuccess = (response) => {
   const { records } = response;
-  console.log('========================!!!!');
-  console.log('Records Are : ');
-  console.log(records);
-  console.log('========================!!!!');
   return {
     type: GET_AR_VIEW_CATEGORY_SUCCESS,
     arViewCategoryOffers: records

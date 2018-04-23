@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   TouchableWithoutFeedback,
-  StyleSheet  
+  StyleSheet
 } from 'react-native';
 import {
   Container,
@@ -39,8 +39,8 @@ class GroupListingScreen extends React.Component {
     );
   }
   componentWillMount() {
-    const { token, userId } = this.props;
-    this.props.getGroupList(token, userId);
+    const { token } = this.props;
+    this.props.getGroupList(token);
   }
   autoBind(...methods) {
       methods.forEach(method => {
@@ -64,7 +64,7 @@ class GroupListingScreen extends React.Component {
         <TouchableWithoutFeedback
           onPress={() => {
             console.log(`Group: ${groupId}`);
-            Actions.groupScreen();
+            Actions.push('groupScreen', { groupId });
           }}
         >
           <ListItem>
@@ -154,8 +154,8 @@ function mapStateToProps({ user, groups }) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getGroupList: (token, userId) => {
-          return dispatch(getGroupList(token, userId));
+        getGroupList: (token) => {
+          return dispatch(getGroupList(token));
         },
     };
 }

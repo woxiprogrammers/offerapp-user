@@ -7,3 +7,4 @@ export const GET_GROUP_OFFERS_FAILURE = 'get_group_offers_failure';
 export const LEAVE_GROUP_REQUEST = 'leave_group_request';
 export const LEAVE_GROUP_SUCCESS = 'leave_group_success';
 export const LEAVE_GROUP_FAILURE = 'leave_group_failure';
+export const GROUP_OFFERS_RESET = 'group_offers_reset';

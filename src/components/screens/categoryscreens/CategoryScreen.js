@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import {
+  Gyroscope
+} from 'expo';
+import {
   StyleSheet,
   // Image,
   // ScrollView,
@@ -35,7 +38,7 @@ import {
 } from '../../../styles';
 import ListingTab from '../../tabs/ListingTab';
 import MapTab from '../../tabs/MapTab';
-import ARTAb from '../../tabs/ARTab';
+// import ARTAb from '../../tabs/ARTab';
 
 export default class CategoryScreen extends Component {
   render() {
@@ -72,7 +75,18 @@ export default class CategoryScreen extends Component {
           </Right>
         </Header>
         <View style={{ flex: 1 }}>
-          <Tabs initialPage={initialPage} locked>
+          <Tabs
+          initialPage={initialPage}
+          locked
+          onChangeTab={({ i }) => {
+            console.log('Index is :');
+            console.log(i);
+            if (i !== 2) {
+              console.log('Removing All Listeners');
+              Gyroscope.removeAllListeners();
+            }
+          }}
+          >
             <Tab
               heading={
                 <TabHeading style={{ backgroundColor: '#EFF2F7' }}>
@@ -113,7 +127,7 @@ export default class CategoryScreen extends Component {
                 </TouchableOpacity>
               </View>
             </Tab>
-            <Tab
+            {/*<Tab
               heading={
                 <TabHeading style={{ backgroundColor: '#EFF2F7' }}>
                   <Icon name="eye" />
@@ -129,7 +143,7 @@ export default class CategoryScreen extends Component {
                     <Text style={{ alignSelf: 'center' }}>Filter</Text>
                   </TouchableOpacity>
                 </View>
-            </Tab>
+            </Tab>*/}
           </Tabs>
         </View>
        </Container>

@@ -6,11 +6,11 @@ import {
   GET_WISHLIST_OFFERS_SUCCESS,
   GET_WISHLIST_OFFERS_FAILURE,
   WISHLIST_OFFERS_RESET,
-  REMOVE_WISHLIST_OFFER
-  // URL
+  REMOVE_WISHLIST_OFFER,
+  URL
 } from '../constants';
 
-export const getWishListOffers = (token, page, userId) => {
+export const getWishListOffers = ({ token, page }) => {
   return (dispatch) => {
     if (page === 1) {
       dispatch({
@@ -18,18 +18,21 @@ export const getWishListOffers = (token, page, userId) => {
       });
     }
     dispatch(getWishListOffersRequest(page));
-    // const path = '';
+    const path = 'customer/offer/wishlist/listing';
+    const offerStatus = 'wishlist';
+    console.log('Getting Wishlist Offers :');
+    console.log(`${URL}/${path}/?token=${token}&page=${page}`);
     axios({
-      url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
+      url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
-        userId
+        offerStatus
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        dispatch(getWishListOffersSuccess(response.data));
+        dispatch(getWishListOffersSuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getWishListOffersFailure(error));
@@ -59,20 +62,22 @@ export const getWishListOffersFailure = (error) => {
   };
 };
 
-export const removeWislistOffer = (index, token, offerId, userId) => {
+export const removeWislistOffer = ({ index, token, offerId }) => {
   return (dispatch) => {
-    // const path = '';
+    const path = 'customer/offer/wishlist/remove';
+    console.log('Removing Wishlist Offer :');
+    console.log(`${URL}/${path}/?token=${token}`);
     axios({
-      url: 'http://www.mocky.io/v2/5ad1a1593000006600534c18',
-      // url: `${URL}/${path}/?token=${token}`,
+      // url: 'http://www.mocky.io/v2/5ad1a1593000006600534c18',
+      url: `${URL}/${path}/?token=${token}`,
       method: 'post',
       data: {
-        userId,
         offerId
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
+        console.log('WishList Offer Removed Successfully !!');
         dispatch(removeWislistOfferSuccess(index));
       }
     }).catch((error) => {

@@ -17,13 +17,12 @@ export const GET_AR_VIEW_CATEGORY_SUCCESS = 'get_ar_view_category_success';
 export const GET_AR_VIEW_CATEGORY_FAILURE = 'get_ar_view_category_failure';
 
 export const ADD_AR_OBJECT = 'add_ar_object';
-export const REMOVE_AR_OBJECT = 'remove_ar_object';
 export const UPDATE_GYRO_DATA = 'update_gyro_data';
-export const CLEAR_AR_OBJECTS = 'CLEAR_AR_OBJECTS';
+export const CLEAR_AR_OBJECTS = 'clear_ar_objects';
+export const AR_HANDLE = 'ar_handle';
 export const UPDATE_X = 'update_x';
 export const UPDATE_Y = 'update_y';
 export const GYRO_MOVE_THRESHOLD_X = 0.055;
 export const GYRO_MOVE_THRESHOLD_Y = 0.055;
-
 export const MOVE_FACTOR_Y = variables.SCREEN_HEIGHT / 7;
 export const MOVE_FACTOR_X = variables.SCREEN_WIDTH / 10;

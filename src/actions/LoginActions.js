@@ -25,12 +25,13 @@ export const loginUser = ({ user, password }) => {
       if (status === 200) {
         console.log('Password Correct!!!');
         const token = response.data.token;
+        const userData = response.data.userData;
         try {
           await AsyncStorage.setItem('token', `${token}`);
         } catch (error) {
           console.log('Error Saving');
         }
-        loginUserSuccess(dispatch, token);
+        loginUserSuccess(dispatch, token, userData);
       } else {
         loginUserFailed(dispatch);
       }
@@ -58,11 +59,11 @@ export const passwordChanged = (text) => {
 export const logoutUser = () => {
   console.log('Going back to Login Screen');
   return async (dispatch) => {
+    await AsyncStorage.removeItem('token');
+    Actions.auth({ type: 'reset' });
     dispatch({
       type: LOGOUT_USER
     });
-    await AsyncStorage.removeItem('token');
-    Actions.auth({ type: 'reset' });
   };
 };
 
@@ -70,10 +71,11 @@ const loginUserFailed = (dispatch) => {
     dispatch({ type: LOGIN_USER_FAIL });
 };
 
-const loginUserSuccess = (dispatch, token) => {
+const loginUserSuccess = (dispatch, token, userData) => {
     dispatch({
     type: LOGIN_USER_SUCCESS,
-    payload: token
+    token,
+    userData
   });
   console.log('Going to Main Screen');
   Actions.push('mainScreen');

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   TouchableWithoutFeedback,
-  StyleSheet  
+  StyleSheet
 } from 'react-native';
 import {
   Container,
@@ -109,6 +109,7 @@ class ChangeLocationScreen extends React.Component {
               onChangeText={this.onSearchTextChange.bind(this)}
               style={{ paddingLeft: responsiveWidth(3) }} placeholder="Search"
             />
+            <Icon name='search' />
           </Item>
         </Header>
         <TouchableWithoutFeedback

@@ -68,11 +68,11 @@ class WishlistScreen extends React.Component {
   }
   componentWillMount() {
     const {
-      token,
-      userId,
+      token
     } = this.props;
     console.log('Mounting WishlistScreen');
-    this.props.getWishListOffers(token, 1, userId);
+    const page = 1;
+    this.props.getWishListOffers({ token, page });
   }
   componentWillUpdate() {
     LayoutAnimation.easeInEaseOut();
@@ -80,22 +80,23 @@ class WishlistScreen extends React.Component {
   onEndReached() {
     const {
       pagination,
-      token,
-      userId,
+      token
     } = this.props;
-    const { page, perPage, pageCount, totalCount } = pagination;
+    const { perPage, pageCount, totalCount } = pagination;
+    let { page } = pagination;
     const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
     if (!pagination.wishListOffersLoading && !lastPage) {
-      this.props.getWishListOffers(token, page + 1, userId);
+      page += 1;
+      this.props.getWishListOffers({ token, page });
     }
   }
 
   onRefresh() {
     const {
-      token,
-      userId,
+      token
     } = this.props;
-    this.props.getWishListOffers(token, 1, userId);
+    const page = 1;
+    this.props.getWishListOffers({ token, page });
   }
   showScaleAnimationDialog = () => {
     this.scaleAnimationDialog.show();
@@ -136,7 +137,7 @@ class WishlistScreen extends React.Component {
         <TouchableOpacity
           onPress={() => {
             console.log(`Index Remove: ${index} and Offer: ${offerId} `);
-            this.props.removeWislistOffer(index, token, offerId, 12345);
+            this.props.removeWislistOffer({ index, token, offerId });
             // console.log('=======================================================');
             // console.log(this.props.wishListOffers);
             // console.log('=======================================================');
@@ -220,10 +221,9 @@ class WishlistScreen extends React.Component {
             selectedValue={this.state.selectedTime}
             onValueChange={(itemValue) => { return this.setState({ selectedTime: itemValue }); }}
           >
-            <Picker.Item label="30 min." value="30 min." />
-            <Picker.Item label="1 hr." value="1 hr." />
-            <Picker.Item label="2 hrs." value="2 hrs." />
-            <Picker.Item label="3 hrs." value="3 hrs." />
+            <Picker.Item label="30 min." value="30-mins" />
+            <Picker.Item label="1 hr." value="1-hour" />
+            <Picker.Item label="2 hrs." value="2-hour" />
           </Picker>
         </View>
       );
@@ -363,11 +363,11 @@ function mapStateToProps({ wishlist, user, interested }) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getWishListOffers: (token, page, userId) => {
-          return dispatch(getWishListOffers(token, page, userId));
+        getWishListOffers: ({ token, page }) => {
+          return dispatch(getWishListOffers({ token, page }));
         },
-        removeWislistOffer: (index, token, offerId, userId) => {
-          return dispatch(removeWislistOffer(index, token, offerId, userId));
+        removeWislistOffer: ({ index, token, offerId }) => {
+          return dispatch(removeWislistOffer({ index, token, offerId }));
         },
         sendInterestedOffer: (token, offerId, userId, selectedTime) => {
           return dispatch(sendInterestedOffer(token, offerId, userId, selectedTime));
