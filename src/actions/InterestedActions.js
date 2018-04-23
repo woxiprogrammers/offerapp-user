@@ -22,8 +22,6 @@ export const getInterestedOffers = ({ token, page }) => {
     dispatch(getInterestedOffersRequest(page));
     const path = 'customer/offer/interested/listing';
     const offerStatus = 'interested';
-    console.log('Getting Interested Offers :');
-    console.log(`${URL}/${path}/?token=${token}&page=${page}`);
     axios({
       // url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
       url: `${URL}/${path}/?token=${token}&page=${page}`,

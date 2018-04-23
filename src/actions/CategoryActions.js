@@ -32,9 +32,6 @@ export const updateSortBy = ({ sortSelected }) => {
   };
 };
 export const updateFilter = ({ distance, typeSelected }) => {
-  console.log('============--!!!!');
-  console.log(distance);
-  console.log(typeSelected);
   return {
     type: UPDATE_FILTER,
     distance,

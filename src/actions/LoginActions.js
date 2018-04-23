@@ -12,7 +12,6 @@ import {
 } from '../constants';
 
 export const loginUser = ({ user, password }) => {
-  console.log('Logging In');
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });
     const path = 'login';
@@ -23,7 +22,6 @@ export const loginUser = ({ user, password }) => {
   }).then(async (response) => {
       const status = response.status;
       if (status === 200) {
-        console.log('Password Correct!!!');
         const token = response.data.token;
         const userData = response.data.userData;
         try {
@@ -35,8 +33,7 @@ export const loginUser = ({ user, password }) => {
       } else {
         loginUserFailed(dispatch);
       }
-    }).catch((error) => {
-    console.log(error);
+    }).catch(() => {
     loginUserFailed(dispatch);
   });
   };
@@ -57,7 +54,6 @@ export const passwordChanged = (text) => {
 };
 
 export const logoutUser = () => {
-  console.log('Going back to Login Screen');
   return async (dispatch) => {
     await AsyncStorage.removeItem('token');
     Actions.auth({ type: 'reset' });
@@ -77,6 +73,5 @@ const loginUserSuccess = (dispatch, token, userData) => {
     token,
     userData
   });
-  console.log('Going to Main Screen');
   Actions.push('mainScreen');
 };

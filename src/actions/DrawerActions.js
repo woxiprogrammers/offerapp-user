@@ -11,9 +11,6 @@ import {
 export const getCategories = ({ token }) => {
   return (dispatch) => {
     dispatch(getCategoriesRequest());
-    console.log(token);
-    console.log('Getting Categories : ');
-    console.log(`${URL}/${path}/?token=${token}`);
     const path = 'customer/offer/category/listing';
     axios({
       url: `${URL}/${path}/?token=${token}`,
@@ -22,7 +19,6 @@ export const getCategories = ({ token }) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        console.log('Success Getting Categories');
         dispatch(getCategoriesSuccess(response.data.data));
       }
     }).catch((error) => {

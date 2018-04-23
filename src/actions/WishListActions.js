@@ -20,8 +20,6 @@ export const getWishListOffers = ({ token, page }) => {
     dispatch(getWishListOffersRequest(page));
     const path = 'customer/offer/wishlist/listing';
     const offerStatus = 'wishlist';
-    console.log('Getting Wishlist Offers :');
-    console.log(`${URL}/${path}/?token=${token}&page=${page}`);
     axios({
       // url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
       url: `${URL}/${path}/?token=${token}&page=${page}`,
@@ -65,8 +63,6 @@ export const getWishListOffersFailure = (error) => {
 export const removeWislistOffer = ({ index, token, offerId }) => {
   return (dispatch) => {
     const path = 'customer/offer/wishlist/remove';
-    console.log('Removing Wishlist Offer :');
-    console.log(`${URL}/${path}/?token=${token}`);
     axios({
       // url: 'http://www.mocky.io/v2/5ad1a1593000006600534c18',
       url: `${URL}/${path}/?token=${token}`,
@@ -77,7 +73,6 @@ export const removeWislistOffer = ({ index, token, offerId }) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        console.log('WishList Offer Removed Successfully !!');
         dispatch(removeWislistOfferSuccess(index));
       }
     }).catch((error) => {

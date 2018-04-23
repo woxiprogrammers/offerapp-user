@@ -77,10 +77,6 @@ export const setLocation = (token, text) => {
 
 export const setLocationSuccess = (response) => {
   const { locationName, coords } = response;
-  console.log('Coords change: ');
-  console.log(coords);
-  console.log('Location change: ');
-  console.log(locationName);
   return {
     type: SET_LOCATION_SUCCESS,
     locationName,
