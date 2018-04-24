@@ -4,6 +4,7 @@ import {
   Thumbnail,
   Container,
   CheckBox,
+  Spinner,
   Content,
   Header,
   Button,
@@ -18,9 +19,10 @@ import {
   Icon,
   Body,
   Text,
-
 } from 'native-base';
+import _ from 'lodash';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -32,8 +34,66 @@ import {
   colors,
 } from '../../../styles';
 import backgroundImage from '../../../assets/images/BackgroundImage.png';
+import {
+  valueChanged,
+  signUpUser
+} from '../../../actions';
 
-export default class SignUpFillUpScreen extends React.Component {
+class SignUpFillUpScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isChecked: false
+    };
+  }
+  componentWillMount() {
+    _.each(this.props, (value, prop) => {
+      this.props.valueChanged({ prop, value });
+    });
+  }
+  onButtonPress() {
+    const {
+      suFirstName,
+      suLastName,
+      suEmail,
+      suPassword,
+      mobileVerify
+    } = this.props;
+    this.props.signUpUser({
+      suFirstName,
+      suLastName,
+      suEmail,
+      suPassword,
+      mobileVerify
+    });
+  }
+  renderSignUpButton() {
+    const { signUpButtonStyle, signUpButtonTextStyle } = styles;
+    const { suLoading, suError } = this.props;
+    const { isChecked } = this.state;
+    if (suLoading) {
+      return (<Button style={signUpButtonStyle}>
+               <Spinner color='white' />
+              </Button>);
+    } else if (suError) {
+      return (<Button style={signUpButtonStyle}>
+               <Text style={signUpButtonTextStyle}>
+                 Sign Up Failed
+               </Text>
+              </Button>);
+   } else if (!isChecked) {
+     return (
+       <Button style={signUpButtonStyle}>
+         <Text style={signUpButtonTextStyle}>Please Accept</Text>
+       </Button>
+     );
+   }
+   return (
+     <Button style={signUpButtonStyle} onPress={this.onButtonPress.bind(this)}>
+       <Text style={signUpButtonTextStyle}>Sign Up</Text>
+     </Button>
+     );
+  }
   render() {
     const {
       backgroundImageStyle,
@@ -41,14 +101,19 @@ export default class SignUpFillUpScreen extends React.Component {
       viewLastNameStyle,
       containerStyle,
       viewItemStyle,
-      signUpStyle,
       contentStyle,
       headerStyle,
       acceptStyle,
       formStyle,
       titleStyle
     } = styles;
-
+    const {
+      suFirstName,
+      suLastName,
+      suEmail,
+      suPassword,
+    } = this.props;
+    const { isChecked } = this.state;
     return (
       <View>
         <ImageBackground
@@ -83,36 +148,76 @@ export default class SignUpFillUpScreen extends React.Component {
                 <View style={viewFirstNameStyle}>
                   <Item stackedLabel>
                     <Label> First Name</Label>
-                    <Input />
+                    <Input
+                      onChangeText={
+                          value => {
+                            this.props.valueChanged({
+                            prop: 'suFirstName', value
+                          });
+                        }
+                      }
+                      value={suFirstName}
+                    />
                   </Item>
                 </View>
                 <View style={viewLastNameStyle}>
                   <Item stackedLabel>
                     <Label> Last Name</Label>
-                    <Input />
+                    <Input
+                      onChangeText={
+                          value => {
+                            this.props.valueChanged({
+                            prop: 'suLastName', value
+                          });
+                        }
+                      }
+                      value={suLastName}
+                    />
                   </Item>
                 </View>
               </View>
               <View style={viewItemStyle}>
                 <Item stackedLabel >
                   <Label> Email Address</Label>
-                  <Input />
+                  <Input
+                    onChangeText={
+                        value => {
+                          this.props.valueChanged({
+                          prop: 'suEmail', value
+                        });
+                      }
+                    }
+                    value={suEmail}
+                  />
                 </Item>
               </View>
               <View style={viewItemStyle}>
                 <Item stackedLabel >
                   <Label> Password</Label>
-                  <Input />
+                  <Input
+                    secureTextEntry
+                    onChangeText={
+                        value => {
+                          this.props.valueChanged({
+                          prop: 'suPassword', value
+                        });
+                      }
+                    }
+                    value={suPassword}
+                  />
                 </Item>
               </View>
               <View style={acceptStyle}>
-                <CheckBox checked={false} />
+                <CheckBox
+                  checked={isChecked}
+                  onPress={() => {
+                    this.setState({ isChecked: !this.state.isChecked });
+                  }}
+                />
                 <Text>    Accept the terms and conditions</Text>
               </View>
               <View>
-                <Button style={signUpStyle}>
-                  <Text>Sign Up</Text>
-                </Button>
+              {this.renderSignUpButton()}
               </View>
             </Form>
           </View>
@@ -161,9 +266,12 @@ const styles = StyleSheet.create({
     height: responsiveHeight(100),
     width: responsiveWidth(100)
   },
-  signUpStyle: {
+  signUpButtonStyle: {
+    width: responsiveWidth(50),
+    marginTop: responsiveHeight(5),
     backgroundColor: colors.headerColor,
-    marginTop: responsiveHeight(5)
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 formStyle: {
   width: responsiveWidth(100),
@@ -199,6 +307,40 @@ acceptStyle: {
   backgroundColor: '#D4D4D4',
   flexDirection: 'row',
   alignItems: 'center'
+},
+signUpButtonTextStyle: {
+  fontSize: responsiveFontSize(2.2)
 }
 
 });
+
+function mapStateToProps({ user }) {
+    return {
+        ...user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        valueChanged: ({ prop, value }) => { return dispatch(valueChanged({ prop, value })); },
+        signUpUser: ({
+          suFirstName,
+          suLastName,
+          suEmail,
+          suPassword,
+          mobileVerify
+        }) => {
+          return dispatch(signUpUser({
+            suFirstName,
+            suLastName,
+            suEmail,
+            suPassword,
+            mobileVerify
+          }));
+        },
+    };
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SignUpFillUpScreen);

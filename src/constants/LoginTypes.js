@@ -12,3 +12,7 @@ export const OTP_VERIFY_CHANGED = 'otp_verify_changed';
 export const VERIFY_OTP_REQUEST = 'verify_otp_request';
 export const VERIFY_OTP_SUCCESS = 'verify_otp_success';
 export const VERIFY_OTP_FAILURE = 'verify_otp_failure';
+export const SU_VALUE_CHANGED = 'su_value_changed';
+export const SU_USER_REQUEST = 'su_user_request';
+export const SU_USER_SUCCESS = 'su_user_success';
+export const SU_USER_FAILURE = 'su_user_failure';
