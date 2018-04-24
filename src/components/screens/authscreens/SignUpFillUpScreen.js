@@ -61,7 +61,7 @@ export default class SignUpFillUpScreen extends React.Component {
             iosBarStyle='light-content'
           >
           <Left style={{ marginRight: -(responsiveWidth(30)) }}>
-            <Button transparent onPress={Actions.pop}>
+            <Button transparent onPress={() => { Actions.popTo('loginScreen'); }}>
               <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
             </Button>
           </Left>
