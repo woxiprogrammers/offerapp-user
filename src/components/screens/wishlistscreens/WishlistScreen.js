@@ -119,12 +119,7 @@ class WishlistScreen extends React.Component {
   renderWishlistOptions({ item, index }) {
     const {
       token,
-      // userId,
     } = this.props;
-    // console.log('In WishList Options : ');
-    // console.log(item);
-    // console.log('Index is : ');
-    // console.log(index);
     const { offerId } = item;
     return (
       <View
@@ -208,7 +203,7 @@ class WishlistScreen extends React.Component {
       dialogContentView,
       pickerStyle,
     } = styles;
-    const { sendInterestedOfferLoading } = this.props;
+    const { sendInterestedOfferLoading, reachInTime } = this.props;
     if (sendInterestedOfferLoading) {
       return (<LoadingIndicator loading={sendInterestedOfferLoading} />);
     }
@@ -221,9 +216,13 @@ class WishlistScreen extends React.Component {
             selectedValue={this.state.selectedTime}
             onValueChange={(itemValue) => { return this.setState({ selectedTime: itemValue }); }}
           >
-            <Picker.Item label="30 min." value="30-mins" />
-            <Picker.Item label="1 hr." value="1-hour" />
-            <Picker.Item label="2 hrs." value="2-hour" />
+            {
+            reachInTime.map((item, i) => {
+              return (
+                <Picker.Item key={i} label={item.name} value={item.slug} />
+                );
+            })
+            }
           </Picker>
         </View>
       );
@@ -352,12 +351,14 @@ const styles = StyleSheet.create({
       paddingBottom: 10,
   },
 });
-function mapStateToProps({ wishlist, user, interested }) {
+function mapStateToProps({ wishlist, user, interested, drawer }) {
     const { token } = user;
+    const { reachInTime } = drawer;
     const { sendInterestedOfferLoading } = interested;
     return {
         ...wishlist,
         token,
+        reachInTime,
         sendInterestedOfferLoading
     };
 }
