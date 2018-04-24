@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   categorySelected: '',
   sortSelected: 'nearestFirst',
   distance: 1,
-    typeSelected: 'all',
+  typeSelected: 'all',
   offerTypes: [],
   offerTypesLoading: false,
 };

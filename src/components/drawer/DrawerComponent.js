@@ -32,8 +32,14 @@ import {
 import { Actions } from 'react-native-router-flux';
 import {
   colors
- } from '../../styles';
- import { logoutUser, setCategory, getCategories, updateShowCategory } from '../../actions';
+} from '../../styles';
+import {
+  logoutUser,
+  setCategory,
+  getReachInTime,
+  getCategories,
+  updateShowCategory
+} from '../../actions';
 import { IMAGEURL } from '../../constants';
 
 class DrawerComponent extends React.Component {
@@ -58,6 +64,7 @@ class DrawerComponent extends React.Component {
   componentDidMount() {
     const { token } = this.props;
     this.props.getCategories({ token });
+    this.props.getReachInTime({ token });
   }
   // componentWillUpdate() {
   //   LayoutAnimation.spring();
@@ -329,6 +336,9 @@ function mapDispatchToProps(dispatch) {
         },
         getCategories: ({ token }) => {
           return dispatch(getCategories({ token }));
+        },
+        getReachInTime: ({ token }) => {
+          return dispatch(getReachInTime({ token }));
         },
         updateShowCategory: (category) => {
           return dispatch(updateShowCategory(category));
