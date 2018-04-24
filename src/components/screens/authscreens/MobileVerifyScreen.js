@@ -1,13 +1,15 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, Picker } from 'react-native';
+import { StyleSheet, ImageBackground } from 'react-native';
 import {
   Container,
   Header,
   Content,
+  Spinner,
   Button,
   Right,
   Title,
   Label,
+  Input,
   Form,
   Item,
   Left,
@@ -15,9 +17,9 @@ import {
   Icon,
   Body,
   Text,
-
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -28,16 +30,45 @@ import {
   colors,
 } from '../../../styles';
  import backgroundImage from '../../../assets/images/BackgroundImage.png';
+ import {
+   getOtp,
+   mobileVerifyChanged
+ } from '../../../actions';
 
-export default class MobileVerifyScreen extends React.Component {
+class MobileVerifyScreen extends React.Component {
+  onMobileVerifyChange(text) {
+    this.props.mobileVerifyChanged(text);
+  }
+  onButtonPress() {
+    const { mobileVerify } = this.props;
+    this.props.getOtp({ mobileVerify });
+  }
+  renderGetOtpButton() {
+    const { getotpStyle, otpButtonStyle } = styles;
+    if (this.props.mobileVerifyLoading) {
+      return (
+        <Button style={getotpStyle} onPress={this.onButtonPress.bind(this)}>
+          <Spinner color='white' />
+        </Button>
+      );
+    } else if (this.props.mobileVerifyError) {
+      return (
+        <Button style={getotpStyle}>
+          <Text style={otpButtonStyle}>OTP NOT SENT</Text>
+        </Button>);
+   }
+   return (
+     <Button style={getotpStyle} onPress={this.onButtonPress.bind(this)}>
+       <Text style={otpButtonStyle}>GET OTP</Text>
+     </Button>);
+  }
   render() {
     const {
       backgroundImageStyle,
       containerStyle,
       itemViewStyle,
       contentStyle,
-      pickerStyle,
-      getotpStyle,
+      // pickerStyle,
       headerStyle,
       titleStyle,
       textStyle,
@@ -72,26 +103,22 @@ export default class MobileVerifyScreen extends React.Component {
               <View>
                 <Form style={formStyle}>
                   <View style={itemViewStyle}>
-                    <Picker
-                    style={pickerStyle}
-                    mode='dropdown'
-                    selectedValue={+91}
-                    >
-                      <Picker.Item label="+91" value="+91" />
-                      <Picker.Item label="+92" value="+92" />
-                      <Picker.Item label="+93" value="+93" />
-                      <Picker.Item label="+94" value="+94" />
-                    </Picker>
+                    <Item >
+                      <Label> +91</Label>
+                    </Item>
                     <Item floatingLabel style={itemStyle}>
                       <Label> Enter your number</Label>
+                      <Input
+                        onChangeText={this.onMobileVerifyChange.bind(this)}
+                        value={this.props.mobileVerify}
+                        keyboardType='numeric'
+                      />
                     </Item>
                   </View>
                 </Form>
               </View>
               <View>
-                <Button style={getotpStyle} onPress={Actions.otpVerifyScreen}>
-                  <Text>GET OTP</Text>
-                </Button>
+                {this.renderGetOtpButton()}
               </View>
             </Content>
           </Container>
@@ -128,11 +155,14 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(3.3),
     marginTop: responsiveHeight(5),
     textAlign: 'center',
-   color: 'white',
+    color: 'white',
    },
   getotpStyle: {
+    width: responsiveWidth(50),
     marginTop: responsiveHeight(10),
     backgroundColor: colors.login,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   pickerStyle: {
     width: responsiveWidth(20),
@@ -153,11 +183,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingBottom: 10,
     marginTop: 9,
+    justifyContent: 'center',
   },
   itemStyle: {
     marginTop: responsiveHeight(-3.3),
     width: responsiveWidth(50),
     alignSelf: 'center',
+  },
+  otpButtonStyle: {
+    fontSize: responsiveFontSize(2.2)
   }
 
 });
+
+function mapStateToProps({ user }) {
+    return {
+        ...user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        mobileVerifyChanged: (text) => { return dispatch(mobileVerifyChanged(text)); },
+        getOtp: ({ mobileVerify }) => {
+          return dispatch(getOtp({ mobileVerify }));
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MobileVerifyScreen);

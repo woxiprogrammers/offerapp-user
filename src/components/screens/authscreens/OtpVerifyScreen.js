@@ -3,10 +3,12 @@ import { StyleSheet, ImageBackground } from 'react-native';
 import {
   Container,
   Content,
+  Spinner,
   Header,
   Button,
   Right,
   Input,
+  Label,
   Title,
   Form,
   Item,
@@ -17,6 +19,7 @@ import {
   Text,
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -27,14 +30,42 @@ import {
   colors
 } from '../../../styles';
 import backgroundImage from '../../../assets/images/BackgroundImage.png';
+import {
+  verifyOtp,
+  otpVerifyChanged
+} from '../../../actions';
 
-
-export default class OtpVerifyScreen extends React.Component {
+class OtpVerifyScreen extends React.Component {
+  onOtpVerifyChange(text) {
+    this.props.otpVerifyChanged(text);
+  }
+  onButtonPress() {
+    const { mobileVerify, otpVerify } = this.props;
+    this.props.verifyOtp({ mobileVerify, otpVerify });
+  }
+  renderGetOtpButton() {
+    const { verifyOtpStyle, otpButtonStyle } = styles;
+    if (this.props.otpVerifyLoading) {
+      return (
+        <Button style={verifyOtpStyle} onPress={this.onButtonPress.bind(this)}>
+          <Spinner color='white' />
+        </Button>
+      );
+    } else if (this.props.otpVerifyError) {
+      return (
+        <Button style={verifyOtpStyle}>
+          <Text style={otpButtonStyle}>WRONG OTP</Text>
+        </Button>);
+   }
+   return (
+     <Button style={verifyOtpStyle} onPress={this.onButtonPress.bind(this)}>
+       <Text style={otpButtonStyle}>VERIFY OTP</Text>
+     </Button>);
+  }
   render() {
     const {
       backgroundImageStyle,
       containerStyle,
-      verifyOtpStyle,
       itemViewStyle,
       contentStyle,
       headerStyle,
@@ -74,8 +105,8 @@ export default class OtpVerifyScreen extends React.Component {
               <Text style={textStyle}>Enter the OTP sent to</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={textStyle}> XXXXXXXXXX</Text>
-              <Button transparent style={editStyle} >
+              <Text style={textStyle}>{this.props.mobileVerify}</Text>
+              <Button onPress={Actions.pop} transparent style={editStyle} >
                   <Icon
                     style={{ color: colors.darkGrayTransparent }}
                     ios='ios-create-outline' android="md-create"
@@ -86,16 +117,17 @@ export default class OtpVerifyScreen extends React.Component {
               <Form style={formStyle}>
                 <View style={itemViewStyle}>
                   <Item stackedLabel style={itemStyle} >
-                    {/*<Label> Enter OTP</Label>*/}
-                    <Input />
+                    <Label> Enter OTP</Label>
+                    <Input
+                      onChangeText={this.onOtpVerifyChange.bind(this)}
+                      value={this.props.otpVerify}
+                    />
                   </Item>
                 </View>
               </Form>
             </View>
             <View>
-              <Button style={verifyOtpStyle} onPress={Actions.signUpFillUpScreen}>
-                <Text>VERIFY OTP</Text>
-              </Button>
+              {this.renderGetOtpButton()}
             </View>
           </Content>
         </Container>
@@ -137,8 +169,11 @@ textStyle: {
   textAlign: 'center',
 },
 verifyOtpStyle: {
-  backgroundColor: colors.headerColor,
+  width: responsiveWidth(50),
   marginTop: responsiveHeight(10),
+  backgroundColor: colors.headerColor,
+  alignItems: 'center',
+  justifyContent: 'center'
 },
 backgroundImageStyle: {
   height: responsiveHeight(100),
@@ -162,6 +197,28 @@ itemStyle: {
   marginTop: responsiveHeight(-3.5),
   alignSelf: 'center',
   flex: 1,
+},
+otpButtonStyle: {
+  fontSize: responsiveFontSize(2.2)
+}
+});
+
+function mapStateToProps({ user }) {
+    return {
+        ...user
+    };
 }
 
-});
+function mapDispatchToProps(dispatch) {
+    return {
+        otpVerifyChanged: (text) => { return dispatch(otpVerifyChanged(text)); },
+        verifyOtp: ({ mobileVerify, otpVerify }) => {
+          return dispatch(verifyOtp({ mobileVerify, otpVerify }));
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(OtpVerifyScreen);

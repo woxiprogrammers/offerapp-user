@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.login,
     width: responsiveWidth(85),
     marginTop: responsiveHeight(4)
-
    },
    contentStyle: {
      alignItems: 'center',

@@ -8,3 +8,4 @@ export * from './OfferActions';
 export * from './CategoryActions';
 export * from './ARActions';
 export * from './DrawerActions';
+export * from './SignUpActions';
