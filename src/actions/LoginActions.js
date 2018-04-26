@@ -31,13 +31,12 @@ export const loginUser = ({ user, password }) => {
       const status = response.status;
       if (status === 200) {
         const token = response.data.token;
-        const userData = response.data.userData;
         try {
           await AsyncStorage.setItem('token', `${token}`);
         } catch (error) {
           console.log('Error Saving');
         }
-        loginUserSuccess(dispatch, token, userData);
+        loginUserSuccess(dispatch, token);
       } else {
         loginUserFailed(dispatch);
       }
@@ -172,11 +171,10 @@ const loginUserFailed = (dispatch) => {
     dispatch({ type: LOGIN_USER_FAIL });
 };
 
-const loginUserSuccess = (dispatch, token, userData) => {
+const loginUserSuccess = (dispatch, token) => {
     dispatch({
     type: LOGIN_USER_SUCCESS,
-    token,
-    userData
+    token
   });
   Actions.push('mainScreen');
 };

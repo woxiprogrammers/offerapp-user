@@ -1,35 +1,43 @@
-import { ListView } from 'react-native';
 import {
+  NEARBY_OFFERS_RESET,
   GET_NEARBY_OFFERS_REQUEST,
   GET_NEARBY_OFFERS_SUCCESS,
   GET_NEARBY_OFFERS_FAILURE
 } from '../../constants';
 
 const INITIAL_STATE = {
-  pagination: { paginationLoading: false },
-  posts: [],
-  ds: new ListView.DataSource({
-    rowHasChanged: (r1, r2) => { return r1 !== r2; } })
+  pagination: { nearByOffersLoading: false },
+  nearByOffers: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case NEARBY_OFFERS_RESET:
+      return {
+        ...state,
+        nearByOffers: [],
+        pagination: {
+          ...state.pagination,
+          nearByOffersLoading: true
+        }
+      };
     case GET_NEARBY_OFFERS_REQUEST:
       return {
         ...state,
         pagination: {
           ...state.pagination,
-          paginationLoading: true
+          nearByOffersLoading: true
         }
       };
     case GET_NEARBY_OFFERS_SUCCESS: {
-      const { posts = [] } = action;
+      console.log('Success Nearby Offers!!');
+      const { nearByOffers = [] } = action;
       return {
         ...state,
-        posts: [...state.posts, ...posts],
+        nearByOffers: [...state.nearByOffers, ...nearByOffers],
         pagination: {
           ...action.pagination,
-          paginationLoading: false
+          nearByOffersLoading: false
         }
       }; }
     case GET_NEARBY_OFFERS_FAILURE:
@@ -37,7 +45,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         pagination: {
           ...state.pagination,
-          paginationLoading: false
+          nearByOffersLoading: false
         }
     };
     default:

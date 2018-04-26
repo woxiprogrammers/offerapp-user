@@ -63,7 +63,7 @@ class WishlistScreen extends React.Component {
       selectedInterestedOffer: {
         offerName: ''
       },
-      selectedTime: '30 min.'
+      selectedTime: '30-mins'
     });
   }
   componentWillMount() {
@@ -236,6 +236,7 @@ class WishlistScreen extends React.Component {
     } = styles;
     const { wishListOffers, token } = this.props;
     const { selectedInterestedOffer, selectedTime } = this.state;
+    const { offerName, offerId } = selectedInterestedOffer;
     return (
       <Container style={containerStyle}>
       <Header
@@ -262,17 +263,16 @@ class WishlistScreen extends React.Component {
             this.scaleAnimationDialog = popupDialog;
           }}
           dialogAnimation={scaleAnimation}
-          dialogTitle={<DialogTitle title={selectedInterestedOffer.offerName} />}
+          dialogTitle={<DialogTitle title={offerName} />}
           actions={[
             <DialogButton
               textContainerStyle={{ height: responsiveHeight(5) }}
               text="Submit"
               onPress={async () => {
-                await this.props.sendInterestedOffer(
+                await this.props.sendInterestedOffer({
                   token,
-                  selectedInterestedOffer.offerId,
-                  12345,
-                  selectedTime);
+                  offerId,
+                  selectedTime });
                 this.scaleAnimationDialog.dismiss();
                 Actions.interestedScreen();
               }}
@@ -370,8 +370,14 @@ function mapDispatchToProps(dispatch) {
         removeWislistOffer: ({ index, token, offerId }) => {
           return dispatch(removeWislistOffer({ index, token, offerId }));
         },
-        sendInterestedOffer: (token, offerId, userId, selectedTime) => {
-          return dispatch(sendInterestedOffer(token, offerId, userId, selectedTime));
+        sendInterestedOffer: ({
+          token,
+          offerId,
+          selectedTime }) => {
+          return dispatch(sendInterestedOffer({
+            token,
+            offerId,
+            selectedTime }));
         },
     };
 }

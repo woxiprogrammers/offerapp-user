@@ -1,3 +1,4 @@
+export const NEARBY_OFFERS_RESET = 'nearby_offers_reset';
 export const GET_NEARBY_OFFERS_REQUEST = 'get_nearby_offers_request';
 export const GET_NEARBY_OFFERS_SUCCESS = 'get_nearby_offers_success';
 export const GET_NEARBY_OFFERS_FAILURE = 'get_nearby_offers_failure';

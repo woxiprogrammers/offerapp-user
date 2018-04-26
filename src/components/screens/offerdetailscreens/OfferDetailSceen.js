@@ -41,6 +41,7 @@ import {
   // mixins,
   colors,
  } from '../../../styles';
+ import { IMAGEURL } from '../../../constants';
 
 const Slide = props => {
  return (
@@ -48,7 +49,7 @@ const Slide = props => {
       <Image
         onLoad={props.loadHandle.bind(null, props.i)}
         style={styles.image}
-        source={{ uri: props.uri }}
+        source={{ uri: `${IMAGEURL}${props.uri}` }}
       />
     {
       !props.loaded && <View style={styles.loadingView}>
@@ -72,7 +73,7 @@ class OfferDetailScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = ({
-      selectedTime: '30 min.',
+      selectedTime: '30-mins',
     });
     this.autoBind(
       'loadHandle',
@@ -85,11 +86,10 @@ class OfferDetailScreen extends React.Component {
   async componentWillMount() {
     const {
       token,
-      offerId,
-      // userId
+      getOffer
     } = this.props;
     console.log('Mounting OfferDetailScreen');
-    await this.props.getOfferDetails(token, offerId, 12345);
+    await this.props.getOfferDetails({ token, offerId: getOffer });
   }
   showMapDialog = () => {
     this.mapDialog.show();
@@ -140,7 +140,6 @@ class OfferDetailScreen extends React.Component {
       addToWishListLoading,
       addedToWishList,
       token,
-      // userId,
       offerId
     } = this.props;
     if (addedToWishList) {
@@ -161,8 +160,8 @@ class OfferDetailScreen extends React.Component {
     }
       return (
         <TouchableOpacity
-          onPress={() => {
-            this.props.addToWishList(token, offerId, 12345);
+          onPress={async () => {
+            await this.props.addToWishList({ token, offerId });
             Actions.push('wishlistScreen');
           }}
           style={{ flex: 1, alignSelf: 'center' }}
@@ -208,7 +207,7 @@ class OfferDetailScreen extends React.Component {
       dialogInterestedView,
       pickerStyle,
     } = styles;
-    const { sendInterestedOfferLoading } = this.props;
+    const { sendInterestedOfferLoading, reachInTime } = this.props;
     if (sendInterestedOfferLoading) {
       return (<LoadingIndicator loading={sendInterestedOfferLoading} />);
     }
@@ -221,10 +220,13 @@ class OfferDetailScreen extends React.Component {
             selectedValue={this.state.selectedTime}
             onValueChange={(itemValue) => { return this.setState({ selectedTime: itemValue }); }}
           >
-            <Picker.Item label="30 min." value="30 min." />
-            <Picker.Item label="1 hr." value="1 hr." />
-            <Picker.Item label="2 hrs." value="2 hrs." />
-            <Picker.Item label="3 hrs." value="3 hrs." />
+            {
+            reachInTime.map((item, i) => {
+              return (
+                <Picker.Item key={i} label={item.name} value={item.slug} />
+                );
+            })
+            }
           </Picker>
         </View>
       );
@@ -291,7 +293,7 @@ class OfferDetailScreen extends React.Component {
         iosBarStyle='light-content'
       >
         <Left style={{ flexDirection: 'row' }}>
-          <Button transparent onPress={Actions.pop}>
+          <Button transparent onPress={() => { Actions.popTo('mainScreen'); }}>
             <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
           </Button>
           <Button transparent style={{ padding: 0 }} onPress={Actions.drawerOpen}>
@@ -345,11 +347,10 @@ class OfferDetailScreen extends React.Component {
                 textContainerStyle={{ height: responsiveHeight(5) }}
                 text="Submit"
                 onPress={async () => {
-                  await this.props.addToInterested(
+                  await this.props.addToInterested({
                     token,
                     offerId,
-                    12345,
-                    selectedTime);
+                    selectedTime });
                   this.interestedDialog.dismiss();
                   Actions.interestedScreen();
                 }}
@@ -526,24 +527,31 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps({ offer, user }) {
-    const { token, userId } = user;
+function mapStateToProps({ offer, user, drawer }) {
+    const { token } = user;
+    const { reachInTime } = drawer;
     return {
         ...offer,
         token,
-        userId
+        reachInTime
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getOfferDetails: (token, offerId, userId) => {
-          return dispatch(getOfferDetails(token, offerId, userId));
+        getOfferDetails: ({ token, offerId }) => {
+          return dispatch(getOfferDetails({ token, offerId }));
         },
-        addToWishList: (token, offerId, userId) => {
-          return dispatch(addToWishList(token, offerId, userId));
+        addToWishList: ({ token, offerId }) => {
+          return dispatch(addToWishList({ token, offerId }));
         },
-        addToInterested: (token, offerId, userId, selectedTime) => {
-          return dispatch(addToInterested(token, offerId, userId, selectedTime));
+        addToInterested: ({
+          token,
+          offerId,
+          selectedTime }) => {
+          return dispatch(addToInterested({
+            token,
+            offerId,
+            selectedTime }));
         },
     };
 }
