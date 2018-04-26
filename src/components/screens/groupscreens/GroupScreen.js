@@ -147,9 +147,9 @@ class GroupScreen extends Component {
             paddingLeft: responsiveWidth(2.5) }}
         >
         <FlatList
+          refreshing
           automaticallyAdjustContentInsets={false}
           data={groupOffers}
-          refreshing={false}
           renderItem={this.renderRow}
           keyExtractor={this.keyExtractor}
           onRefresh={() => { return this.onRefresh(); }}

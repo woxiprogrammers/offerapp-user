@@ -64,11 +64,6 @@ export const getListViewCategory = ({
   coords,
   page }) => {
   return (dispatch) => {
-    if (page === 1) {
-      dispatch({
-        type: LISTING_VIEW_CATEGORY_RESET
-      });
-    }
     dispatch(getListViewCategoryRequest(page));
     const path = 'customer/offer/nearby/listing';
     console.log('Getting List View CategoryScreen');
@@ -86,6 +81,11 @@ export const getListViewCategory = ({
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
+        if (page === 1) {
+          dispatch({
+            type: LISTING_VIEW_CATEGORY_RESET
+          });
+        }
         dispatch(getListViewCategorySuccess(response.data));
       }
     }).catch((error) => {
@@ -123,11 +123,6 @@ export const getMapViewCategory = ({
   coords,
   page }) => {
   return (dispatch) => {
-    if (page === 1) {
-      dispatch({
-        type: MAP_VIEW_CATEGORY_RESET
-      });
-    }
     dispatch(getMapViewCategoryRequest(page));
     // const path = '';
     console.log('Getting Map View CategoryScreen');
@@ -144,6 +139,11 @@ export const getMapViewCategory = ({
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
+        if (page === 1) {
+          dispatch({
+            type: MAP_VIEW_CATEGORY_RESET
+          });
+        }
         dispatch(getMapViewCategorySuccess(response.data));
       }
     }).catch((error) => {
@@ -182,11 +182,6 @@ export const getARViewCategory = ({
   coords,
   page }) => {
   return (dispatch) => {
-    if (page === 1) {
-      dispatch({
-        type: AR_VIEW_CATEGORY_RESET
-      });
-    }
     dispatch(getARViewCategoryRequest(page));
     // const path = '';
     console.log('Getting AR View CategoryScreen');
@@ -203,6 +198,11 @@ export const getARViewCategory = ({
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
+        if (page === 1) {
+          dispatch({
+            type: AR_VIEW_CATEGORY_RESET
+          });
+        }
         dispatch(getARViewCategorySuccess(response.data));
       }
     }).catch((error) => {
@@ -236,8 +236,6 @@ export const getOfferTypes = ({ token }) => {
   return (dispatch) => {
     dispatch(getOfferTypesRequest());
     const path = 'customer/offer/types/listing';
-    console.log('Getting Offer Types');
-    console.log(`${URL}/${path}/?token=${token}`);
     axios({
       url: `${URL}/${path}/?token=${token}`,
       // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',

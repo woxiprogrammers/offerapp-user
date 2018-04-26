@@ -169,7 +169,7 @@ class ARFilterScreen extends React.Component {
         <TouchableOpacity
           onPress={() => {
             this.filterPressed();
-            Actions.push('arScreen', { });
+            Actions.push('arScreen', {});
           }}
           style={{ flex: 1, alignSelf: 'center' }}
         >

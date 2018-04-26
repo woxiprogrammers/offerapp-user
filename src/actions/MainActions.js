@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import {
+  NEARBY_OFFERS_RESET,
   GET_NEARBY_OFFERS_REQUEST,
   GET_NEARBY_OFFERS_SUCCESS,
   GET_NEARBY_OFFERS_FAILURE,
@@ -13,21 +14,26 @@ import {
   URL
 } from '../constants';
 
-export const getNearbyOffers = (token, page, userLocation) => {
+export const getNearbyOffers = ({ token, page, userLocation }) => {
   return (dispatch) => {
     dispatch(getNearbyOffersRequest(page));
     // const path = '';
     axios({
-      url: 'http://www.mocky.io/v2/5abb7db42d000047009bdd30',
+      url: 'http://www.mocky.io/v2/5ae01b9032000055005109a3',
       // url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
         userLocation
       }
     }).then((response) => {
+      if (page === 1) {
+        dispatch({
+          type: NEARBY_OFFERS_RESET
+        });
+      }
       const status = response.status;
       if (status === 200) {
-        dispatch(getNearbyOffersSuccess(response.data));
+        dispatch(getNearbyOffersSuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getNearbyOffersFailure(error));
@@ -38,7 +44,7 @@ export const getNearbyOffersSuccess = (response) => {
   const { records, pagination } = response;
   return {
     type: GET_NEARBY_OFFERS_SUCCESS,
-    posts: records,
+    nearByOffers: records,
     pagination
   };
 };

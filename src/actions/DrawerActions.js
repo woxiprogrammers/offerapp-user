@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
   UPDATE_SHOW_CATEGORY,
+  USER_DATA_FETCH_SUCCESS,
   GET_CATEGORIES_REQUEST,
   GET_CATEGORIES_SUCCESS,
   GET_CATEGORIES_FAILURE,
@@ -49,6 +50,26 @@ export const getCategoriesFailure = (error) => {
     error
   };
 };
+export const userDataFetch = ({ token }) => {
+  // const path = '';
+  return (dispatch) => {
+    axios({
+      // url: `${url}/${usersPath}/`,
+      url: `http://www.mocky.io/v2/5ae189c12d000028009d7ca2?token=${token}`,
+      method: 'get',
+    })
+      .then((response) => {
+        const status = response.status;
+        if (status === 200) {
+          const { userData } = response.data.data;
+          dispatch({ type: USER_DATA_FETCH_SUCCESS, userData });
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
+  };
+};
+
 export const getReachInTime = ({ token }) => {
   return (dispatch) => {
     dispatch(getReachInTimeRequest());
@@ -67,6 +88,7 @@ export const getReachInTime = ({ token }) => {
     });
   };
 };
+
 export const getReachInTimeSuccess = (response) => {
   const reachInTime = response.reachInTime;
   return {

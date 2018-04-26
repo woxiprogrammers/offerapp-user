@@ -168,12 +168,12 @@ class ARScreen extends React.Component {
             console.log(`xDeviation ${i} : ${xDeviation}`);
             const startingPosY = (height / 2);
             const startingPosX = (width / 2) + (xDeviation * width);
-            const offerCategory = offer.offerCategory;
+            const offerCount = offer.offerCount;
             const offerId = offer.offerId;
             return this.props.addARObject({
                     startingPosX,
                     startingPosY,
-                    offerCategory,
+                    offerCount,
                     offerId });
       });
       this.setState({ loaded: true });
@@ -212,7 +212,7 @@ class ARScreen extends React.Component {
             style={{
               color: 'rgba(226, 229, 239, 0.3)'
             }}
-          >-----{ Math.round(bearing) }-----</Text>
+          >───────{ Math.round(bearing) }───────</Text>
         </View>
         <View style={styles.arDisplay}>
         {
@@ -223,7 +223,7 @@ class ARScreen extends React.Component {
                   index={i}
                   startingPosX={arObj.startingPosX}
                   startingPosY={arObj.startingPosY}
-                  offerCategory={arObj.offerCategory}
+                  offerCount={arObj.offerCount}
                   offerId={arObj.offerId}
                 />
             );

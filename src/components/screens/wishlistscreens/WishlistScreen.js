@@ -109,7 +109,6 @@ class WishlistScreen extends React.Component {
   }
   keyExtractor = (item, index) => { return index; };
   refreshFlatlist = (removeWislistOfferIndex) => {
-    console.log('Refreshing');
     this.setState(() => {
       return {
         removeWislistOffer: removeWislistOfferIndex
@@ -133,9 +132,6 @@ class WishlistScreen extends React.Component {
           onPress={() => {
             console.log(`Index Remove: ${index} and Offer: ${offerId} `);
             this.props.removeWislistOffer({ index, token, offerId });
-            // console.log('=======================================================');
-            // console.log(this.props.wishListOffers);
-            // console.log('=======================================================');
             this.refreshFlatlist(index);
           }}
           style={{
@@ -183,8 +179,6 @@ class WishlistScreen extends React.Component {
       );
   }
   renderRow(offerDetails) {
-    // console.log('Rendering Row');
-    // console.log(offerDetails.item);
     const { item, index } = offerDetails;
     const { pagination } = this.props;
     if (pagination.wishListOffersLoading) {

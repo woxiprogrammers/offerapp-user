@@ -38,7 +38,8 @@ import {
   setCategory,
   getReachInTime,
   getCategories,
-  updateShowCategory
+  updateShowCategory,
+  userDataFetch
 } from '../../actions';
 import { IMAGEURL } from '../../constants';
 
@@ -65,6 +66,7 @@ class DrawerComponent extends React.Component {
     const { token } = this.props;
     this.props.getCategories({ token });
     this.props.getReachInTime({ token });
+    this.props.userDataFetch({ token });
   }
   // componentWillUpdate() {
   //   LayoutAnimation.spring();
@@ -339,6 +341,9 @@ function mapDispatchToProps(dispatch) {
         },
         getReachInTime: ({ token }) => {
           return dispatch(getReachInTime({ token }));
+        },
+        userDataFetch: ({ token }) => {
+          return dispatch(userDataFetch({ token }));
         },
         updateShowCategory: (category) => {
           return dispatch(updateShowCategory(category));
