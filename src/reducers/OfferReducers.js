@@ -37,7 +37,9 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         offerLoading: false,
         offerSwiperLoading: false,
-        ...action.offer
+        ...action.offerDetail,
+        imageList: action.imageList,
+        loadQueue: action.loadQueue
       };
     }
     case GET_OFFER_DETAILS_FAILURE:

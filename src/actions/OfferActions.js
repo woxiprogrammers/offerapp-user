@@ -13,25 +13,30 @@ import {
   ADD_TO_INTERESTED_REQUEST,
   ADD_TO_INTERESTED_SUCCESS,
   ADD_TO_INTERESTED_FAILURE,
-  // URL
+  URL
 } from '../constants';
 
-export const getOfferDetails = (token, userId, offerId) => {
+export const getOfferDetails = ({ token, offerId }) => {
   return (dispatch) => {
     dispatch(getOfferDetailsRequest());
-    // const path = '';
+    const path = 'customer/offer/detail';
+    console.log('Getting Offer Details :');
+    console.log('offerId is :');
+    console.log(offerId);
+    console.log('token is :');
+    console.log(token);
     axios({
-      url: 'http://www.mocky.io/v2/5ad545413200006600202a92',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: 'http://www.mocky.io/v2/5ad545413200006600202a92',
+      url: `${URL}/${path}/?token=${token}`,
       method: 'post',
       data: {
-        userId,
         offerId
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        dispatch(getOfferDetailsSuccess(response.data));
+        console.log('Success Getting Offer');
+        dispatch(getOfferDetailsSuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getOfferDetailsFailure(error));
@@ -39,9 +44,14 @@ export const getOfferDetails = (token, userId, offerId) => {
   };
 };
 export const getOfferDetailsSuccess = (response) => {
+  console.log('Success Offer Details Response is :');
+  console.log(response);
+  const { offerDetail, imageList, loadQueue } = response;
   return {
     type: GET_OFFER_DETAILS_SUCCESS,
-    offer: response,
+    offerDetail,
+    imageList,
+    loadQueue
   };
 };
 
@@ -103,21 +113,22 @@ export const getOfferDetailsFailure = (error) => {
 //   };
 // };
 
-export const addToWishList = (token, userId, offerId) => {
+export const addToWishList = ({ token, offerId }) => {
   return (dispatch) => {
     dispatch(getOfferDetailsRequest());
-    // const path = '';
+    const path = 'customer/offer/wishlist/add';
     axios({
-      url: 'http://www.mocky.io/v2/5ad32bcd2d000054005c976f',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: 'http://www.mocky.io/v2/5ad32bcd2d000054005c976f',
+      url: `${URL}/${path}/?token=${token}`,
       method: 'post',
       data: {
-        userId,
         offerId
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
+        console.log('Success Wishlist : ');
+        console.log(response.data);
         dispatch(getOfferDetailsSuccess());
       }
     }).catch((error) => {
@@ -143,22 +154,26 @@ export const addToWishListFailure = (error) => {
     error
   };
 };
-export const addToInterested = (token, offerId, userId, selectedTime) => {
+export const addToInterested = ({
+  token,
+  offerId,
+  selectedTime }) => {
   return (dispatch) => {
     dispatch(addToInterestedRequest());
-    // const path = '';
+    const path = 'customer/offer/interested/add';
     axios({
-      url: 'http://www.mocky.io/v2/5ad1a1593000006600534c18',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: 'http://www.mocky.io/v2/5ad1a1593000006600534c18',
+      url: `${URL}/${path}/?token=${token}`,
       method: 'post',
       data: {
         offerId,
-        userId,
         selectedTime
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
+        console.log('Success Interested : ');
+        console.log(response.data);
         dispatch(addToInterestedSuccess());
       }
     }).catch((error) => {

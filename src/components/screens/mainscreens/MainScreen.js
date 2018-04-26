@@ -3,8 +3,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  ListView,
-  RefreshControl,
+  FlatList,
   TouchableOpacity
 } from 'react-native';
 import {
@@ -77,6 +76,7 @@ class MainScreen extends React.Component {
     );
   }
   async componentWillMount() {
+    console.log('Mounting MainScreen');
     const { token } = this.props;
     if (!this.props.fromChangeLocation) {
     const location = await Location.getCurrentPositionAsync(GEOLOCATION_OPTIONS);
@@ -89,6 +89,8 @@ class MainScreen extends React.Component {
     const locationName = this.props.locationName;
     const userLocation = { locationName, latitude, longitude };
     this.props.getSwipper(token, userLocation);
+    const page = 1;
+    await this.props.getNearbyOffers({ token, page, userLocation });
   }
   onEndReached() {
     const {
@@ -99,10 +101,12 @@ class MainScreen extends React.Component {
       token,
     } = this.props;
     const userLocation = { locationName, latitude, longitude };
-    const { page, perPage, pageCount, totalCount } = pagination;
+    const { perPage, pageCount, totalCount } = pagination;
+    let { page } = pagination;
     const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
-    if (!pagination.paginationLoading && !lastPage) {
-      this.props.getNearbyOffers(token, page + 1, userLocation);
+    if (!pagination.nearByOffersLoading && !lastPage) {
+      page += 1;
+      this.props.getNearbyOffers({ token, page, userLocation });
     }
   }
   onRefresh() {
@@ -113,7 +117,8 @@ class MainScreen extends React.Component {
       token,
     } = this.props;
     const userLocation = { locationName, latitude, longitude };
-    this.props.getNearbyOffers(token, 1, userLocation);
+    const page = 1;
+    this.props.getNearbyOffers({ token, page, userLocation });
   }
 
   autoBind(...methods) {
@@ -122,6 +127,7 @@ class MainScreen extends React.Component {
         return this[method];
       });
   }
+  keyExtractor = (item, index) => { return index; };
   loadHandle(i) {
       const loadQueue = this.props.loadQueue;
       loadQueue[i] = 1;
@@ -130,12 +136,15 @@ class MainScreen extends React.Component {
       });
   }
   renderRow(offerDetails) {
-    if (offerDetails.type === 'Loading') {
+    const { item } = offerDetails;
+    const { pagination } = this.props;
+    const loading = pagination.nearByOffersLoading;
+    if (loading) {
       return (
-        <LoadingIndicator loading={offerDetails.loading} />);
+        <LoadingIndicator loading={loading} />);
     }
       return (
-        <SmallOfferCard offerDetails={offerDetails} />
+        <SmallOfferCard offerDetails={item} />
       );
   }
   renderSwiper() {
@@ -165,6 +174,36 @@ class MainScreen extends React.Component {
       </Swiper>);
   }
 
+  renderNearByOffers() {
+    const { pagination, nearByOffers } = this.props;
+    const { loadingStyle } = styles;
+    if (pagination.nearByOffersLoading) {
+      return (
+        <View style={loadingStyle}>
+          <Spinner color='white' />
+        </View>
+      );
+    }
+   return (
+     <ScrollView
+       showsHorizontalScrollIndicator={false}
+       horizontal
+       style={{ paddingLeft: 10 }}
+     >
+     <FlatList
+       horizontal
+       scrollEnabled={false}
+       refreshing
+       automaticallyAdjustContentInsets={false}
+       data={nearByOffers}
+       renderItem={this.renderRow}
+       keyExtractor={this.keyExtractor}
+       onRefresh={() => { return this.onRefresh(); }}
+       onEndReached={() => { return this.onEndReached(); }}
+     />
+     </ScrollView>
+     );
+  }
   render() {
     const {
       containerStyle,
@@ -173,12 +212,6 @@ class MainScreen extends React.Component {
       // swiperStyle,
       titleStyle
     } = styles;
-    const { posts, pagination, ds } = this.props;
-    const loading = {
-      type: 'Loading',
-      loading: pagination.paginationLoading
-    };
-    const nearbyoffers = ds.cloneWithRows([...posts, loading]);
     const { locationName } = this.props;
     let locationNameMain = locationName;
     if (locationNameMain === '') {
@@ -267,26 +300,7 @@ class MainScreen extends React.Component {
                     fontSize: responsiveFontSize(2.5) }}
                 >Offers Nearby Me</Text>
               </View>
-              <ScrollView
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                style={{ paddingLeft: 10 }}
-              >
-              <ListView
-                horizontal
-                enableEmptySections
-                automaticallyAdjustContentInsets={false}
-                dataSource={nearbyoffers}
-                renderRow={row => { return this.renderRow(row); }}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={false}
-                    onRefresh={() => { return this.onRefresh(); }}
-                  />
-                }
-                onEndReached={() => { return this.onEndReached(); }}
-              />
-              </ScrollView>
+              {this.renderNearByOffers()}
             </View>
           </View>
         </Content>

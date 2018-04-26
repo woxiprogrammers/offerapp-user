@@ -26,14 +26,20 @@ import {
        cardStyle,
      } = styles;
      const {
-       // offerId,
+       offerId,
        offerPic,
        offerName,
        sellerInfo,
        // offerExpiry
     } = this.props.offerDetails;
      return (
-       <TouchableOpacity onPress={() => { Actions.offerDetailScreen(); }}>
+       <TouchableOpacity
+        onPress={() => {
+          console.log('Going to OfferDetail:');
+          console.log(offerId);
+          Actions.push('offerDetailScreen', { getOffer: offerId }); 
+        }}
+       >
         <Card style={cardStyle}>
           <CardItem style={cardHeaderStyle}>
             <Left

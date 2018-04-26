@@ -16,7 +16,8 @@ import {
     SU_VALUE_CHANGED,
     SU_USER_REQUEST,
     SU_USER_SUCCESS,
-    SU_USER_FAILURE
+    SU_USER_FAILURE,
+    USER_DATA_FETCH_SUCCESS
   } from '../constants';
 
 const INITIAL_STATE = {
@@ -60,8 +61,7 @@ export default (state = INITIAL_STATE, action) => {
         return {
           ...state,
           ...INITIAL_STATE,
-          token: action.token,
-          userData: action.userData
+          token: action.token
         };
       case LOGIN_USER_FAIL:
         return {
@@ -71,6 +71,8 @@ export default (state = INITIAL_STATE, action) => {
           loginLoading: false };
       case LOGIN_USER:
         return { ...state, loginLoading: true, error: false };
+      case USER_DATA_FETCH_SUCCESS:
+        return { ...state, userData: action.userData };
       case LOGOUT_USER:
           return {
             ...state,
