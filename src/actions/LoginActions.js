@@ -104,10 +104,6 @@ export const getOtpFailure = (error) => {
 export const verifyOtp = ({ mobileVerify, otpVerify }) => {
   return (dispatch) => {
     dispatch(verifyOtpRequest());
-    console.log('mobileVerify is :');
-    console.log(mobileVerify);
-    console.log('otpVerify is: ');
-    console.log(otpVerify);
     const path = 'verifyOtp';
     axios({
       url: `${URL}/${path}`,

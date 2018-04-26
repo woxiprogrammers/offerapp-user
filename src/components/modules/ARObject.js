@@ -36,11 +36,7 @@ class ARObject extends React.Component {
       );
   }
   renderIcon() {
-    if (this.props.offerCategory === 'clothing') {
-      return <Icon ios='ios-shirt' android="md-shirt" style={{ fontSize: 50, color: 'white' }} />;
-    } else if (this.props.offerCategory === 'bank') {
-      return <Icon ios='ios-cash' android="md-cash" style={{ fontSize: 50, color: 'white' }} />;
-    }
+      return <Icon name="albums" style={{ fontSize: 50, color: 'white' }} />;
   }
   render() {
     return (

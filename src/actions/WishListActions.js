@@ -12,11 +12,6 @@ import {
 
 export const getWishListOffers = ({ token, page }) => {
   return (dispatch) => {
-    if (page === 1) {
-      dispatch({
-        type: WISHLIST_OFFERS_RESET
-      });
-    }
     dispatch(getWishListOffersRequest(page));
     const path = 'customer/offer/wishlist/listing';
     const offerStatus = 'wishlist';
@@ -30,6 +25,11 @@ export const getWishListOffers = ({ token, page }) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
+        if (page === 1) {
+          dispatch({
+            type: WISHLIST_OFFERS_RESET
+          });
+        }
         dispatch(getWishListOffersSuccess(response.data.data));
       }
     }).catch((error) => {

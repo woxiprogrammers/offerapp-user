@@ -94,27 +94,27 @@ export const getAROffers = ({
   coords,
   page }) => {
   return (dispatch) => {
-    if (page === 1) {
-      dispatch({
-        type: AR_OFFERS_RESET
-      });
-    }
     dispatch(getAROffersRequest(page));
     // const path = '';
     console.log('Getting AR Offers Screen');
     axios({
-      url: 'http://www.mocky.io/v2/5ad84f513000006c00e58702',
+      url: 'http://www.mocky.io/v2/5ae170d42d000056009d7be6',
       // url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
         distance,
-        typeSelected,
+        offerTypeSlug: typeSelected,
         coords
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        dispatch(getAROffersSuccess(response.data));
+        if (page === 1) {
+          dispatch({
+            type: AR_OFFERS_RESET
+          });
+        }
+        dispatch(getAROffersSuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getAROffersFailure(error));
