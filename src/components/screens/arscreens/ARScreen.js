@@ -169,12 +169,14 @@ class ARScreen extends React.Component {
             const startingPosY = (height / 2);
             const startingPosX = (width / 2) + (xDeviation * width);
             const offerCount = offer.offerCount;
-            const offerId = offer.offerId;
+            const sellerAddressId = offer.sellerAddressId;
+            const sellerInfo = offer.sellerInfo;
             return this.props.addARObject({
                     startingPosX,
                     startingPosY,
                     offerCount,
-                    offerId });
+                    sellerAddressId,
+                    sellerInfo });
       });
       this.setState({ loaded: true });
   }
@@ -224,7 +226,8 @@ class ARScreen extends React.Component {
                   startingPosX={arObj.startingPosX}
                   startingPosY={arObj.startingPosY}
                   offerCount={arObj.offerCount}
-                  offerId={arObj.offerId}
+                  sellerAddressId={arObj.sellerAddressId}
+                  sellerInfo={arObj.sellerInfo}
                 />
             );
           })
