@@ -19,6 +19,7 @@ import ProfileEditScreen from './src/components/screens/profilescreens/ProfileEd
 import ChangePasswordScreen from './src/components/screens/profilescreens/ChangePasswordScreen';
 import ARScreen from './src/components/screens/arscreens/ARScreen';
 import ARFilterScreen from './src/components/screens/arscreens/ARFilterScreen';
+import ARListingScreen from './src/components/screens/arscreens/ARListingScreen';
 
 class RouterComponent extends React.Component {
   render() {
@@ -47,6 +48,7 @@ class RouterComponent extends React.Component {
                   />
                   <Scene hideNavBar key="arScreen" component={ARScreen} />
                   <Scene hideNavBar key="arFilterScreen" component={ARFilterScreen} />
+                  <Scene hideNavBar key="arListingSceen" component={ARListingScreen} />
                   <Scene hideNavBar key="changeLocationScreen" component={ChangeLocationScreen} />
                   <Scene hideNavBar key="offerDetailScreen" component={OfferDetailScreen} />
                   <Scene hideNavBar key="categoryScreen" component={CategoryScreen} />

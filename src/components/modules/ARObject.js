@@ -5,8 +5,13 @@ import {
     Text,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Icon } from 'native-base';
-// import { Actions } from 'react-native-router-flux';
+import { Icon, Button, Badge } from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import {
+  responsiveHeight,
+  responsiveWidth,
+  // responsiveFontSize
+} from 'react-native-responsive-dimensions';
 import { mixins, variables } from '../../styles';
 
 class ARObject extends React.Component {
@@ -35,24 +40,29 @@ class ARObject extends React.Component {
           this.props.yOffset !== nextProps.yOffset
       );
   }
-  renderIcon() {
-      return <Icon name="albums" style={{ fontSize: 50, color: 'white' }} />;
-  }
   render() {
+    const { sellerAddressId, sellerInfo, offerCount } = this.props;
     return (
       <View style={styles.root}>
-        <Text
-          onPress={() => { console.log(this.props.offerId); }}
-          style={[
-              ...styles.arTarget,
-              {
-                  top: this.props.startingPosY + this.props.yOffset,
-                  left: this.props.startingPosX + this.props.xOffset
-              }
-          ]}
+        <Button
+          badge transparent
+          onPress={() => {
+            console.log(`Seller Address Id is : ${sellerAddressId}`);
+            console.log(`Seller Info is : ${sellerInfo}`);
+            Actions.push('arListingSceen', { sellerInfo, sellerAddressId });
+          }}
+          style={{
+                flex: 1,
+                top: this.props.startingPosY + this.props.yOffset,
+                left: this.props.startingPosX + this.props.xOffset
+              }}
         >
-        {this.renderIcon()}
-        </Text>
+        <Icon ios="ios-albums" android="md-albums" style={{ fontSize: 50, color: 'white' }} />
+        <Badge
+          primary
+          style={{ marginTop: responsiveHeight(-3), width: responsiveWidth(5) }}
+        ><Text>{offerCount}</Text></Badge>
+        </Button>
       </View>
     );
   }

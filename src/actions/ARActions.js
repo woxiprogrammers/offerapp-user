@@ -5,6 +5,10 @@ import {
     GET_AR_OFFERS_REQUEST,
     GET_AR_OFFERS_SUCCESS,
     GET_AR_OFFERS_FAILURE,
+    GET_AR_LISTING_OFFERS_REQUEST,
+    GET_AR_LISTING_OFFERS_SUCCESS,
+    GET_AR_LISTING_OFFERS_FAILURE,
+    AR_LISTING_OFFERS_RESET,
     GYRO_MOVE_THRESHOLD_X,
     ADD_AR_OBJECT,
     UPDATE_GYRO_DATA,
@@ -98,7 +102,7 @@ export const getAROffers = ({
     // const path = '';
     console.log('Getting AR Offers Screen');
     axios({
-      url: 'http://www.mocky.io/v2/5ae170d42d000056009d7be6',
+      url: 'http://www.mocky.io/v2/5ae1a0c92d000046009d7d22',
       // url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
@@ -139,6 +143,58 @@ export const getAROffersRequest = (page) => {
 export const getAROffersFailure = (error) => {
   return {
     type: GET_AR_OFFERS_FAILURE,
+    error
+  };
+};
+export const getARListingOffers = ({
+    token,
+    sellerAddressId,
+    page
+  }) => {
+  return (dispatch) => {
+    dispatch(getARListingOffersRequest(page));
+    // const path = 'customer/offer/interested/listing';
+    axios({
+      url: `http://www.mocky.io/v2/5ae19c8e2d00005e009d7d03?token=${token}`,
+      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      method: 'post',
+      data: {
+        sellerAddressId
+      }
+    }).then((response) => {
+      const status = response.status;
+      if (status === 200) {
+        if (page === 1) {
+          dispatch({
+            type: AR_LISTING_OFFERS_RESET
+          });
+        }
+        dispatch(getARListingOffersSuccess(response.data.data));
+      }
+    }).catch((error) => {
+        dispatch(getARListingOffersFailure(error));
+    });
+  };
+};
+export const getARListingOffersSuccess = (response) => {
+  const { records, pagination } = response;
+  return {
+    type: GET_AR_LISTING_OFFERS_SUCCESS,
+    arListingOffers: records,
+    pagination
+  };
+};
+
+export const getARListingOffersRequest = (page) => {
+  return {
+    type: GET_AR_LISTING_OFFERS_REQUEST,
+    page
+  };
+};
+
+export const getARListingOffersFailure = (error) => {
+  return {
+    type: GET_AR_LISTING_OFFERS_FAILURE,
     error
   };
 };
