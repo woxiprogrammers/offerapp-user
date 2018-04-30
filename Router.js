@@ -1,6 +1,11 @@
 import React from 'react';
 import { Scene, Router, Drawer, Stack, Overlay } from 'react-native-router-flux';
 import LoginScreen from './src/components/screens/authscreens/LoginScreen';
+import ForgotPasswordMobileVerifyScreen from
+'./src/components/screens/authscreens/ForgotPasswordMobileVerifyScreen';
+import ForgotPasswordVerifyOtpScreen from
+'./src/components/screens/authscreens/ForgotPasswordVerifyOtpScreen';
+import ForgotPasswordScreen from './src/components/screens/authscreens/ForgotPasswordScreen';
 import MobileVerifyScreen from './src/components/screens/authscreens/MobileVerifyScreen';
 import OtpVerifyScreen from './src/components/screens/authscreens/OtpVerifyScreen';
 import SignUpFillUpScreen from './src/components/screens/authscreens/SignUpFillUpScreen';
@@ -16,6 +21,12 @@ import InterestedScreen from './src/components/screens/interestedscreens/Interes
 import DrawerComponent from './src/components/drawer/DrawerComponent';
 import OfferDetailScreen from './src/components/screens/offerdetailscreens/OfferDetailSceen';
 import ProfileEditScreen from './src/components/screens/profilescreens/ProfileEditScreen';
+import ChangeMobileGetOtpScreen from
+'./src/components/screens/profilescreens/ChangeMobileGetOtpScreen';
+import ChangeMobileOtpVerifyScreen from
+'./src/components/screens/profilescreens/ChangeMobileOtpVerifyScreen';
+import ChangePasswordOtpVerifyScreen from
+'./src/components/screens/profilescreens/ChangePasswordOtpVerifyScreen';
 import ChangePasswordScreen from './src/components/screens/profilescreens/ChangePasswordScreen';
 import ARScreen from './src/components/screens/arscreens/ARScreen';
 import ARFilterScreen from './src/components/screens/arscreens/ARFilterScreen';
@@ -29,8 +40,23 @@ class RouterComponent extends React.Component {
           <Scene key="root">
           <Scene key="auth">
             <Scene hideNavBar key="loginScreen" component={LoginScreen} />
+            <Scene
+              hideNavBar
+              key="forgotPasswordMobileVerifyScreen"
+              component={ForgotPasswordMobileVerifyScreen}
+            />
+            <Scene
+              hideNavBar
+              key="forgotPasswordVerifyOtpScreen"
+              component={ForgotPasswordVerifyOtpScreen}
+            />
+            <Scene
+              hideNavBar
+              key="forgotPasswordScreen"
+              component={ForgotPasswordScreen}
+            />
             <Scene hideNavBar key="mobileVerifyScreen" component={MobileVerifyScreen} />
-            <Scene hideNavBar key="otpVerifyScreen" component={OtpVerifyScreen} />
+            <Scene hideNavBar key="verifyOtpScreen" component={OtpVerifyScreen} />
             <Scene hideNavBar key="signUpFillUpScreen" component={SignUpFillUpScreen} />
           </Scene>
             <Drawer
@@ -59,6 +85,21 @@ class RouterComponent extends React.Component {
                   <Scene hideNavBar key="wishlistScreen" component={WishlistScreen} />
                   <Scene hideNavBar key="interestedScreen" component={InterestedScreen} />
                   <Scene hideNavBar key="profileEditScreen" component={ProfileEditScreen} />
+                  <Scene
+                    hideNavBar
+                    key="changeMobileGetOtpScreen"
+                    component={ChangeMobileGetOtpScreen}
+                  />
+                  <Scene
+                    hideNavBar
+                    key="changeMobileOtpVerifyScreen"
+                    component={ChangeMobileOtpVerifyScreen}
+                  />
+                  <Scene
+                    hideNavBar
+                    key="changePasswordOtpVerifyScreen"
+                    component={ChangePasswordOtpVerifyScreen}
+                  />
                   <Scene hideNavBar key="changePasswordScreen" component={ChangePasswordScreen} />
                 </Stack>
               </Scene>

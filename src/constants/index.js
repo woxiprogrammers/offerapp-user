@@ -8,6 +8,8 @@ export * from './OfferTypes';
 export * from './CategoryTypes';
 export * from './ARTypes';
 export * from './DrawerTypes';
+export * from './ProfileTypes';
+export * from './ForgotPasswordTypes';
 
 // export const URL = 'http://192.168.43.29:8000';
 export const URL = 'https://offerapi.20agr17dev.xyz';

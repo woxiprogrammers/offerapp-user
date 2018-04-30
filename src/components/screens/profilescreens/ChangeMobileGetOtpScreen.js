@@ -31,27 +31,28 @@ import {
 } from '../../../styles';
  import backgroundImage from '../../../assets/images/BackgroundImage.png';
  import {
-   getOtp,
-   mobileVerifyChanged
+   profileGetOtp,
+   changeMobileMobileVerifyChanged
  } from '../../../actions';
 
-class MobileVerifyScreen extends React.Component {
+class ChangeMobileGetOtpScreen extends React.Component {
   onMobileVerifyChange(text) {
-    this.props.mobileVerifyChanged(text);
+    this.props.changeMobileMobileVerifyChanged(text);
   }
   onButtonPress() {
-    const { mobileVerify } = this.props;
-    this.props.getOtp({ mobileVerify });
+    const { pecmMobileVerify } = this.props;
+    const fromChangeMobile = true;
+    this.props.profileGetOtp({ mobileVerify: pecmMobileVerify, fromChangeMobile });
   }
   renderGetOtpButton() {
     const { getotpStyle, otpButtonStyle } = styles;
-    if (this.props.mobileVerifyLoading) {
+    if (this.props.peMobileVerifyLoading) {
       return (
         <Button style={getotpStyle}>
           <Spinner color='white' />
         </Button>
       );
-    } else if (this.props.mobileVerifyError) {
+    } else if (this.props.peMobileVerifyError) {
       return (
         <Button style={getotpStyle}>
           <Text style={otpButtonStyle}>OTP NOT SENT</Text>
@@ -92,13 +93,13 @@ class MobileVerifyScreen extends React.Component {
                 </Button>
               </Left>
               <Body>
-                <Title style={titleStyle}>Sign Up-Step 1</Title>
+                <Title style={titleStyle}>Change Mobile</Title>
               </Body>
               <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
             </Header>
             <Content contentContainerStyle={contentStyle}>
               <View>
-                <Text style={textStyle}>Verify your number</Text>
+                <Text style={textStyle}>Enter new number</Text>
               </View>
               <View>
                 <Form style={formStyle}>
@@ -110,7 +111,7 @@ class MobileVerifyScreen extends React.Component {
                       <Label> Enter your number</Label>
                       <Input
                         onChangeText={this.onMobileVerifyChange.bind(this)}
-                        value={this.props.mobileVerify}
+                        value={this.props.pecmMobileVerify}
                         keyboardType='numeric'
                       />
                     </Item>
@@ -196,18 +197,20 @@ const styles = StyleSheet.create({
 
 });
 
-function mapStateToProps({ auth }) {
-    const { signup } = auth;
+function mapStateToProps({ profile }) {
+    const { profileedit } = profile;
     return {
-        ...signup
+        ...profileedit
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        mobileVerifyChanged: (text) => { return dispatch(mobileVerifyChanged(text)); },
-        getOtp: ({ mobileVerify }) => {
-          return dispatch(getOtp({ mobileVerify }));
+        changeMobileMobileVerifyChanged: (text) => {
+          return dispatch(changeMobileMobileVerifyChanged(text));
+        },
+        profileGetOtp: ({ mobileVerify, fromChangeMobile }) => {
+          return dispatch(profileGetOtp({ mobileVerify, fromChangeMobile }));
         },
     };
 }
@@ -215,4 +218,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(MobileVerifyScreen);
+)(ChangeMobileGetOtpScreen);

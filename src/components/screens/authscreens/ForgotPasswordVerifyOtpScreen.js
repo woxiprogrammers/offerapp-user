@@ -31,27 +31,28 @@ import {
 } from '../../../styles';
 import backgroundImage from '../../../assets/images/BackgroundImage.png';
 import {
-  verifyOtp,
-  otpVerifyChanged
+  forgotPasswordVerifyOtp,
+  forgotPasswordVerifyOtpChanged
 } from '../../../actions';
 
-class OtpVerifyScreen extends React.Component {
+class ForgotPasswordVerifyOtpScreen extends React.Component {
   onOtpVerifyChange(text) {
-    this.props.otpVerifyChanged(text);
+    this.props.forgotPasswordVerifyOtpChanged(text);
   }
   onButtonPress() {
-    const { mobileVerify, otpVerify } = this.props;
-    this.props.verifyOtp({ mobileVerify, otpVerify });
+    console.log('Button Pressed !');
+    const { fpMobileVerify, fpOtpVerify } = this.props;
+    this.props.forgotPasswordVerifyOtp({ fpMobileVerify, fpOtpVerify });
   }
   renderGetOtpButton() {
     const { verifyOtpStyle, otpButtonStyle } = styles;
-    if (this.props.otpVerifyLoading) {
+    if (this.props.fpOtpVerifyLoading) {
       return (
         <Button style={verifyOtpStyle}>
           <Spinner color='white' />
         </Button>
       );
-    } else if (this.props.otpVerifyError) {
+    } else if (this.props.fpOtpVerifyError) {
       return (
         <Button style={verifyOtpStyle}>
           <Text style={otpButtonStyle}>WRONG OTP</Text>
@@ -86,7 +87,7 @@ class OtpVerifyScreen extends React.Component {
             style={headerStyle}
             iosBarStyle='light-content'
           >
-            <Left style={{ marginRight: -(responsiveWidth(30)) }}>
+            <Left>
               <Button transparent onPress={Actions.pop}>
                 <Icon
                 style={{ color: colors.white }}
@@ -96,16 +97,16 @@ class OtpVerifyScreen extends React.Component {
               </Button>
             </Left>
             <Body>
-              <Title style={titleStyle}>Sign Up-Step 2</Title>
+              <Title style={titleStyle}>Forgot Password-Step 2</Title>
             </Body>
-            <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
+            <Right />
           </Header>
           <Content contentContainerStyle={contentStyle}>
             <View>
               <Text style={textStyle}>Enter the OTP sent to</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={textStyle}>{this.props.mobileVerify}</Text>
+              <Text style={textStyle}>{this.props.fpMobileVerify}</Text>
               <Button onPress={Actions.pop} transparent style={editStyle} >
                   <Icon
                     style={{ color: colors.darkGrayTransparent }}
@@ -151,10 +152,10 @@ editStyle: {
 },
 titleStyle: {
   fontSize: responsiveFontSize(3),
-  width: responsiveWidth(100),
+  width: responsiveWidth(60),
   justifyContent: 'center',
-  fontWeight: 'bold',
   color: colors.white,
+  fontWeight: 'bold',
   textAlign: 'center'
 },
 contentStyle: {
@@ -204,17 +205,19 @@ otpButtonStyle: {
 });
 
 function mapStateToProps({ auth }) {
-    const { signup } = auth;
+    const { forgotpassword } = auth;
     return {
-        ...signup
+        ...forgotpassword
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        otpVerifyChanged: (text) => { return dispatch(otpVerifyChanged(text)); },
-        verifyOtp: ({ mobileVerify, otpVerify }) => {
-          return dispatch(verifyOtp({ mobileVerify, otpVerify }));
+        forgotPasswordVerifyOtpChanged: (text) => {
+          return dispatch(forgotPasswordVerifyOtpChanged(text));
+        },
+        forgotPasswordVerifyOtp: ({ fpMobileVerify, fpOtpVerify }) => {
+          return dispatch(forgotPasswordVerifyOtp({ fpMobileVerify, fpOtpVerify }));
         },
     };
 }
@@ -222,4 +225,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(OtpVerifyScreen);
+)(ForgotPasswordVerifyOtpScreen);

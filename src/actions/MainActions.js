@@ -64,7 +64,7 @@ export const getNearbyOffersFailure = (error) => {
 };
 
 
-export const getSwipper = (token, userLocation) => {
+export const getSwipper = ({ token, coords }) => {
   return (dispatch) => {
     dispatch(getSwipperRequest());
     // const path = '';
@@ -73,7 +73,7 @@ export const getSwipper = (token, userLocation) => {
       url: 'http://www.mocky.io/v2/5ab8cd272c00000e001861a7',
       method: 'post',
       data: {
-        userLocation
+        coords
       }
     }).then((response) => {
       const status = response.status;

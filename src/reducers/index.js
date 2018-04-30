@@ -8,9 +8,12 @@ import OfferReducers from './OfferReducers';
 import CategoriesReducers from './categoryreducers';
 import ARReducers from './arreducers';
 import DrawerReducers from './DrawerReducers';
+import ProfileReducers from './profilereducers';
+import AuthReducers from './authreducers';
 
 export default combineReducers({
   ar: ARReducers,
+  auth: AuthReducers,
   drawer: DrawerReducers,
   user: LoginReducers,
   main: MainReducers,
@@ -18,5 +21,6 @@ export default combineReducers({
   wishlist: WishListReducers,
   interested: InterestedReducers,
   offer: OfferReducers,
-  categories: CategoriesReducers
+  categories: CategoriesReducers,
+  profile: ProfileReducers
 });

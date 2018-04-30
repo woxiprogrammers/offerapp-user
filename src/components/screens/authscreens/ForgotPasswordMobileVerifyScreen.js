@@ -31,27 +31,27 @@ import {
 } from '../../../styles';
  import backgroundImage from '../../../assets/images/BackgroundImage.png';
  import {
-   getOtp,
-   mobileVerifyChanged
+   forgotPasswordGetOtp,
+   forgotPasswordMobileVerifyChanged
  } from '../../../actions';
 
-class MobileVerifyScreen extends React.Component {
+class ForgotPasswordMobileVerifyScreen extends React.Component {
   onMobileVerifyChange(text) {
-    this.props.mobileVerifyChanged(text);
+    this.props.forgotPasswordMobileVerifyChanged(text);
   }
   onButtonPress() {
-    const { mobileVerify } = this.props;
-    this.props.getOtp({ mobileVerify });
+    const { fpMobileVerify } = this.props;
+    this.props.forgotPasswordGetOtp({ mobileVerify: fpMobileVerify });
   }
   renderGetOtpButton() {
     const { getotpStyle, otpButtonStyle } = styles;
-    if (this.props.mobileVerifyLoading) {
+    if (this.props.fpMobileVerifyLoading) {
       return (
         <Button style={getotpStyle}>
           <Spinner color='white' />
         </Button>
       );
-    } else if (this.props.mobileVerifyError) {
+    } else if (this.props.fpMobileVerifyError) {
       return (
         <Button style={getotpStyle}>
           <Text style={otpButtonStyle}>OTP NOT SENT</Text>
@@ -86,15 +86,15 @@ class MobileVerifyScreen extends React.Component {
             style={headerStyle}
             iosBarStyle='light-content'
             >
-              <Left style={{ marginRight: -(responsiveWidth(30)) }}>
+              <Left>
                 <Button transparent onPress={Actions.pop}>
                   <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
                 </Button>
               </Left>
               <Body>
-                <Title style={titleStyle}>Sign Up-Step 1</Title>
+                <Title style={titleStyle}>Forgot Password-Step 1</Title>
               </Body>
-              <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
+              <Right />
             </Header>
             <Content contentContainerStyle={contentStyle}>
               <View>
@@ -110,7 +110,7 @@ class MobileVerifyScreen extends React.Component {
                       <Label> Enter your number</Label>
                       <Input
                         onChangeText={this.onMobileVerifyChange.bind(this)}
-                        value={this.props.mobileVerify}
+                        value={this.props.fpMobileVerify}
                         keyboardType='numeric'
                       />
                     </Item>
@@ -138,11 +138,12 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   titleStyle: {
-    width: responsiveWidth(100),
-    color: colors.white,
-    textAlign: 'center',
-    fontWeight: 'bold',
     fontSize: responsiveFontSize(3),
+    width: responsiveWidth(60),
+    justifyContent: 'center',
+    color: colors.white,
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   backgroundImageStyle: {
     height: responsiveHeight(100),
@@ -197,17 +198,19 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps({ auth }) {
-    const { signup } = auth;
+    const { forgotpassword } = auth;
     return {
-        ...signup
+        ...forgotpassword
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        mobileVerifyChanged: (text) => { return dispatch(mobileVerifyChanged(text)); },
-        getOtp: ({ mobileVerify }) => {
-          return dispatch(getOtp({ mobileVerify }));
+        forgotPasswordMobileVerifyChanged: (text) => {
+          return dispatch(forgotPasswordMobileVerifyChanged(text));
+        },
+        forgotPasswordGetOtp: ({ mobileVerify }) => {
+          return dispatch(forgotPasswordGetOtp({ mobileVerify }));
         },
     };
 }
@@ -215,4 +218,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(MobileVerifyScreen);
+)(ForgotPasswordMobileVerifyScreen);

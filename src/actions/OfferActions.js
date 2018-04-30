@@ -20,11 +20,6 @@ export const getOfferDetails = ({ token, offerId }) => {
   return (dispatch) => {
     dispatch(getOfferDetailsRequest());
     const path = 'customer/offer/detail';
-    console.log('Getting Offer Details :');
-    console.log('offerId is :');
-    console.log(offerId);
-    console.log('token is :');
-    console.log(token);
     axios({
       // url: 'http://www.mocky.io/v2/5ad545413200006600202a92',
       url: `${URL}/${path}/?token=${token}`,
@@ -35,7 +30,6 @@ export const getOfferDetails = ({ token, offerId }) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        console.log('Success Getting Offer');
         dispatch(getOfferDetailsSuccess(response.data.data));
       }
     }).catch((error) => {
@@ -44,8 +38,6 @@ export const getOfferDetails = ({ token, offerId }) => {
   };
 };
 export const getOfferDetailsSuccess = (response) => {
-  console.log('Success Offer Details Response is :');
-  console.log(response);
   const { offerDetail, imageList, loadQueue } = response;
   return {
     type: GET_OFFER_DETAILS_SUCCESS,
@@ -127,8 +119,6 @@ export const addToWishList = ({ token, offerId }) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        console.log('Success Wishlist : ');
-        console.log(response.data);
         dispatch(getOfferDetailsSuccess());
       }
     }).catch((error) => {
@@ -172,8 +162,6 @@ export const addToInterested = ({
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        console.log('Success Interested : ');
-        console.log(response.data);
         dispatch(addToInterestedSuccess());
       }
     }).catch((error) => {

@@ -4,6 +4,7 @@
   "dependencies": {
     "@expo/vector-icons": "^6.2.2",
     "axios": "^0.18.0",
+    "email-validator": "^2.0.3",
     "eslint-config-rallycoding": "^3.2.0",
     "expo": "^25.0.0",
     "lodash": "^4.17.5",

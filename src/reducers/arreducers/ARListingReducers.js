@@ -19,7 +19,7 @@ export default (state = INITIAL_STATE, action) => {
         arListingOffers: [],
         pagination: {
           ...state.pagination,
-          arListingOffersLoading: true
+          arListingOffersLoading: false
         }
       };
     case GET_AR_LISTING_OFFERS_REQUEST:
