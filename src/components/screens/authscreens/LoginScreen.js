@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ImageBackground } from 'react-native';
+import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import {
   Container,
   Content,
@@ -113,8 +113,12 @@ import {
           {this.renderButton()}
         </View>
         <View style={passwordStyle}>
-          <Text style={{ color: 'white', fontSize: responsiveFontSize(2) }}>
-          Forget Password ?</Text>
+          <TouchableOpacity
+            onPress={() => { Actions.forgotPasswordMobileVerifyScreen(); }}
+          >
+            <Text style={{ color: 'white', fontSize: responsiveFontSize(2) }}>
+            Forget Password ?</Text>
+          </TouchableOpacity>
         </View>
         <View style={orstyle} >
           <Text style={{ color: 'white' }}>
@@ -122,7 +126,7 @@ import {
             </Text>
         </View>
         <View >
-          <Button style={signupStyle} onPress={Actions.mobileVerifyScreen}>
+          <Button style={signupStyle} onPress={() => { Actions.mobileVerifyScreen(); }}>
             <Text style={textStyle}>SIGN UP</Text>
           </Button>
         </View>

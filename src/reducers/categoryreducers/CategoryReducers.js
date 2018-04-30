@@ -32,8 +32,6 @@ export default (state = INITIAL_STATE, action) => {
       };
     }
     case UPDATE_OFFER_TYPES: {
-      console.log('Updating type :');
-      console.log(action.typeSelected);
       return {
         ...state,
         typeSelected: action.typeSelected

@@ -88,7 +88,8 @@ class MainScreen extends React.Component {
     const { latitude, longitude } = this.props;
     const locationName = this.props.locationName;
     const userLocation = { locationName, latitude, longitude };
-    this.props.getSwipper(token, userLocation);
+    const coords = { latitude, longitude };
+    this.props.getSwipper({ token, coords });
     const page = 1;
     await this.props.getNearbyOffers({ token, page, userLocation });
   }
@@ -398,7 +399,9 @@ function mapDispatchToProps(dispatch) {
         getNearbyOffers: (token, page, userLocation) => {
           return dispatch(getNearbyOffers(token, page, userLocation));
         },
-        getSwipper: (token, userLocation) => { return dispatch(getSwipper(token, userLocation)); },
+        getSwipper: ({ token, coords }) => {
+          return dispatch(getSwipper({ token, coords }));
+        },
     };
 }
 

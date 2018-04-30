@@ -9,3 +9,5 @@ export * from './CategoryActions';
 export * from './ARActions';
 export * from './DrawerActions';
 export * from './SignUpActions';
+export * from './ProfileActions';
+export * from './ForgotPasswordActions';

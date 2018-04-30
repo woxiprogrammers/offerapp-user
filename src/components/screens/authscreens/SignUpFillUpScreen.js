@@ -314,9 +314,10 @@ signUpButtonTextStyle: {
 
 });
 
-function mapStateToProps({ user }) {
+function mapStateToProps({ auth }) {
+    const { signup } = auth;
     return {
-        ...user
+        ...signup
     };
 }
 

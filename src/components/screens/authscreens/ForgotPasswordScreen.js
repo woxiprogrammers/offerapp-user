@@ -32,22 +32,22 @@ import {
 } from '../../../styles';
 import backgroundImage from '../../../assets/images/BackgroundImage.png';
 import {
-  passwordValueChanged,
-  changePassword
+  forgotPasswordPasswordValueChanged,
+  forgotPassword
 } from '../../../actions';
 
-class ChangePasswordScreen extends React.Component {
+class ForgotPasswordScreen extends React.Component {
   onChangePassword(text) {
-    this.props.passwordValueChanged(text);
+    this.props.forgotPasswordPasswordValueChanged(text);
   }
   DonePressed() {
-    const { token } = this.props;
     const {
-      password
+      password,
+      fpMobileVerify
     } = this.props;
     const empty = password === '';
     if (!empty) {
-      this.props.changePassword({ password, token });
+      this.props.forgotPassword({ password, fpMobileVerify });
     } else {
       console.log('Showing Toast !!');
       Toast.show({
@@ -58,7 +58,7 @@ class ChangePasswordScreen extends React.Component {
     }
   }
   renderDone() {
-    if (this.props.changePasswordLoading) {
+    if (this.props.forgotPasswordLoading) {
       return <Spinner color="white" />;
     }
     return (
@@ -99,7 +99,7 @@ class ChangePasswordScreen extends React.Component {
             iosBarStyle='light-content'
           >
             <Left style={{ flexDirection: 'row' }}>
-              <Button transparent onPress={() => { Actions.popTo('profileEditScreen'); }}>
+              <Button transparent onPress={() => { Actions.popTo('loginScreen'); }}>
                 <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
               </Button>
             </Left>
@@ -178,22 +178,20 @@ viewEmailItemStyle: {
 }
 });
 
-function mapStateToProps({ user, profile }) {
-    const { changepassword } = profile;
-    const { token } = user;
+function mapStateToProps({ auth }) {
+    const { forgotpassword } = auth;
     return {
-        token,
-        ...changepassword
+        ...forgotpassword
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        passwordValueChanged: (text) => {
-          return dispatch(passwordValueChanged(text));
+        forgotPasswordPasswordValueChanged: (text) => {
+          return dispatch(forgotPasswordPasswordValueChanged(text));
         },
-        changePassword: ({ password, token }) => {
-          return dispatch(changePassword({ password, token }));
+        forgotPassword: ({ password, fpMobileVerify }) => {
+          return dispatch(forgotPassword({ password, fpMobileVerify }));
         },
     };
 }
@@ -201,4 +199,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ChangePasswordScreen);
+)(ForgotPasswordScreen);

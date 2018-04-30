@@ -5,6 +5,7 @@ import {
   Container,
   Content,
   Header,
+  Spinner,
   Button,
   Right,
   Input,
@@ -15,22 +16,102 @@ import {
   Left,
   View,
   Icon,
-  Body
+  Body,
+  Toast
 } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
+import { ImagePicker } from 'expo';
+import * as EmailValidator from 'email-validator';
 import {
   //variables,
   // mixins,
   colors,
 } from '../../../styles';
 import backgroundImage from '../../../assets/images/BackgroundImage.png';
+import {
+  profileValueChanged,
+  profileEdit,
+  profilePicUpload
+} from '../../../actions';
+import { IMAGEURL } from '../../../constants';
 
-export default class ProfileEditScreen extends React.Component {
+class ProfileEditScreen extends React.Component {
+  componentWillMount() {
+    const {
+      firstName,
+      lastName,
+      email,
+      mobileNo,
+    } = this.props;
+    this.props.profileValueChanged({ prop: 'peFirstName', value: firstName });
+    this.props.profileValueChanged({ prop: 'peLastName', value: lastName });
+    this.props.profileValueChanged({ prop: 'peEmail', value: email });
+    this.props.profileValueChanged({ prop: 'peMobileVerify', value: mobileNo });
+    this.props.profileValueChanged({ prop: 'pecmMobileVerify', value: '' });
+  }
+  pickImage = async () => {
+  const response = await ImagePicker.launchImageLibraryAsync({
+    allowsEditing: true,
+    aspect: [1, 1],
+    base64: true
+  });
+  if (!response.cancelled) {
+      const { token } = this.props;
+      this.props.profileValueChanged({ prop: 'peProfilePicBase64', value: response.base64 });
+      this.props.profilePicUpload({ profilePicBase64: response.base64, token });
+    }
+  }
+  DonePressed() {
+    const { token } = this.props;
+    const {
+      peFirstName,
+      peLastName,
+      peEmail,
+      peProfilePicBase64
+    } = this.props;
+    const EmailValid = EmailValidator.validate(peEmail);
+    if (EmailValid) {
+      this.props.profileEdit({
+        peFirstName,
+        peLastName,
+        peEmail,
+        peProfilePicBase64,
+        token
+      });
+    } else {
+      console.log('Showing Toast !!');
+      Toast.show({
+                text: 'Enter Correct Email !',
+                buttonText: 'Okay',
+                duration: 3000
+              });
+    }
+  }
+  renderDone() {
+    if (this.props.peLoading) {
+      return <Spinner color="white" />;
+    }
+    return (
+      <Button
+        transparent
+        onPress={() => { this.DonePressed(); }}
+      >
+        <Icon
+        style={{
+          color: 'white',
+          fontSize: responsiveFontSize(5) }}
+          ios='ios-checkmark'
+          android="md-checkmark"
+        />
+      </Button>
+    );
+  }
   render() {
     const {
       backgroundImageStyle,
@@ -42,9 +123,15 @@ export default class ProfileEditScreen extends React.Component {
       contentStyle,
       headerStyle,
       formStyle,
-      titleStyle
+      titleStyle,
+      // errorStyle
     } = styles;
-
+    const {
+      profilePic,
+      peFirstName,
+      peLastName,
+      peEmail
+    } = this.props;
     return (
       <View>
         <ImageBackground
@@ -68,58 +155,91 @@ export default class ProfileEditScreen extends React.Component {
               <Title style={titleStyle}>Profile Edit</Title>
             </Body>
             <Right>
-              <Button transparent>
-                <Icon
-                style={{
-                  color: 'white',
-                  fontSize: responsiveFontSize(5) }}
-                 ios='ios-checkmark'
-                  android="md-checkmark"
-                />
-              </Button>
+              {this.renderDone()}
             </Right>
           </Header>
         <Content contentContainerStyle={contentStyle}>
-          <View style={{ marginTop: 20 }}>
-            <Thumbnail
-              large
-              source={{ uri: 'http://s3.amazonaws.com/cdn.roosterteeth.com/default/md/user_profile_male.jpg' }}
-            />
+          <View style={{ marginTop: responsiveHeight(5) }}>
+            <Button
+              style={{ alignSelf: 'center' }}
+              transparent
+              onPress={this.pickImage.bind(this)}
+            >
+              <Thumbnail
+                large
+                source={{ uri: `${IMAGEURL}${profilePic}` }}
+              />
+            </Button>
           </View>
-          <View >
+          <View>
             <Form style={formStyle}>
               <View style={{ flexDirection: 'row' }}>
                 <View style={viewFirstNameStyle}>
                   <Item stackedLabel>
                     <Label>First Name</Label>
-                    <Input />
+                    <Input
+                      onChangeText={
+                          value => {
+                            this.props.profileValueChanged({
+                            prop: 'peFirstName', value
+                          });
+                        }
+                      }
+                      value={peFirstName}
+                    />
                   </Item>
                 </View>
                 <View style={viewLastNameStyle}>
                   <Item stackedLabel>
                     <Label>Last Name</Label>
-                    <Input />
+                    <Input
+                      onChangeText={
+                          value => {
+                            this.props.profileValueChanged({
+                            prop: 'peLastName', value
+                          });
+                        }
+                      }
+                      value={peLastName}
+                    />
                   </Item>
                 </View>
               </View>
               <View style={viewEmailItemStyle}>
                 <Item stackedLabel >
                   <Label>Email Address</Label>
-                  <Input />
+                  <Input
+                    onChangeText={
+                        value => {
+                          this.props.profileValueChanged({
+                          prop: 'peEmail', value
+                        });
+                      }
+                    }
+                    value={peEmail}
+                  />
                 </Item>
               </View>
+              <Button
+                transparent
+                onPress={() => { Actions.changeMobileGetOtpScreen(); }}
+              >
               <View style={viewItemStyle}>
                 <Item>
                   <Label>Change Mobile Number</Label>
                 </Item>
               </View>
-              <TouchableWithoutFeedback onPress={() => { Actions.changePasswordScreen(); }} >
+              </Button>
+              <Button
+                transparent
+                onPress={() => { Actions.changePasswordOtpVerifyScreen(); }}
+              >
               <View style={viewItemStyle}>
                 <Item >
                   <Label>Change Password</Label>
                 </Item>
               </View>
-              </TouchableWithoutFeedback>
+              </Button>
             </Form>
           </View>
         </Content>
@@ -141,11 +261,12 @@ const styles = StyleSheet.create({
     paddingTop: 0
   },
   titleStyle: {
-    fontWeight: 'bold',
-    color: colors.white,
-    textAlign: 'center',
     fontSize: responsiveFontSize(3),
-    width: responsiveWidth(60)
+    width: responsiveWidth(60),
+    justifyContent: 'center',
+    color: colors.white,
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   contentStyle: {
     backgroundColor: colors.GrayTransparent,
@@ -159,7 +280,7 @@ const styles = StyleSheet.create({
 formStyle: {
   width: responsiveWidth(100),
   alignItems: 'center',
-  marginTop: 20,
+  marginTop: responsiveHeight(5),
   flex: 1,
 },
 viewEmailItemStyle: {
@@ -169,6 +290,15 @@ viewEmailItemStyle: {
   justifyContent: 'center',
   marginTop: 10,
   paddingBottom: responsiveHeight(2),
+  paddingLeft: responsiveWidth(2)
+},
+errorStyle: {
+  backgroundColor: '#D4D4D4',
+  width: responsiveWidth(100),
+  height: responsiveHeight(6),
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: 10,
   paddingLeft: responsiveWidth(2)
 },
 viewItemStyle: {
@@ -197,5 +327,45 @@ viewLastNameStyle: {
   paddingLeft: responsiveWidth(2)
 
 }
-
 });
+
+function mapStateToProps({ user, profile }) {
+    const { profileedit } = profile;
+    const { userData, token } = user;
+    return {
+        ...userData,
+        token,
+        ...profileedit
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        profileValueChanged: ({ prop, value }) => {
+          return dispatch(profileValueChanged({ prop, value }));
+        },
+        profileEdit: ({
+          peFirstName,
+          peLastName,
+          peEmail,
+          peProfilePicBase64,
+          token
+        }) => {
+          return dispatch(profileEdit({
+            peFirstName,
+            peLastName,
+            peEmail,
+            peProfilePicBase64,
+            token
+          }));
+        },
+        profilePicUpload: ({ profilePicBase64, token }) => {
+          return dispatch(profilePicUpload({ profilePicBase64, token }));
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ProfileEditScreen);

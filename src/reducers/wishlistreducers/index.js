@@ -41,13 +41,6 @@ export default (state = INITIAL_STATE, action) => {
         }
       }; }
     case REMOVE_WISHLIST_OFFER: {
-      // console.log('REMOVE_WISHLIST');
-      // console.log(`wishListOfferIndex: ${action.index}`);
-      // console.log('sliced: ');
-      // console.log([
-      //         ...state.wishListOffers.slice(0, action.index),
-      //         ...state.wishListOffers.slice(action.index + 1)
-      //     ]);
       return {
         ...state,
         wishListOffers: [

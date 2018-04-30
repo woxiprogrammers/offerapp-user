@@ -28,8 +28,6 @@ export default (state = INITIAL_STATE, action) => {
       };
     case GET_AR_OFFERS_SUCCESS: {
       const { arOffers } = action;
-      console.log('Get AR Offer Success :');
-      console.log(arOffers);
       return {
         ...state,
         arOffers: [

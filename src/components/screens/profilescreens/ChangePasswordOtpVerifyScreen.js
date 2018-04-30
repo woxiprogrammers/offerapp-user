@@ -31,27 +31,33 @@ import {
 } from '../../../styles';
 import backgroundImage from '../../../assets/images/BackgroundImage.png';
 import {
-  verifyOtp,
-  otpVerifyChanged
+  changePasswordVerifyOtp,
+  changePasswordVerifyOtpChanged,
+  profileGetOtp
 } from '../../../actions';
 
-class OtpVerifyScreen extends React.Component {
+class ChangePasswordOtpVerifyScreen extends React.Component {
+  componentWillMount() {
+    const { peMobileVerify } = this.props;
+    const fromChangeMobile = false;
+    this.props.profileGetOtp({ mobileVerify: peMobileVerify, fromChangeMobile });
+  }
   onOtpVerifyChange(text) {
-    this.props.otpVerifyChanged(text);
+    this.props.changePasswordVerifyOtpChanged(text);
   }
   onButtonPress() {
-    const { mobileVerify, otpVerify } = this.props;
-    this.props.verifyOtp({ mobileVerify, otpVerify });
+    const { peMobileVerify, peOtpVerify } = this.props;
+    this.props.changePasswordVerifyOtp({ peMobileVerify, peOtpVerify });
   }
   renderGetOtpButton() {
     const { verifyOtpStyle, otpButtonStyle } = styles;
-    if (this.props.otpVerifyLoading) {
+    if (this.props.peOtpVerifyLoading) {
       return (
         <Button style={verifyOtpStyle}>
           <Spinner color='white' />
         </Button>
       );
-    } else if (this.props.otpVerifyError) {
+    } else if (this.props.peOtpVerifyError) {
       return (
         <Button style={verifyOtpStyle}>
           <Text style={otpButtonStyle}>WRONG OTP</Text>
@@ -62,18 +68,53 @@ class OtpVerifyScreen extends React.Component {
        <Text style={otpButtonStyle}>VERIFY OTP</Text>
      </Button>);
   }
+  renderGetOtp() {
+    const { peMobileVerifyLoading } = this.props;
+    const {
+      itemViewStyle,
+      itemStyle,
+      formStyle,
+    } = styles;
+    if (peMobileVerifyLoading) {
+      return (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1
+          }}
+        >
+          <Spinner color="white" size='small' />
+        </View>
+      );
+    }
+    return (
+          <View>
+            <Form style={formStyle}>
+              <View style={itemViewStyle}>
+                <Item stackedLabel style={itemStyle} >
+                  <Label> Enter OTP</Label>
+                  <Input
+                    onChangeText={this.onOtpVerifyChange.bind(this)}
+                    value={this.props.peOtpVerify}
+                  />
+                </Item>
+              </View>
+            </Form>
+            <View>
+              {this.renderGetOtpButton()}
+            </View>
+          </View>
+        );
+  }
   render() {
     const {
       backgroundImageStyle,
       containerStyle,
-      itemViewStyle,
       contentStyle,
       headerStyle,
       titleStyle,
-      itemStyle,
-      formStyle,
       textStyle,
-      editStyle
     } = styles;
     return (
       <View>
@@ -86,49 +127,24 @@ class OtpVerifyScreen extends React.Component {
             style={headerStyle}
             iosBarStyle='light-content'
           >
-            <Left style={{ marginRight: -(responsiveWidth(30)) }}>
-              <Button transparent onPress={Actions.pop}>
-                <Icon
-                style={{ color: colors.white }}
-                ios='ios-arrow-back'
-                android="md-arrow-back"
-                />
-              </Button>
-            </Left>
+          <Left style={{ flexDirection: 'row' }}>
+            <Button transparent onPress={() => { Actions.pop(); }}>
+              <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
+            </Button>
+          </Left>
             <Body>
-              <Title style={titleStyle}>Sign Up-Step 2</Title>
+              <Title style={titleStyle}>Change Password-Step 1</Title>
             </Body>
-            <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
+            <Right />
           </Header>
           <Content contentContainerStyle={contentStyle}>
             <View>
               <Text style={textStyle}>Enter the OTP sent to</Text>
             </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={textStyle}>{this.props.mobileVerify}</Text>
-              <Button onPress={Actions.pop} transparent style={editStyle} >
-                  <Icon
-                    style={{ color: colors.darkGrayTransparent }}
-                    ios='ios-create-outline' android="md-create"
-                  />
-              </Button>
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={textStyle}>{this.props.peMobileVerify}</Text>
             </View>
-            <View>
-              <Form style={formStyle}>
-                <View style={itemViewStyle}>
-                  <Item stackedLabel style={itemStyle} >
-                    <Label> Enter OTP</Label>
-                    <Input
-                      onChangeText={this.onOtpVerifyChange.bind(this)}
-                      value={this.props.otpVerify}
-                    />
-                  </Item>
-                </View>
-              </Form>
-            </View>
-            <View>
-              {this.renderGetOtpButton()}
-            </View>
+            {this.renderGetOtp()}
           </Content>
         </Container>
       </ImageBackground>
@@ -146,15 +162,13 @@ headerStyle: {
   borderBottomColor: colors.headerColor,
   paddingTop: 0
 },
-editStyle: {
-  marginTop: 25
-},
 titleStyle: {
   fontSize: responsiveFontSize(3),
-  width: responsiveWidth(100),
+  width: responsiveWidth(60),
   justifyContent: 'center',
-  fontWeight: 'bold',
   color: colors.white,
+  fontWeight: 'bold',
+
   textAlign: 'center'
 },
 contentStyle: {
@@ -203,18 +217,24 @@ otpButtonStyle: {
 }
 });
 
-function mapStateToProps({ auth }) {
-    const { signup } = auth;
+function mapStateToProps({ profile }) {
+    const { profileedit, changepassword } = profile;
     return {
-        ...signup
+        ...profileedit,
+        ...changepassword
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        otpVerifyChanged: (text) => { return dispatch(otpVerifyChanged(text)); },
-        verifyOtp: ({ mobileVerify, otpVerify }) => {
-          return dispatch(verifyOtp({ mobileVerify, otpVerify }));
+        changePasswordVerifyOtpChanged: (text) => {
+          return dispatch(changePasswordVerifyOtpChanged(text));
+        },
+        changePasswordVerifyOtp: ({ peMobileVerify, peOtpVerify }) => {
+          return dispatch(changePasswordVerifyOtp({ peMobileVerify, peOtpVerify }));
+        },
+        profileGetOtp: ({ mobileVerify, fromChangeMobile }) => {
+          return dispatch(profileGetOtp({ mobileVerify, fromChangeMobile }));
         },
     };
 }
@@ -222,4 +242,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(OtpVerifyScreen);
+)(ChangePasswordOtpVerifyScreen);
