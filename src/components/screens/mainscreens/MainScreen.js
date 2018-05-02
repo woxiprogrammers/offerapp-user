@@ -39,6 +39,7 @@ import {
 import SmallOfferCard from '../../modules/SmallOfferCard';
 import swiperLoading from '../../../assets/images/loading.gif';
 import { getLocation, getSwipper, getNearbyOffers } from '../../../actions';
+import { IMAGEURL } from '../../../constants';
 
 const GEOLOCATION_OPTIONS = { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 };
 
@@ -52,7 +53,7 @@ const Slide = props => {
       <Image
         onLoad={props.loadHandle.bind(null, props.i)}
         style={styles.image}
-        source={{ uri: props.uri }}
+        source={{ uri: `${IMAGEURL}${props.uri}` }}
       />
       {
         !props.loaded && <View style={styles.loadingView}>
@@ -86,40 +87,36 @@ class MainScreen extends React.Component {
     await this.props.getLocation(token, coords);
     }
     const { latitude, longitude } = this.props;
-    const locationName = this.props.locationName;
-    const userLocation = { locationName, latitude, longitude };
     const coords = { latitude, longitude };
     this.props.getSwipper({ token, coords });
     const page = 1;
-    await this.props.getNearbyOffers({ token, page, userLocation });
+    await this.props.getNearbyOffers({ token, page, coords });
   }
   onEndReached() {
     const {
-      locationName,
       pagination,
       longitude,
       latitude,
       token,
     } = this.props;
-    const userLocation = { locationName, latitude, longitude };
+    const coords = { latitude, longitude };
     const { perPage, pageCount, totalCount } = pagination;
     let { page } = pagination;
     const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
     if (!pagination.nearByOffersLoading && !lastPage) {
       page += 1;
-      this.props.getNearbyOffers({ token, page, userLocation });
+      this.props.getNearbyOffers({ token, page, coords });
     }
   }
   onRefresh() {
     const {
-      locationName,
       longitude,
       latitude,
       token,
     } = this.props;
-    const userLocation = { locationName, latitude, longitude };
+    const coords = { latitude, longitude };
     const page = 1;
-    this.props.getNearbyOffers({ token, page, userLocation });
+    this.props.getNearbyOffers({ token, page, coords });
   }
 
   autoBind(...methods) {
@@ -149,13 +146,20 @@ class MainScreen extends React.Component {
       );
   }
   renderSwiper() {
-    const { swiperStyle } = styles;
+    const { swiperStyle, swiperErrorStyle, whiteStyle } = styles;
+    const { imageList, swiperError } = this.props;
     if (this.props.swiperLoading) {
       return (
         <Spinner
-          style={{ height: responsiveHeight(25) }}
+          style={swiperStyle}
           color='black'
         />);
+    } else if (swiperError || imageList.length === 0) {
+      return (
+        <View style={swiperErrorStyle}>
+          <Icon style={whiteStyle}active name='ionitron' />
+          <Text style={whiteStyle}>Sorry! No Offers to Show </Text>
+        </View>);
     }
     return (
       <Swiper autoplay style={swiperStyle} >
@@ -211,7 +215,8 @@ class MainScreen extends React.Component {
       locationStyle,
       headerStyle,
       // swiperStyle,
-      titleStyle
+      titleStyle,
+      whiteStyle
     } = styles;
     const { locationName } = this.props;
     let locationNameMain = locationName;
@@ -237,7 +242,7 @@ class MainScreen extends React.Component {
               onPress={() => { Actions.push('arScreen'); }}
               transparent
             >
-              <Icon style={{ color: 'white' }} name="eye" />
+              <Icon style={whiteStyle} name="eye" />
             </Button>
           </Right>
         </Header>
@@ -352,6 +357,15 @@ const styles = StyleSheet.create({
   swiperStyle: {
     height: responsiveHeight(25)
   },
+  whiteStyle: {
+    color: colors.white
+  },
+  swiperErrorStyle: {
+    backgroundColor: '#1C2A3A',
+    height: responsiveHeight(25),
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   slide: {
     flex: 1,
     justifyContent: 'center',
@@ -396,8 +410,8 @@ function mapDispatchToProps(dispatch) {
         getLocation: (token, coords) => {
           return dispatch(getLocation(token, coords));
         },
-        getNearbyOffers: (token, page, userLocation) => {
-          return dispatch(getNearbyOffers(token, page, userLocation));
+        getNearbyOffers: ({ token, page, coords }) => {
+          return dispatch(getNearbyOffers({ token, page, coords }));
         },
         getSwipper: ({ token, coords }) => {
           return dispatch(getSwipper({ token, coords }));

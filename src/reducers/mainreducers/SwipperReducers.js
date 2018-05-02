@@ -8,7 +8,8 @@ const INITIAL_STATE = {
   offerId: [],
   imageList: [],
   loadQueue: [],
-  swiperLoading: false,
+  swiperLoading: true,
+  swiperError: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -16,7 +17,8 @@ export default (state = INITIAL_STATE, action) => {
     case GET_SWIPER_REQUEST:
       return {
         ...state,
-        swiperLoading: true
+        swiperLoading: true,
+        swiperError: false,
       };
     case GET_SWIPER_SUCCESS: {
       const offerId = action.offerId;
@@ -25,6 +27,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         swiperLoading: false,
+        swiperError: false,
         offerId: [...offerId],
         imageList: [...imageList],
         loadQueue: [...loadQueue],
@@ -32,7 +35,8 @@ export default (state = INITIAL_STATE, action) => {
     case GET_SWIPER_FAILURE:
       return {
         ...state,
-        swiperLoading: true
+        swiperLoading: false,
+        swiperError: true,
       };
     default:
       return state;

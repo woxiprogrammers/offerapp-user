@@ -14,7 +14,7 @@ import {
   URL
 } from '../constants';
 
-export const getNearbyOffers = ({ token, page, userLocation }) => {
+export const getNearbyOffers = ({ token, page, coords }) => {
   return (dispatch) => {
     dispatch(getNearbyOffersRequest(page));
     // const path = '';
@@ -23,7 +23,7 @@ export const getNearbyOffers = ({ token, page, userLocation }) => {
       // url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
-        userLocation
+        coords
       }
     }).then((response) => {
       if (page === 1) {
@@ -67,10 +67,10 @@ export const getNearbyOffersFailure = (error) => {
 export const getSwipper = ({ token, coords }) => {
   return (dispatch) => {
     dispatch(getSwipperRequest());
-    // const path = '';
+    const path = 'customer/offer/trending/listing';
     axios({
-      // url: `${URL}/${path}/?token=${token}`,
-      url: 'http://www.mocky.io/v2/5ab8cd272c00000e001861a7',
+      url: `${URL}/${path}/?token=${token}`,
+      // url: 'http://www.mocky.io/v2/5ab8cd272c00000e001861a7',
       method: 'post',
       data: {
         coords
@@ -78,7 +78,7 @@ export const getSwipper = ({ token, coords }) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        dispatch(getSwipperSuccess(response.data));
+        dispatch(getSwipperSuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getSwipperFailure(error));
@@ -89,7 +89,6 @@ export const getSwipperSuccess = (response) => {
   const offerId = response.offerId;
   const imageList = response.imageList;
   const loadQueue = response.loadQueue;
-
   return {
     type: GET_SWIPER_SUCCESS,
     offerId,
