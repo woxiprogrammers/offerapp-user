@@ -1,57 +1,6 @@
 import * as variables from './variables';
 import * as colors from './colors';
 
-export function createShadow(level) {
-    switch (level) {
-        case 1:
-            return {
-                shadowColor: 'rgb(49, 53, 66)',
-                shadowOpacity: 0.32,
-                shadowRadius: 2,
-                shadowOffset: {
-                    height: 1
-                }
-            };
-        case 2:
-            return {
-                shadowColor: 'rgb(49, 53, 66)',
-                shadowOpacity: 0.4,
-                shadowRadius: 4,
-                shadowOffset: {
-                    height: 2
-                }
-            };
-        case 3:
-            return {
-                shadowColor: 'rgb(49, 53, 66)',
-                shadowOpacity: 0.5,
-                shadowRadius: 6,
-                shadowOffset: {
-                    height: 4
-                }
-            };
-        case 4:
-            return {
-                shadowColor: 'rgb(49, 53, 66)',
-                shadowOpacity: 0.6,
-                shadowRadius: 8,
-                shadowOffset: {
-                    height: 6
-                }
-            };
-        case 5:
-            return {
-                shadowColor: 'rgb(49, 53, 66)',
-                shadowOpacity: 0.70,
-                shadowRadius: 10,
-                shadowOffset: {
-                    height: 9
-                }
-            };
-        default:
-    }
-}
-
 export const arObject = {
     position: 'absolute'
 };

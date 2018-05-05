@@ -50,7 +50,7 @@ class FilterScreen extends React.Component {
     const { distance, typeSelected } = this.props;
     this.props.updateFilter({ distance, typeSelected });
   }
-  keyExtractor = (item, index) => { return index; };
+  keyExtractor = (item, index) => { return index.toString(); };
   renderOfferTypes() {
     const { typeSelected, offerTypesLoading, offerTypes } = this.props;
     if (offerTypesLoading) {

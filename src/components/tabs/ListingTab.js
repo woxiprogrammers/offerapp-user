@@ -104,7 +104,7 @@ class ListingTab extends Component {
         return this[method];
       });
   }
-  keyExtractor = (item, index) => { return index; };
+  keyExtractor = (item, index) => { return index.toString(); };
   renderRow(offerDetails) {
     // console.log('Rendering Row');
     // console.log(offerDetails);

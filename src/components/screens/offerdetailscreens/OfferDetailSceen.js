@@ -320,7 +320,10 @@ class OfferDetailScreen extends React.Component {
             dialogTitle={<DialogTitle title={sellerInfo} />}
             actions={[
               <DialogButton
-                textContainerStyle={{ height: responsiveHeight(5) }}
+                textContainerStyle={{
+                  height: responsiveHeight(10),
+                  paddingTop: responsiveHeight(2.5)
+                }}
                 text="Close"
                 onPress={() => {
                   this.mapDialog.dismiss();

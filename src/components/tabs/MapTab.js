@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  FlatList
+  FlatList,
+  ScrollView
 } from 'react-native';
 import {
   Container,
@@ -123,7 +124,7 @@ class MapTab extends Component {
         return this[method];
       });
   }
-  keyExtractor = (item, index) => { return index; };
+  keyExtractor = (item, index) => { return index.toString(); };
   renderRow(offerDetails) {
     const { item } = offerDetails;
     const { pagination } = this.props;
@@ -167,10 +168,10 @@ class MapTab extends Component {
               })}
             </MapView>
           </View>
-            <View
+            <ScrollView
+              showsVerticalScrollIndicator={false}
               style={{
                 backgroundColor: '#1E2D3E',
-                alignItems: 'center',
                 flex: 1, }}
             >
               <View
@@ -180,15 +181,15 @@ class MapTab extends Component {
                   height: responsiveHeight(1) }}
               />
               <FlatList
-                automaticallyAdjustContentInsets={false}
                 data={mapViewCategoryOffers}
                 refreshing={false}
+                scrollEnabled={false}
                 renderItem={this.renderRow}
                 keyExtractor={this.keyExtractor}
                 onRefresh={() => { return this.onRefresh(); }}
                 onEndReached={() => { return this.onEndReached(); }}
               />
-            </View>
+            </ScrollView>
         </View>
       </Container>
     );

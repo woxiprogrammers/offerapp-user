@@ -107,7 +107,7 @@ class WishlistScreen extends React.Component {
         return this[method];
       });
   }
-  keyExtractor = (item, index) => { return index; };
+  keyExtractor = (item, index) => { return index.toString(); };
   refreshFlatlist = (removeWislistOfferIndex) => {
     this.setState(() => {
       return {

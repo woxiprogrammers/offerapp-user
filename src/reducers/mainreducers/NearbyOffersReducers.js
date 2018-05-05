@@ -6,7 +6,7 @@ import {
 } from '../../constants';
 
 const INITIAL_STATE = {
-  pagination: { nearByOffersLoading: false },
+  pagination: { nearByOffersLoading: true },
   nearByOffers: [],
 };
 

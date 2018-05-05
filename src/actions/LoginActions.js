@@ -71,5 +71,5 @@ const loginUserSuccess = (dispatch, token) => {
     type: LOGIN_USER_SUCCESS,
     token
   });
-  Actions.push('mainScreen');
+  Actions.drawer({ type: 'reset' });
 };

@@ -79,7 +79,7 @@ class GroupScreen extends Component {
         return this[method];
       });
   }
-  keyExtractor = (item, index) => { return index; };
+  keyExtractor = (item, index) => { return index.toString(); };
   leaveGroupPressed() {
     const { token, groupId } = this.props;
     this.props.leaveGroup({ token, groupId });

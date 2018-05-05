@@ -26,7 +26,7 @@ import {
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 import * as EmailValidator from 'email-validator';
 import {
   //variables,
@@ -37,35 +37,49 @@ import backgroundImage from '../../../assets/images/BackgroundImage.png';
 import {
   profileValueChanged,
   profileEdit,
-  profilePicUpload
 } from '../../../actions';
-import { IMAGEURL } from '../../../constants';
 
 class ProfileEditScreen extends React.Component {
-  componentWillMount() {
+  async componentWillMount() {
     const {
+      profilePic,
       firstName,
       lastName,
       email,
       mobileNo,
     } = this.props;
+    this.props.profileValueChanged({ prop: 'peProfilePic', value: profilePic });
     this.props.profileValueChanged({ prop: 'peFirstName', value: firstName });
     this.props.profileValueChanged({ prop: 'peLastName', value: lastName });
     this.props.profileValueChanged({ prop: 'peEmail', value: email });
     this.props.profileValueChanged({ prop: 'peMobileVerify', value: mobileNo });
     this.props.profileValueChanged({ prop: 'pecmMobileVerify', value: '' });
+    const cameraPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    this.setState({ cameraPermission: cameraPermission.status });
   }
   pickImage = async () => {
-  const response = await ImagePicker.launchImageLibraryAsync({
-    allowsEditing: true,
-    aspect: [1, 1],
-    base64: true
-  });
-  if (!response.cancelled) {
-      const { token } = this.props;
-      this.props.profileValueChanged({ prop: 'peProfilePicBase64', value: response.base64 });
-      this.props.profilePicUpload({ profilePicBase64: response.base64, token });
-    }
+  const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+  this.setState({ hasRollPermission: status === 'granted' });
+  if (this.state.hasRollPermission) {
+    const response = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      base64: true
+    });
+    if (!response.cancelled) {
+        // const { token } = this.props;
+        this.props.profileValueChanged({ prop: 'peProfilePicBase64', value: response.base64 });
+        this.props.profileValueChanged({ prop: 'peProfilePic', value: response.uri });
+        // this.props.profileValueChanged({ prop: 'pro', value: response.base64 });
+        // this.props.profilePicUpload({ profilePicBase64: response.base64, token });
+      }
+  } else {
+    Toast.show({
+              text: 'Camera Roll Permission Denied',
+              buttonText: 'Okay',
+              duration: 3000
+            });
+  }
   }
   DonePressed() {
     const { token } = this.props;
@@ -85,7 +99,6 @@ class ProfileEditScreen extends React.Component {
         token
       });
     } else {
-      console.log('Showing Toast !!');
       Toast.show({
                 text: 'Enter Correct Email !',
                 buttonText: 'Okay',
@@ -127,7 +140,7 @@ class ProfileEditScreen extends React.Component {
       // errorStyle
     } = styles;
     const {
-      profilePic,
+      peProfilePic,
       peFirstName,
       peLastName,
       peEmail
@@ -167,7 +180,7 @@ class ProfileEditScreen extends React.Component {
             >
               <Thumbnail
                 large
-                source={{ uri: `${IMAGEURL}${profilePic}` }}
+                source={{ uri: peProfilePic }}
               />
             </Button>
           </View>
@@ -358,10 +371,7 @@ function mapDispatchToProps(dispatch) {
             peProfilePicBase64,
             token
           }));
-        },
-        profilePicUpload: ({ profilePicBase64, token }) => {
-          return dispatch(profilePicUpload({ profilePicBase64, token }));
-        },
+        }
     };
 }
 

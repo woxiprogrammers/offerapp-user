@@ -121,7 +121,7 @@ class ChangeLocationScreen extends React.Component {
               const coords = { latitude, longitude };
               await this.props.getLocation(token, coords);
               await this.props.setLocation(token, locationName);
-              Actions.push('mainScreen', { fromChangeLocation: true });
+              Actions.popTo('mainScreen', { fromChangeLocation: true });
           }}
         >
           <ListItem>
