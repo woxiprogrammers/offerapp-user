@@ -36,7 +36,7 @@ import {
   colors,
 } from '../../../styles';
 import OfferCard from '../../modules/OfferCard';
-import { getInterestedOffers } from '../../../actions';
+import { getInterestedOffers, getGrabCode } from '../../../actions';
 
 const scaleAnimation = new ScaleAnimation();
 
@@ -93,8 +93,10 @@ class InterestedScreen extends React.Component {
         return this[method];
       });
   }
-  keyExtractor = (item, index) => { return index; };
+  keyExtractor = (item, index) => { return index.toString(); };
   renderInterestedOptions({ item }) {
+    const { token } = this.props;
+    const { offerId } = item;
     return (
       <View
         style={{
@@ -111,11 +113,12 @@ class InterestedScreen extends React.Component {
             width: responsiveWidth(47.5),
           }}
         >
-          <Text style={{ alignSelf: 'center' }}>Offer Id: {item.offerId}</Text>
+          <Text style={{ alignSelf: 'center' }}>Offer Id: {offerId}</Text>
         </View>
         <TouchableOpacity
           onPress={() => {
             this.setState({ selectedGrabOffer: item });
+            this.props.getGrabCode({ token, offerId });
             this.showScaleAnimationDialog();
           }}
           style={{
@@ -147,10 +150,18 @@ class InterestedScreen extends React.Component {
         </View>
       );
   }
-  renderDialogContent(selectedGrabOffer) {
+  renderDialogContent() {
     const {
       dialogContentView,
     } = styles;
+    const { grabCode, grabCodeLoading } = this.props;
+    if (grabCodeLoading) {
+      return (
+        <View style={dialogContentView}>
+          <Spinner color="black" />
+        </View>
+      );
+    }
     return (
       <View style={dialogContentView}>
         <Text style={{ fontSize: responsiveFontSize(1.5), paddingBottom: responsiveHeight(3) }}>
@@ -158,7 +169,7 @@ class InterestedScreen extends React.Component {
         </Text>
         <Item>
           <Label>
-            # {selectedGrabOffer.grabCode}
+            # {grabCode}
           </Label>
         </Item>
       </View>
@@ -210,7 +221,7 @@ class InterestedScreen extends React.Component {
             />,
           ]}
         >
-        {this.renderDialogContent(selectedGrabOffer)}
+        {this.renderDialogContent()}
         </PopupDialog>
         <Content
           showsVerticalScrollIndicator={false}
@@ -284,6 +295,9 @@ function mapDispatchToProps(dispatch) {
     return {
         getInterestedOffers: ({ token, page }) => {
           return dispatch(getInterestedOffers({ token, page }));
+        },
+        getGrabCode: ({ token, offerId }) => {
+          return dispatch(getGrabCode({ token, offerId }));
         },
     };
 }

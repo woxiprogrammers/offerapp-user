@@ -5,3 +5,6 @@ export const SEND_INTERESTED_OFFER_REQUEST = 'send_interested_offer_request';
 export const SEND_INTERESTED_OFFER_SUCCESS = 'send_interested_offer_success';
 export const SEND_INTERESTED_OFFER_FAILURE = 'send_interested_offer_failure';
 export const INTERESTED_OFFERS_RESET = 'interested_offers_reset';
+export const GET_GRAB_CODE_REQUEST = 'get_grab_code_request';
+export const GET_GRAB_CODE_SUCCESS = 'get_grab_code_success';
+export const GET_GRAB_CODE_FAILURE = 'get_grab_code_failure';

@@ -8,6 +8,9 @@ import {
   SEND_INTERESTED_OFFER_REQUEST,
   SEND_INTERESTED_OFFER_SUCCESS,
   SEND_INTERESTED_OFFER_FAILURE,
+  GET_GRAB_CODE_REQUEST,
+  GET_GRAB_CODE_SUCCESS,
+  GET_GRAB_CODE_FAILURE,
   INTERESTED_OFFERS_RESET,
   URL
 } from '../constants';
@@ -103,6 +106,47 @@ export const sendInterestedOfferRequest = () => {
 export const sendInterestedOfferFailure = (error) => {
   return {
     type: SEND_INTERESTED_OFFER_FAILURE,
+    error
+  };
+};
+export const getGrabCode = ({ token, offerId }) => {
+  return (dispatch) => {
+    dispatch(getGrabCodeRequest());
+    // const path = 'customer/offer/interested/add';
+    axios({
+      url: `http://www.mocky.io/v2/5ae9bc0b3000006c005db199?token=${token}`,
+      // url: `${URL}/${path}/?token=${token}`,
+      method: 'post',
+      data: {
+        offerId
+      }
+    }).then((response) => {
+      const status = response.status;
+      if (status === 200) {
+        dispatch(getGrabCodeSuccess(response.data.data));
+      }
+    }).catch((error) => {
+        dispatch(getGrabCodeFailure(error));
+    });
+  };
+};
+export const getGrabCodeSuccess = (response) => {
+  const grabCode = response.grabCode;
+  return {
+    type: GET_GRAB_CODE_SUCCESS,
+    grabCode
+  };
+};
+
+export const getGrabCodeRequest = () => {
+  return {
+    type: GET_GRAB_CODE_REQUEST,
+  };
+};
+
+export const getGrabCodeFailure = (error) => {
+  return {
+    type: GET_GRAB_CODE_FAILURE,
     error
   };
 };

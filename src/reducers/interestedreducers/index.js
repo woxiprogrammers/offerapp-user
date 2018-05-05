@@ -5,6 +5,9 @@ import {
   SEND_INTERESTED_OFFER_REQUEST,
   SEND_INTERESTED_OFFER_SUCCESS,
   SEND_INTERESTED_OFFER_FAILURE,
+  GET_GRAB_CODE_REQUEST,
+  GET_GRAB_CODE_SUCCESS,
+  GET_GRAB_CODE_FAILURE,
   INTERESTED_OFFERS_RESET,
 } from '../../constants';
 
@@ -12,6 +15,9 @@ const INITIAL_STATE = {
   pagination: { interestedOffersLoading: false },
   interestedOffers: [],
   sendInterestedOfferLoading: false,
+  grabCode: 0,
+  grabCodeLoading: false,
+  grabCodeError: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -65,6 +71,25 @@ export default (state = INITIAL_STATE, action) => {
     return {
       ...state,
       sendInterestedOfferLoading: false
+    };
+    case GET_GRAB_CODE_REQUEST:
+      return {
+        ...state,
+        grabCodeError: false,
+        grabCodeLoading: true
+      };
+    case GET_GRAB_CODE_SUCCESS:
+      return {
+        ...state,
+        grabCode: action.grabCode,
+        grabCodeError: false,
+        grabCodeLoading: false
+      };
+    case GET_GRAB_CODE_FAILURE:
+    return {
+      ...state,
+      grabCodeError: true,
+      grabCodeLoading: false
     };
     default:
       return state;
