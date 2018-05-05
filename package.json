@@ -6,13 +6,13 @@
     "axios": "^0.18.0",
     "email-validator": "^2.0.3",
     "eslint-config-rallycoding": "^3.2.0",
-    "expo": "^25.0.0",
+    "expo": "^27.0.0",
     "lodash": "^4.17.5",
     "native-base": "^2.3.10",
-    "react": "16.2.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react": "16.3.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-27.0.0.tar.gz",
     "react-native-auto-height-image": "^1.0.0",
-    "react-native-collapsible": "^0.10.0",
+    "react-native-collapsible": "^0.11.2",
     "react-native-communications": "^2.2.1",
     "react-native-marquee": "^0.3.1",
     "react-native-popup-dialog": "^0.11.46",
@@ -20,7 +20,7 @@
     "react-native-router-flux": "^4.0.0-beta.28",
     "react-native-swiper": "^1.5.13",
     "react-redux": "^5.0.7",
-    "redux": "^3.7.2",
+    "redux": "^4.0.0",
     "redux-thunk": "^2.2.0"
   }
 }
