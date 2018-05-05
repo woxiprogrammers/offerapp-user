@@ -16,30 +16,31 @@ import AHImage from 'react-native-auto-height-image';
 import {
   normalize,
   colors,
- } from '../../styles';
+} from '../../styles';
+import { IMAGEURL } from '../../constants';
 
- export default class SmallOfferCard extends Component {
-   render() {
-     const {
-       cardHeaderStyle,
-       cardBodyStyle,
-       cardStyle,
-     } = styles;
-     const {
+export default class SmallOfferCard extends Component {
+  render() {
+    const {
+      cardHeaderStyle,
+      cardBodyStyle,
+      cardStyle,
+    } = styles;
+    const {
        offerId,
        offerPic,
        offerName,
        sellerInfo,
        // offerExpiry
     } = this.props.offerDetails;
-     return (
-       <TouchableOpacity
+    return (
+      <TouchableOpacity
         onPress={() => {
           console.log('Going to OfferDetail:');
           console.log(offerId);
-          Actions.push('offerDetailScreen', { getOffer: offerId }); 
+          Actions.push('offerDetailScreen', { getOffer: offerId });
         }}
-       >
+      >
         <Card style={cardStyle}>
           <CardItem style={cardHeaderStyle}>
             <Left
@@ -67,22 +68,22 @@ import {
           </CardItem>
           <CardItem cardBody style={cardBodyStyle}>
             <AHImage
-              source={{ uri: offerPic }}
-              width={responsiveHeight(20)}
+              source={{ uri: `${IMAGEURL}${offerPic}` }}
+              width={responsiveWidth(45)}
             />
           </CardItem>
         </Card>
-       </TouchableOpacity>
-     );
-   }
- }
+      </TouchableOpacity>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   cardStyle: {
     flex: 1,
     marginLeft: 0,
-    marginRight: 10,
-    width: responsiveWidth(45) + 15 // 15 for right side padding
+    marginRight: responsiveWidth(2.5),
+    width: responsiveWidth(45) + responsiveWidth(1) // 15 for right side padding
   },
   cardHeaderStyle: {
     backgroundColor: colors.smallOfferCardHeader,
@@ -95,5 +96,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 0,
     paddingLeft: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 });

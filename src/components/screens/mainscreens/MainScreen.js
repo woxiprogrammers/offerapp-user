@@ -12,6 +12,7 @@ import {
   Spinner,
   Header,
   Button,
+  Badge,
   Right,
   Title,
   Left,
@@ -21,7 +22,7 @@ import {
   Text,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { Location } from 'expo';
+import { Location, Permissions } from 'expo';
 import Swiper from 'react-native-swiper';
 import { Actions } from 'react-native-router-flux';
 import MarqueeText from 'react-native-marquee';
@@ -72,19 +73,28 @@ class MainScreen extends React.Component {
       'loadHandle',
       'renderSwiper',
       'onEndReached',
-      'onRefresh',
       'renderRow'
     );
+    this.state = ({
+      message: '',
+    });
   }
   async componentWillMount() {
     console.log('Mounting MainScreen');
     const { token } = this.props;
     if (!this.props.fromChangeLocation) {
-    const location = await Location.getCurrentPositionAsync(GEOLOCATION_OPTIONS);
-    const latitude = location.coords.latitude;
-    const longitude = location.coords.longitude;
-    const coords = { latitude, longitude };
-    await this.props.getLocation(token, coords);
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status !== 'granted') {
+        this.setState({
+          message: 'Permission to access location was denied',
+        });
+      } else {
+      const location = await Location.getCurrentPositionAsync(GEOLOCATION_OPTIONS);
+      const latitude = location.coords.latitude;
+      const longitude = location.coords.longitude;
+      const coords = { latitude, longitude };
+      await this.props.getLocation(token, coords);
+    }
     }
     const { latitude, longitude } = this.props;
     const coords = { latitude, longitude };
@@ -108,16 +118,6 @@ class MainScreen extends React.Component {
       this.props.getNearbyOffers({ token, page, coords });
     }
   }
-  onRefresh() {
-    const {
-      longitude,
-      latitude,
-      token,
-    } = this.props;
-    const coords = { latitude, longitude };
-    const page = 1;
-    this.props.getNearbyOffers({ token, page, coords });
-  }
 
   autoBind(...methods) {
       methods.forEach(method => {
@@ -125,7 +125,7 @@ class MainScreen extends React.Component {
         return this[method];
       });
   }
-  keyExtractor = (item, index) => { return index; };
+  keyExtractor = (item, index) => { return index.toString(); };
   loadHandle(i) {
       const loadQueue = this.props.loadQueue;
       loadQueue[i] = 1;
@@ -181,29 +181,33 @@ class MainScreen extends React.Component {
 
   renderNearByOffers() {
     const { pagination, nearByOffers } = this.props;
-    const { loadingStyle } = styles;
+    const { loadingStyle, whiteStyle, nearbyErrorStyle } = styles;
     if (pagination.nearByOffersLoading) {
       return (
         <View style={loadingStyle}>
           <Spinner color='white' />
         </View>
       );
+    } else if (nearByOffers.length === 0) {
+      return (
+        <View style={nearbyErrorStyle}>
+          <Icon style={whiteStyle}active name='ionitron' />
+          <Text style={whiteStyle}>Sorry! No Offers to Show </Text>
+        </View>);
     }
    return (
      <ScrollView
        showsHorizontalScrollIndicator={false}
        horizontal
-       style={{ paddingLeft: 10 }}
+       style={{ paddingLeft: responsiveWidth(2.5) }}
      >
      <FlatList
        horizontal
        scrollEnabled={false}
-       refreshing
        automaticallyAdjustContentInsets={false}
        data={nearByOffers}
        renderItem={this.renderRow}
        keyExtractor={this.keyExtractor}
-       onRefresh={() => { return this.onRefresh(); }}
        onEndReached={() => { return this.onEndReached(); }}
      />
      </ScrollView>
@@ -294,14 +298,14 @@ class MainScreen extends React.Component {
               style={{
                 backgroundColor: '#1C2A3A',
                 height: responsiveHeight(40),
-                marginTop: normalize.normalize(5),
-                paddingBottom: normalize.normalize(10) }}
+                marginTop: responsiveHeight(1),
+                paddingBottom: responsiveHeight(2) }}
             >
               <View>
                 <Text
                   style={{
-                    paddingLeft: normalize.normalize(9),
-                    paddingTop: normalize.normalize(9),
+                    paddingLeft: responsiveWidth(2.5),
+                    paddingTop: responsiveHeight(2),
                     color: colors.white,
                     fontSize: responsiveFontSize(2.5) }}
                 >Offers Nearby Me</Text>
@@ -363,6 +367,11 @@ const styles = StyleSheet.create({
   swiperErrorStyle: {
     backgroundColor: '#1C2A3A',
     height: responsiveHeight(25),
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  nearbyErrorStyle: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
