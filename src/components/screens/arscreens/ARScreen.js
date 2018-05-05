@@ -90,7 +90,7 @@ class ARScreen extends React.Component {
           const initBearing = await Location.getHeadingAsync();
           await this.setState({ initialBearing: initBearing.trueHeading });
           await this.setState({ bearing: initBearing.trueHeading });
-          const watchHeading = Location.watchHeadingAsync(({ trueHeading }) => {
+          const watchHeading = await Location.watchHeadingAsync(({ trueHeading }) => {
             const { bearing } = this.state;
             const difference = bearing - trueHeading;
             if (difference >= 180 || difference <= -180) {
@@ -125,8 +125,11 @@ class ARScreen extends React.Component {
     });
   }
   componentWillUnmount() {
+    const { watchHeading, watchPosition } = this.state;
     Gyroscope.removeAllListeners();
     this.props.clearARObjects();
+    watchHeading.remove();
+    watchPosition.remove();
   }
   getLocationAsync = async () => {
     let location = null;
@@ -137,7 +140,7 @@ class ARScreen extends React.Component {
       });
     } else {
       location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-      const watchPosition = Location.watchPositionAsync({
+      const watchPosition = await Location.watchPositionAsync({
         enableHighAccuracy: true,
         timeInterval: 1000 }, (coords) => {
           const { userLocation, loaded } = this.state;

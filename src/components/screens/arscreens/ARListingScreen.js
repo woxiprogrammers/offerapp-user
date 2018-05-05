@@ -39,7 +39,6 @@ class ARListingScreen extends React.Component {
     super(props);
     this.autoBind(
       'onEndReached',
-      'onRefresh',
       'renderRow'
     );
   }
@@ -74,25 +73,13 @@ class ARListingScreen extends React.Component {
         });
     }
   }
-  onRefresh() {
-    const {
-      token,
-      sellerAddressId
-    } = this.props;
-    const page = 1;
-    this.props.getARListingOffers({
-        token,
-        sellerAddressId,
-        page
-      });
-  }
   autoBind(...methods) {
       methods.forEach(method => {
         this[method] = this[method].bind(this);
         return this[method];
       });
   }
-  keyExtractor = (item, index) => { return index; };
+  keyExtractor = (item, index) => { return index.toString(); };
   renderRow(offerDetails) {
     console.log('Rendering Row');
     // console.log(offerDetails);
@@ -148,13 +135,11 @@ class ARListingScreen extends React.Component {
             paddingLeft: responsiveWidth(2.5) }}
         >
         <FlatList
-          refreshing
           style={{ flex: 1 }}
           automaticallyAdjustContentInsets={false}
           data={arListingOffers}
           renderItem={this.renderRow}
           keyExtractor={this.keyExtractor}
-          onRefresh={() => { return this.onRefresh(); }}
           onEndReached={() => { return this.onEndReached(); }}
         />
       </Content>

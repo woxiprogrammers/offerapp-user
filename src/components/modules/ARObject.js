@@ -10,7 +10,7 @@ import { Actions } from 'react-native-router-flux';
 import {
   responsiveHeight,
   responsiveWidth,
-  // responsiveFontSize
+  responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import { mixins, variables } from '../../styles';
 
@@ -45,7 +45,7 @@ class ARObject extends React.Component {
     return (
       <View style={styles.root}>
         <Button
-          badge transparent
+          transparent
           onPress={() => {
             console.log(`Seller Address Id is : ${sellerAddressId}`);
             console.log(`Seller Info is : ${sellerInfo}`);
@@ -57,11 +57,19 @@ class ARObject extends React.Component {
                 left: this.props.startingPosX + this.props.xOffset
               }}
         >
-        <Icon ios="ios-albums" android="md-albums" style={{ fontSize: 50, color: 'white' }} />
-        <Badge
-          primary
-          style={{ marginTop: responsiveHeight(-3), width: responsiveWidth(5) }}
-        ><Text>{offerCount}</Text></Badge>
+          <Icon
+            ios="ios-albums"
+            android="md-albums"
+            style={{ fontSize: responsiveFontSize(8), color: 'white' }}
+          />
+          <Badge
+            primary
+            style={{
+              marginLeft: responsiveWidth(-5),
+              marginTop: responsiveHeight(-2),
+              alignItems: 'center',
+            }}
+          ><Text>{offerCount}</Text></Badge>
         </Button>
       </View>
     );
