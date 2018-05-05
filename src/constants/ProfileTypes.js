@@ -2,8 +2,6 @@ export const PROFILE_VALUE_CHANGED = 'profile_value_changed';
 export const PROFILE_EDIT_REQUEST = 'profile_edit_request';
 export const PROFILE_EDIT_SUCCESS = 'profile_edit_success';
 export const PROFILE_EDIT_FAILURE = 'profile_edit_failure';
-export const PROFILE_PIC_UPLOAD_SUCCESS = 'profile_pic_upload_success';
-export const PROFILE_PIC_UPLOAD_FAILURE = 'profile_pic_upload_failure';
 
 export const CP_VERIFY_OTP_CHANGED = 'cp_verify_otp_changed';
 export const CP_VERIFY_OTP_REQUEST = 'cp_verify_otp_request';

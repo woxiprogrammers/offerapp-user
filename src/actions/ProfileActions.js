@@ -7,8 +7,6 @@ import {
   PROFILE_EDIT_SUCCESS,
   PROFILE_EDIT_FAILURE,
   USER_DATA_FETCH_SUCCESS,
-  PROFILE_PIC_UPLOAD_SUCCESS,
-  PROFILE_PIC_UPLOAD_FAILURE,
   CP_VERIFY_OTP_CHANGED,
   CP_VERIFY_OTP_REQUEST,
   CP_VERIFY_OTP_SUCCESS,
@@ -78,32 +76,6 @@ const profileEditSuccess = (dispatch, userData) => {
   });
   dispatch({ type: USER_DATA_FETCH_SUCCESS, userData });
   Actions.push('mainScreen');
-};
-
-
-export const profilePicUpload = ({ profilePicBase64, token }) => {
-  return (dispatch) => {
-    // const path = 'register';
-    axios({
-      url: `http://www.mocky.io/v2/5ae2e3f53100005500083c01?token=${token}`,
-      // url: `${URL}/${path}`,
-      method: 'post',
-      data: {
-        profilePicBase64
-      }
-    }).then(async (response) => {
-      const status = response.status;
-      if (status === 200) {
-        const { profilePic } = response.data.data;
-        dispatch({ type: PROFILE_PIC_UPLOAD_SUCCESS, profilePic });
-      } else {
-        dispatch({ type: PROFILE_PIC_UPLOAD_FAILURE });
-      }
-    }).catch((error) => {
-        console.log(error);
-        dispatch({ type: PROFILE_PIC_UPLOAD_FAILURE });
-    });
-  };
 };
 
 export const changePasswordVerifyOtp = ({ peMobileVerify, peOtpVerify }) => {

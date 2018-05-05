@@ -6,8 +6,7 @@ import {
     LOGIN_USER,
     LOGOUT_USER,
     USER_DATA_FETCH_SUCCESS,
-    PROFILE_PIC_UPLOAD_SUCCESS,
-    PROFILE_PIC_UPLOAD_FAILURE
+    IMAGEURL
   } from '../constants';
 
 const INITIAL_STATE = {
@@ -39,21 +38,17 @@ export default (state = INITIAL_STATE, action) => {
           loginLoading: false };
       case LOGIN_USER:
         return { ...state, loginLoading: true, error: false };
-      case USER_DATA_FETCH_SUCCESS:
-        return { ...state, userData: action.userData };
-      case PROFILE_PIC_UPLOAD_SUCCESS: {
-        const { profilePic } = action.profilePic;
+      case USER_DATA_FETCH_SUCCESS: {
+        const profilePic = action.userData.profilePic;
+        const profilePicPath = `${IMAGEURL}${profilePic}`;
         return {
           ...state,
-          userData: [
-            ...state.userData,
-            profilePic
-          ]
-        }; }
-      case PROFILE_PIC_UPLOAD_FAILURE:
-        return {
-          ...state,
+          userData: {
+          ...action.userData,
+          profilePic: profilePicPath
+          }
         };
+      }
       case LOGOUT_USER:
           return {
             ...state,
