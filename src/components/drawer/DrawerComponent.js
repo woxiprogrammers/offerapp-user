@@ -41,7 +41,6 @@ import {
   updateShowCategory,
   userDataFetch
 } from '../../actions';
-import { IMAGEURL } from '../../constants';
 
 class DrawerComponent extends React.Component {
   constructor(props) {
@@ -74,7 +73,7 @@ class DrawerComponent extends React.Component {
   toggleExpanded = () => {
   this.setState({ subExpand: !this.state.subExpand });
   }
-  keyExtractor = (item, index) => { return index + 1; };
+  keyExtractor = (item, index) => { const newind = index + 1; return newind.toString(); };
   autoBind(...methods) {
       methods.forEach(method => {
         this[method] = this[method].bind(this);
@@ -84,8 +83,14 @@ class DrawerComponent extends React.Component {
   renderArrow(category) {
     if (category.subCategory.length !== 0) {
         return (
-          <View>
+          <View
+            style={{
+              flex: 0.5,
+              justifyContent: 'center'
+            }}
+          >
           <Button
+            transparent
             style={{ height: responsiveHeight(4) }}
             onPress={async () => {
               console.log('Right Clicked');
@@ -93,13 +98,18 @@ class DrawerComponent extends React.Component {
               await this.props.updateShowCategory(category.subCategory);
             }}
           >
-          <Right>
-            <Icon
-              style={{ color: 'white' }}
-              ios='ios-arrow-forward'
-              android="md-arrow-forward"
-            />
-          </Right>
+            <Right
+              style={{
+                height: responsiveHeight(4),
+                justifyContent: 'center'
+              }}
+            >
+              <Icon
+                style={{ fontSize: responsiveFontSize(4), color: 'white' }}
+                ios='ios-arrow-forward'
+                android="md-arrow-forward"
+              />
+            </Right>
           </Button>
           </View>
         );
@@ -115,13 +125,14 @@ class DrawerComponent extends React.Component {
         <View
           style={{
           flexDirection: 'row',
+          height: responsiveHeight(4),
           }}
         >
           <TouchableWithoutFeedback
             onPress={() => {
               console.log(`Category: ${category.name}`);
               this.props.setCategory(category.id);
-              Actions.drawerClose(); Actions.categoryScreen();
+              Actions.drawerClose(); Actions.pop(); Actions.push('categoryScreen');
             }}
           >
             <Left>
@@ -138,13 +149,14 @@ class DrawerComponent extends React.Component {
         <View
           style={{
           flexDirection: 'row',
+          height: responsiveHeight(4),
           }}
         >
           <TouchableWithoutFeedback
             onPress={() => {
               console.log(`Category: ${category.name}`);
               this.props.setCategory(category.id);
-              Actions.drawerClose(); Actions.categoryScreen();
+              Actions.drawerClose(); Actions.pop(); Actions.push('categoryScreen');
             }}
           >
             <Left>
@@ -162,7 +174,7 @@ class DrawerComponent extends React.Component {
           <Button
             full
             transparent
-            style={{ justifyContent: 'flex-start', height: responsiveHeight(4) }}
+            style={{ justifyContent: 'flex-start' }}
             onPress={async () => {
               console.log('Left Clicked');
               await this.toggleExpanded();
@@ -170,11 +182,16 @@ class DrawerComponent extends React.Component {
             }}
           >
             <Icon
-              style={{ color: 'white' }}
+              style={{ fontSize: responsiveFontSize(2.5), color: 'white' }}
               ios='ios-arrow-back'
               android="md-arrow-back"
             />
-            <Text style={{ color: 'white' }}>Back to Categories</Text>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: responsiveFontSize(2.5)
+              }}
+            >Back to Categories</Text>
           </Button>
         </View>
       );
@@ -238,7 +255,7 @@ class DrawerComponent extends React.Component {
               <View style={{ paddingLeft: responsiveWidth(5) }}>
                 <Thumbnail
                   large
-                  source={{ uri: `${IMAGEURL}${profilePic}` }}
+                  source={{ uri: profilePic }}
                 />
               </View>
             </View>
@@ -265,7 +282,7 @@ class DrawerComponent extends React.Component {
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback
-              onPress={() => { Actions.drawerClose(); Actions.push('interestedScreen'); }}
+              onPress={() => { Actions.drawerClose(); Actions.interestedScreen(); }}
             >
               <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
                 <Icon style={{ color: 'white' }} ios='ios-thumbs-up' android="md-thumbs-up" />
