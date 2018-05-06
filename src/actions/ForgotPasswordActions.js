@@ -120,14 +120,14 @@ export const forgotPasswordVerifyOtpChanged = (text) => {
 export const forgotPassword = ({ password, fpMobileVerify }) => {
   return (dispatch) => {
     dispatch(forgotPasswordRequest());
-    // const path = 'getOtp';
+    const path = 'forgetpassword';
     axios({
-      // url: `${URL}/${path}`,
-      url: 'http://www.mocky.io/v2/5ae2e3f53100005500083c01',
+      url: `${URL}/${path}`,
+      // url: 'http://www.mocky.io/v2/5ae2e3f53100005500083c01',
       method: 'post',
       data: {
         password,
-        mobileNo: fpMobileVerify
+        mobile_no: fpMobileVerify
       }
     }).then((response) => {
       const status = response.status;
