@@ -65,18 +65,20 @@ class ListingTab extends Component {
       typeSelected,
       coords,
     } = this.props;
-    const { page, perPage, pageCount, totalCount } = pagination;
+    const { perPage, pageCount, totalCount } = pagination;
+    let { page } = pagination;
     const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
     if (!pagination.listingViewCategoryOffersLoading && !lastPage) {
-      this.props.getListViewCategory(
+      page += 1;
+      this.props.getListViewCategory({
         token,
         categorySelected,
         sortSelected,
         distance,
         typeSelected,
         coords,
-        page + 1
-      );
+        page
+      });
     }
   }
   onRefresh() {
@@ -88,15 +90,16 @@ class ListingTab extends Component {
       typeSelected,
       coords,
     } = this.props;
-    this.props.getListViewCategory(
+    const page = 1;
+    this.props.getListViewCategory({
       token,
       categorySelected,
       sortSelected,
       distance,
       typeSelected,
       coords,
-      1
-    );
+      page
+    });
   }
   autoBind(...methods) {
       methods.forEach(method => {
@@ -187,22 +190,24 @@ function mapStateToProps({ main, categories, user }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getListViewCategory: (
+        getListViewCategory: ({
           token,
           categorySelected,
           sortSelected,
           distance,
           typeSelected,
+          coords,
           page
-          ) => {
-          return dispatch(getListViewCategory(
+        }) => {
+          return dispatch(getListViewCategory({
             token,
             categorySelected,
             sortSelected,
             distance,
             typeSelected,
+            coords,
             page
-            ));
+          }));
         },
     };
 }

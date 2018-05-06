@@ -84,17 +84,19 @@ class MapTab extends Component {
       coords,
       pagination
     } = this.props;
-    const { page, perPage, pageCount, totalCount } = pagination;
+    const { perPage, pageCount, totalCount } = pagination;
+    let { page } = pagination;
     const lastPage = totalCount <= ((page - 1) * perPage) + pageCount;
     if (!pagination.mapViewCategoryOffersLoading && !lastPage) {
-      this.props.getMapViewCategory(
+      page += 1;
+      this.props.getMapViewCategory({
         token,
         categorySelected,
         distance,
         typeSelected,
         coords,
-        page + 1
-      );
+        page
+      });
     }
   }
   onRefresh() {

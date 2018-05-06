@@ -67,6 +67,16 @@ export const getListViewCategory = ({
     dispatch(getListViewCategoryRequest(page));
     const path = 'customer/offer/nearby/listing';
     console.log('Getting List View CategoryScreen');
+    // console.log('categorySelected is :');
+    // console.log(categorySelected);
+    // console.log('sortSelected is :');
+    // console.log(sortSelected);
+    // console.log('coords is :');
+    // console.log(coords);
+    // console.log('distance is :');
+    // console.log(distance);
+    // console.log('typeSelected is :');
+    // console.log(typeSelected);
     axios({
       // url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
       url: `${URL}/${path}/?token=${token}&page=${page}`,
@@ -86,7 +96,7 @@ export const getListViewCategory = ({
             type: LISTING_VIEW_CATEGORY_RESET
           });
         }
-        dispatch(getListViewCategorySuccess(response.data));
+        dispatch(getListViewCategorySuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getListViewCategoryFailure(error));
@@ -116,7 +126,7 @@ export const getListViewCategoryFailure = (error) => {
   };
 };
 export const getMapViewCategory = ({
-  //token,
+  token,
   categorySelected,
   distance,
   typeSelected,
@@ -124,17 +134,16 @@ export const getMapViewCategory = ({
   page }) => {
   return (dispatch) => {
     dispatch(getMapViewCategoryRequest(page));
-    // const path = '';
-    console.log('Getting Map View CategoryScreen');
+    const path = 'customer/offer/map/listing';
     axios({
-      url: 'http://www.mocky.io/v2/5ad72ad12e00006600c93e01',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: 'http://www.mocky.io/v2/5ad72ad12e00006600c93e01',
+      url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
         categorySelected,
         distance,
-        typeSelected,
-        coords,
+        offerTypeSlug: typeSelected,
+        coords
       }
     }).then((response) => {
       const status = response.status;
@@ -144,7 +153,7 @@ export const getMapViewCategory = ({
             type: MAP_VIEW_CATEGORY_RESET
           });
         }
-        dispatch(getMapViewCategorySuccess(response.data));
+        dispatch(getMapViewCategorySuccess(response.data.data));
       }
     }).catch((error) => {
         dispatch(getMapViewCategoryFailure(error));
