@@ -5,6 +5,9 @@ import {
   GET_REACH_IN_TIME_REQUEST,
   GET_REACH_IN_TIME_SUCCESS,
   GET_REACH_IN_TIME_FAILURE,
+  GET_OFFER_TYPES_REQUEST,
+  GET_OFFER_TYPES_SUCCESS,
+  GET_OFFER_TYPES_FAILURE,
   UPDATE_SHOW_CATEGORY
 } from '../constants';
 
@@ -14,6 +17,8 @@ const INITIAL_STATE = {
   reachInTime: [],
   categoriesLoading: false,
   reachInTimeLoading: false,
+  offerTypes: [],
+  offerTypesLoading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -29,7 +34,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         categoriesLoading: false,
         categories: [...categories],
-        showCategory: [...categories],
+        showCategory: [...categories]
       };
     }
     case GET_CATEGORIES_FAILURE:
@@ -60,6 +65,23 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         showCategory: action.category
       };
+    case GET_OFFER_TYPES_REQUEST:
+      return {
+        ...state,
+        offerTypesLoading: true
+      };
+    case GET_OFFER_TYPES_SUCCESS: {
+      const { offerTypes } = action;
+      return {
+        ...state,
+        offerTypes,
+        offerTypesLoading: false
+      }; }
+    case GET_OFFER_TYPES_FAILURE:
+    return {
+      ...state,
+      offerTypesLoading: false
+    };
     default:
       return state;
   }

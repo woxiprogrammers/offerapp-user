@@ -3,10 +3,7 @@ import {
   UPDATE_SORT_BY,
   UPDATE_FILTER,
   UPDATE_DISTANCE,
-  UPDATE_OFFER_TYPES,
-  GET_OFFER_TYPES_REQUEST,
-  GET_OFFER_TYPES_SUCCESS,
-  GET_OFFER_TYPES_FAILURE,
+  UPDATE_OFFER_TYPES
 } from '../../constants';
 
 const INITIAL_STATE = {
@@ -14,8 +11,6 @@ const INITIAL_STATE = {
   sortSelected: 'nearestFirst',
   distance: 1,
   typeSelected: 'all',
-  offerTypes: [],
-  offerTypesLoading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -48,22 +43,6 @@ export default (state = INITIAL_STATE, action) => {
         typeSelected: action.typeSelected
       };
     }
-    case GET_OFFER_TYPES_REQUEST:
-      return {
-        ...state,
-        offerTypesLoading: true
-      };
-    case GET_OFFER_TYPES_SUCCESS: {
-      return {
-        ...state,
-        offerTypes: action.offerTypes,
-        offerTypesLoading: false
-      }; }
-    case GET_OFFER_TYPES_FAILURE:
-    return {
-      ...state,
-      offerTypesLoading: false
-    };
     default:
       return state;
   }

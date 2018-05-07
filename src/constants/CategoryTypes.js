@@ -14,11 +14,6 @@ export const GET_MAP_VIEW_CATEGORY_REQUEST = 'get_map_view_category_request';
 export const GET_MAP_VIEW_CATEGORY_SUCCESS = 'get_map_view_category_success';
 export const GET_MAP_VIEW_CATEGORY_FAILURE = 'get_map_view_category_failure';
 
-export const GET_OFFER_TYPES_REQUEST = 'get_offer_types_request';
-export const GET_OFFER_TYPES_SUCCESS = 'get_offer_types_success';
-export const GET_OFFER_TYPES_FAILURE = 'get_offer_types_failure';
-
-
 export const GET_AR_VIEW_CATEGORY_REQUEST = 'get_ar_view_category_request';
 export const GET_AR_VIEW_CATEGORY_SUCCESS = 'get_ar_view_category_success';
 export const GET_AR_VIEW_CATEGORY_FAILURE = 'get_ar_view_category_failure';

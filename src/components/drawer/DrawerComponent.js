@@ -38,6 +38,7 @@ import {
   setCategory,
   getReachInTime,
   getCategories,
+  getOfferTypes,
   updateShowCategory,
   userDataFetch
 } from '../../actions';
@@ -66,6 +67,7 @@ class DrawerComponent extends React.Component {
     this.props.getCategories({ token });
     this.props.getReachInTime({ token });
     this.props.userDataFetch({ token });
+    this.props.getOfferTypes({ token });
   }
   // componentWillUpdate() {
   //   LayoutAnimation.spring();
@@ -364,7 +366,10 @@ function mapDispatchToProps(dispatch) {
         },
         updateShowCategory: (category) => {
           return dispatch(updateShowCategory(category));
-        }
+        },
+        getOfferTypes: ({ token }) => {
+          return dispatch(getOfferTypes({ token }));
+        },
     };
 }
 
