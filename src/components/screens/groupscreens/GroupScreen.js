@@ -47,7 +47,6 @@ class GroupScreen extends Component {
       groupId
     } = this.props;
     const page = 1;
-    console.log('Mounting GroupScreen');
     this.props.getGroupOffers({ token, page, groupId });
   }
   onEndReached() {
@@ -85,8 +84,6 @@ class GroupScreen extends Component {
     }
   }
   renderRow(offerDetails) {
-    // console.log('Rendering Row');
-    // console.log(offerDetails);
     const { item } = offerDetails;
     return (
       <OfferCard offerDetails={item} />

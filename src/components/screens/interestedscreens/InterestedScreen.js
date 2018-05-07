@@ -61,7 +61,6 @@ class InterestedScreen extends React.Component {
     const {
       token,
     } = this.props;
-    console.log('Mounting InterestedScreen');
     const page = 1;
     this.props.getInterestedOffers({ token, page });
   }
@@ -143,9 +142,6 @@ class InterestedScreen extends React.Component {
     }
   }
   renderRow(offerDetails) {
-    // console.log('Rendering Row');
-    // console.log(offerDetails);
-    // console.log(offerDetails);
     const { item, index } = offerDetails;
     return (
       <View>

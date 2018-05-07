@@ -47,7 +47,7 @@ const Slide = props => {
   return (
     <View style={styles.slide}>
       <TouchableOpacity
-        onPress={() => { console.log(props.offerId); }}
+        onPress={() => { Actions.push('offerDetailScreen', { getOffer: props.offerId }); }}
         style={{ height: responsiveHeight(25) }}
       >
       <Image
@@ -79,7 +79,6 @@ class MainScreen extends React.Component {
     });
   }
   async componentWillMount() {
-    console.log('Mounting MainScreen');
     const { token } = this.props;
     if (!this.props.fromChangeLocation) {
       const { status } = await Permissions.askAsync(Permissions.LOCATION);

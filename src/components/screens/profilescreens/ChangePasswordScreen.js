@@ -49,7 +49,6 @@ class ChangePasswordScreen extends React.Component {
     if (!empty) {
       this.props.changePassword({ password, token });
     } else {
-      console.log('Showing Toast !!');
       Toast.show({
                 text: 'Enter Correct Password !',
                 buttonText: 'Okay',

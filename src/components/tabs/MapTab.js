@@ -55,7 +55,6 @@ class MapTab extends Component {
       longitudeDelta: LONGITUDE_DELTA,
     };
     this.setState({ region });
-    console.log(JSON.stringify(location));
 
     const {
       token,
@@ -65,7 +64,6 @@ class MapTab extends Component {
       coords,
     } = this.props;
     const page = 1;
-    console.log('Mounting Map Tab');
     this.props.getMapViewCategory({
       token,
       categorySelected,

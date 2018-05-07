@@ -43,8 +43,6 @@ export const profileEdit = ({
   return (dispatch) => {
     dispatch({ type: PROFILE_EDIT_REQUEST });
     const path = 'customer/profile/edit';
-    // console.log('peProfilePicBase64 is :');
-    // console.log(peProfilePicBase64);
     axios({
       // url: `http://www.mocky.io/v2/5ae189c12d000028009d7ca2?token=${token}`,
       url: `${URL}/${path}?token=${token}`,
@@ -59,8 +57,6 @@ export const profileEdit = ({
       const status = response.status;
       if (status === 200) {
         const { userData } = response.data.data;
-        console.log('Success Editing Profile');
-        console.log(userData);
         profileEditSuccess(dispatch, userData);
       } else {
         dispatch({ type: PROFILE_EDIT_FAILURE });
@@ -210,7 +206,6 @@ export const changePassword = ({ password, token }) => {
       const status = response.status;
       if (status === 200) {
         dispatch(changePasswordSuccess());
-        console.log('Password Change Success');
         Actions.push('mainScreen');
       }
     }).catch((error) => {
@@ -253,7 +248,6 @@ export const changeMobileVerifyOtp = ({ token, pecmMobileVerify, peOtpVerify }) 
         credentialSlug
       }
     }).then((response) => {
-      console.log(response);
       const status = response.status;
       if (status === 200) {
         dispatch(changeMobileVerifyOtpSuccess());

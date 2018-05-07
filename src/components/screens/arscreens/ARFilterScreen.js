@@ -57,12 +57,7 @@ class ARFilterScreen extends React.Component {
           return (
             <TouchableWithoutFeedback
               onPress={() => {
-              console.log(`Setting type: ${slug}`);
               this.setType(slug);
-              console.log('typeSelected:');
-              console.log(typeSelected);
-              console.log('Slug is:');
-              console.log(slug);
               }}
             >
               <ListItem>

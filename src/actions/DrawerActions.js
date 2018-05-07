@@ -64,13 +64,10 @@ export const userDataFetch = ({ token }) => {
       .then((response) => {
         const status = response.status;
         if (status === 200) {
-          console.log('Success userDataFetch');
           const { userData } = response.data.data;
-          console.log(userData);
           dispatch({ type: USER_DATA_FETCH_SUCCESS, userData });
         }
-      }).catch((error) => {
-        console.log(error);
+      }).catch(() => {
       });
   };
 };

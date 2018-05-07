@@ -14,7 +14,6 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case MAP_VIEW_CATEGORY_RESET: {
-      console.log('Clearing list');
       return {
         ...INITIAL_STATE
       };

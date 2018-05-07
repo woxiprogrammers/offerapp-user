@@ -58,12 +58,7 @@ class FilterScreen extends React.Component {
           return (
             <TouchableWithoutFeedback
               onPress={() => {
-              console.log(`Setting type: ${slug}`);
               this.setType(slug);
-              console.log('typeSelected:');
-              console.log(typeSelected);
-              console.log('Slug is:');
-              console.log(slug);
               }}
             >
               <ListItem>
@@ -231,8 +226,6 @@ const styles = StyleSheet.create({
 function mapStateToProps({ drawer, categories, user }) {
   const { category } = categories;
   const { token } = user;
-  console.log('offerTypes is :');
-  console.log(drawer.offerTypes);
   return {
     ...drawer,
     ...category,

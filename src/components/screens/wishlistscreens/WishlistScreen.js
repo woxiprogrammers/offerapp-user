@@ -70,7 +70,6 @@ class WishlistScreen extends React.Component {
     const {
       token
     } = this.props;
-    console.log('Mounting WishlistScreen');
     const page = 1;
     this.props.getWishListOffers({ token, page });
   }
@@ -122,7 +121,6 @@ class WishlistScreen extends React.Component {
       >
         <TouchableOpacity
           onPress={() => {
-            console.log(`Index Remove: ${index} and Offer: ${offerId} `);
             this.props.removeWislistOffer({ index, token, offerId });
             this.refreshFlatlist(index);
           }}

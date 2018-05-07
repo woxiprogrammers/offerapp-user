@@ -88,7 +88,6 @@ class OfferDetailScreen extends React.Component {
       token,
       getOffer
     } = this.props;
-    console.log('Mounting OfferDetailScreen');
     await this.props.getOfferDetails({ token, offerId: getOffer });
   }
   showMapDialog = () => {

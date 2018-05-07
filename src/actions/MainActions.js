@@ -18,8 +18,6 @@ export const getNearbyOffers = ({ token, page, coords }) => {
   return (dispatch) => {
     dispatch(getNearbyOffersRequest(page));
     const path = 'customer/offer/nearby/listing';
-    console.log('coords are :');
-    console.log(coords);
     axios({
       // url: 'http://www.mocky.io/v2/5ae01b9032000055005109a3',
       url: `${URL}/${path}/?token=${token}&page=${page}`,

@@ -49,7 +49,6 @@ class ARListingScreen extends React.Component {
       typeSelected,
       token
     } = this.props;
-    console.log('Mounting ARListingScreen');
     const page = 1;
     this.props.getARListingOffers({
         sellerAddressId,
@@ -94,9 +93,6 @@ class ARListingScreen extends React.Component {
     }
   }
   renderRow(offerDetails) {
-    console.log('Rendering Row');
-    // console.log(offerDetails);
-    // console.log(offerDetails);
     const { item } = offerDetails;
     return (
       <OfferCard offerDetails={item} />

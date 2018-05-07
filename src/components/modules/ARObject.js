@@ -47,8 +47,6 @@ class ARObject extends React.Component {
         <Button
           transparent
           onPress={() => {
-            console.log(`Seller Address Id is : ${sellerAddressId}`);
-            console.log(`Seller Info is : ${sellerInfo}`);
             Actions.push('arListingSceen', { sellerInfo, sellerAddressId });
           }}
           style={{

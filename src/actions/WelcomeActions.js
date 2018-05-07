@@ -12,10 +12,8 @@ export const checkLoggedIn = () => {
       type: LOGIN_USER_SUCCESS,
       token
     });
-      console.log('Going to Main Screen');
       Actions.drawer({ type: 'reset' });
     } else {
-      console.log('Going to Login Screen');
       Actions.auth({ type: 'reset' });
     }
   };

@@ -7,7 +7,7 @@ import {
   View,
   Card
 } from 'native-base';
-// import AHImage from 'react-native-auto-height-image';
+import { Actions } from 'react-native-router-flux';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import {
   responsiveHeight,
@@ -35,7 +35,7 @@ import {
     } = this.props.offerDetails;
      return (
         <TouchableOpacity
-          onPress={() => { console.log(`OfferId: ${offerId}`); }}
+          onPress={() => { Actions.push('offerDetailScreen', { getOffer: offerId }); }}
           style={{
             backgroundColor: '#1E2D3E',
             height: responsiveHeight(16.5),

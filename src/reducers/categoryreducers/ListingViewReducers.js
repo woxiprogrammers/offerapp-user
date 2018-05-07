@@ -13,7 +13,6 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case LISTING_VIEW_CATEGORY_RESET: {
-      console.log('Clearing list');
       return {
         ...state,
         listingViewCategoryOffers: [],

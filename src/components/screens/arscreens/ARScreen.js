@@ -65,7 +65,6 @@ class ARScreen extends React.Component {
     this.autoBind('handleARStart', 'calculateAngleDegress');
   }
   async componentWillMount() {
-    console.log('Mounting AR Screen');
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
 
@@ -111,12 +110,6 @@ class ARScreen extends React.Component {
       });
   }
   componentDidMount() {
-    // console.log('=============================++');
-    // console.log(this.props);
-    // console.log('=============================!!');
-    // console.log(this.state);
-    // console.log('=============================++');
-    // console.log('componentDidMount');
     this.props.clearARObjects();
     Gyroscope.removeAllListeners();
     Gyroscope.setUpdateInterval(50);
@@ -162,12 +155,10 @@ class ARScreen extends React.Component {
       const { arOffers } = this.props;
 
       arOffers.map((offer, i) => {
-            console.log('Offer:');
-            console.log(offer);
             const xDisplacementDegrees = this.calculateAngleDegress(userLocation, offer);
             const xDeviation = ((180 + xDisplacementDegrees) - Math.round(initialBearing)) / 10;
-            console.log(`initialBearing : ${initialBearing}`);
-            console.log(`xDisplacementDegrees: ${xDisplacementDegrees}`);
+            // console.log(`initialBearing : ${initialBearing}`);
+            // console.log(`xDisplacementDegrees: ${xDisplacementDegrees}`);
             console.log(`xDeviation ${i} : ${xDeviation}`);
             const startingPosY = (height / 2);
             const startingPosX = (width / 2) + (xDeviation * width);
@@ -184,12 +175,12 @@ class ARScreen extends React.Component {
       this.setState({ loaded: true });
   }
   calculateAngleDegress(userLocation, offerLocation) {
-    console.log('userLocation: ');
-    console.log(userLocation);
-    console.log('Longitude::');
-    console.log((userLocation.longitude - offerLocation.longitude));
-    console.log('Latitude::');
-    console.log((userLocation.latitude - offerLocation.latitude));
+    // console.log('userLocation: ');
+    // console.log(userLocation);
+    // console.log('Longitude::');
+    // console.log((userLocation.longitude - offerLocation.longitude));
+    // console.log('Latitude::');
+    // console.log((userLocation.latitude - offerLocation.latitude));
 
     return Math.atan2(
       (userLocation.longitude - offerLocation.longitude),

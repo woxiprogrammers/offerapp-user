@@ -18,7 +18,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case AR_OFFERS_RESET: {
-      console.log('Clearing list');
+      
       return {
         ...INITIAL_STATE
       };

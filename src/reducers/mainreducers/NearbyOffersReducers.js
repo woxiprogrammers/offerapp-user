@@ -30,7 +30,6 @@ export default (state = INITIAL_STATE, action) => {
         }
       };
     case GET_NEARBY_OFFERS_SUCCESS: {
-      console.log('Success Nearby Offers!!');
       const { nearByOffers = [] } = action;
       return {
         ...state,

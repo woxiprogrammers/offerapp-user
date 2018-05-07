@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Gyroscope
-} from 'expo';
-import {
   StyleSheet,
   // Image,
   // ScrollView,
@@ -38,7 +35,6 @@ import {
 } from '../../../styles';
 import ListingTab from '../../tabs/ListingTab';
 import MapTab from '../../tabs/MapTab';
-// import ARTAb from '../../tabs/ARTab';
 
 export default class CategoryScreen extends Component {
   render() {
@@ -48,8 +44,6 @@ export default class CategoryScreen extends Component {
       titleStyle
     } = styles;
     const { initialPage = 1 } = this.props;
-    console.log('Initial Page :');
-    console.log(initialPage);
     return (
       <Container style={containerStyle}>
         <Header
@@ -78,14 +72,6 @@ export default class CategoryScreen extends Component {
           <Tabs
           initialPage={initialPage}
           locked
-          onChangeTab={({ i }) => {
-            console.log('Index is :');
-            console.log(i);
-            if (i !== 2) {
-              console.log('Removing All Listeners');
-              Gyroscope.removeAllListeners();
-            }
-          }}
           >
             <Tab
               heading={
@@ -127,23 +113,6 @@ export default class CategoryScreen extends Component {
                 </TouchableOpacity>
               </View>
             </Tab>
-            {/*<Tab
-              heading={
-                <TabHeading style={{ backgroundColor: '#EFF2F7' }}>
-                  <Icon name="eye" />
-                    <Text>AR</Text>
-                </TabHeading>}
-            >
-                <ARTAb />
-                <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
-                  <TouchableOpacity
-                    onPress={() => { Actions.push('filterScreen', { initialPage: 2 }); }}
-                    style={{ flex: 1, alignSelf: 'center' }}
-                  >
-                    <Text style={{ alignSelf: 'center' }}>Filter</Text>
-                  </TouchableOpacity>
-                </View>
-            </Tab>*/}
           </Tabs>
         </View>
        </Container>

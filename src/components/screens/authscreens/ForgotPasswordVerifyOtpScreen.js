@@ -40,7 +40,6 @@ class ForgotPasswordVerifyOtpScreen extends React.Component {
     this.props.forgotPasswordVerifyOtpChanged(text);
   }
   onButtonPress() {
-    console.log('Button Pressed !');
     const { fpMobileVerify, fpOtpVerify } = this.props;
     this.props.forgotPasswordVerifyOtp({ fpMobileVerify, fpOtpVerify });
   }

@@ -49,7 +49,6 @@ class ForgotPasswordScreen extends React.Component {
     if (!empty) {
       this.props.forgotPassword({ password, fpMobileVerify });
     } else {
-      console.log('Showing Toast !!');
       Toast.show({
                 text: 'Enter Correct Password !',
                 buttonText: 'Okay',

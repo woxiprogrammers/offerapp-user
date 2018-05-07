@@ -68,17 +68,6 @@ export const getListViewCategory = ({
     }
     dispatch(getListViewCategoryRequest(page));
     const path = 'customer/offer/nearby/listing';
-    console.log('Getting List View CategoryScreen');
-    // console.log('categorySelected is :');
-    // console.log(categorySelected);
-    // console.log('sortSelected is :');
-    // console.log(sortSelected);
-    // console.log('coords is :');
-    // console.log(coords);
-    // console.log('distance is :');
-    // console.log(distance);
-    // console.log('typeSelected is :');
-    // console.log(typeSelected);
     axios({
       // url: 'http://www.mocky.io/v2/5abffe7d2c00004d00c3ced1',
       url: `${URL}/${path}/?token=${token}&page=${page}`,
@@ -190,7 +179,6 @@ export const getARViewCategory = ({
   return (dispatch) => {
     dispatch(getARViewCategoryRequest(page));
     // const path = '';
-    console.log('Getting AR View CategoryScreen');
     axios({
       url: 'http://www.mocky.io/v2/5ad84f513000006c00e58702',
       // url: `${URL}/${path}/?token=${token}&page=${page}`,

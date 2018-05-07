@@ -95,7 +95,6 @@ class DrawerComponent extends React.Component {
             transparent
             style={{ height: responsiveHeight(4) }}
             onPress={async () => {
-              console.log('Right Clicked');
               await this.toggleExpanded();
               await this.props.updateShowCategory(category.subCategory);
             }}
@@ -132,7 +131,6 @@ class DrawerComponent extends React.Component {
         >
           <TouchableWithoutFeedback
             onPress={() => {
-              console.log(`Category: ${category.name}`);
               this.props.setCategory(category.id);
               Actions.drawerClose(); Actions.pop(); Actions.push('categoryScreen');
             }}
@@ -156,7 +154,6 @@ class DrawerComponent extends React.Component {
         >
           <TouchableWithoutFeedback
             onPress={() => {
-              console.log(`Category: ${category.name}`);
               this.props.setCategory(category.id);
               Actions.drawerClose(); Actions.pop(); Actions.push('categoryScreen');
             }}
@@ -178,7 +175,6 @@ class DrawerComponent extends React.Component {
             transparent
             style={{ justifyContent: 'flex-start' }}
             onPress={async () => {
-              console.log('Left Clicked');
               await this.toggleExpanded();
               await this.props.updateShowCategory(this.props.categories);
             }}

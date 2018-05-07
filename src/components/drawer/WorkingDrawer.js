@@ -104,7 +104,6 @@ class DrawerComponent extends React.Component {
           <Button
             style={{ height: responsiveHeight(4) }}
             onPress={() => {
-              console.log('Right Clicked');
               this.toggleExpanded();
               this.setState({ subCategorySelected: category });
             }}
@@ -152,8 +151,6 @@ class DrawerComponent extends React.Component {
                   <ListItem>
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log('SubCategory: ');
-                        console.log(`${subCategorySelected}:${subcategory}`);
                         this.props.setCategory(`${category}:${subcategory}`);
                         Actions.drawerClose(); Actions.categoryScreen();
                       }}
@@ -252,7 +249,6 @@ class DrawerComponent extends React.Component {
                   >
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log(`Category: ${categories[0]}`);
                         this.props.setCategory(`${categories[0]}`);
                         Actions.drawerClose(); Actions.categoryScreen();
                       }}
@@ -273,7 +269,6 @@ class DrawerComponent extends React.Component {
                   >
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log(`Category: ${categories[1]}`);
                         this.props.setCategory(`${categories[1]}`);
                         Actions.drawerClose(); Actions.categoryScreen();
                       }}
@@ -294,7 +289,6 @@ class DrawerComponent extends React.Component {
                   >
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log(`Category: ${categories[2]}`);
                         this.props.setCategory(`${categories[2]}`);
                         Actions.drawerClose(); Actions.categoryScreen();
                       }}
@@ -315,7 +309,6 @@ class DrawerComponent extends React.Component {
                   >
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log(`Category: ${categories[3]}`);
                         this.props.setCategory(`${categories[3]}`);
                         Actions.drawerClose(); Actions.categoryScreen();
                       }}
@@ -336,7 +329,6 @@ class DrawerComponent extends React.Component {
                   >
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log(`Category: ${categories[4]}`);
                         this.props.setCategory(`${categories[4]}`);
                         Actions.drawerClose(); Actions.categoryScreen();
                       }}
@@ -357,7 +349,6 @@ class DrawerComponent extends React.Component {
                   >
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log(`Category: ${categories[5]}`);
                         this.props.setCategory(`${categories[5]}`);
                         Actions.drawerClose(); Actions.categoryScreen();
                       }}
@@ -378,7 +369,6 @@ class DrawerComponent extends React.Component {
                   >
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log(`Category: ${categories[6]}`);
                         this.props.setCategory(`${categories[6]}`);
                         Actions.drawerClose(); Actions.categoryScreen();
                       }}
@@ -399,7 +389,6 @@ class DrawerComponent extends React.Component {
                   >
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log(`Category: ${categories[7]}`);
                         this.props.setCategory(`${categories[7]}`);
                         Actions.drawerClose(); Actions.categoryScreen();
                       }}

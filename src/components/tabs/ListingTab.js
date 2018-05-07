@@ -44,7 +44,6 @@ class ListingTab extends Component {
       coords,
     } = this.props;
     const page = 1;
-    console.log('Mounting Listing Tab');
     this.props.getListViewCategory({
       token,
       categorySelected,
@@ -117,9 +116,6 @@ class ListingTab extends Component {
     }
   }
   renderRow(offerDetails) {
-    // console.log('Rendering Row');
-    // console.log(offerDetails);
-    // console.log(offerDetails);
     const { item } = offerDetails;
     return (
       <View>

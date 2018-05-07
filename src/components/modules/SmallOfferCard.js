@@ -36,8 +36,6 @@ export default class SmallOfferCard extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          console.log('Going to OfferDetail:');
-          console.log(offerId);
           Actions.push('offerDetailScreen', { getOffer: offerId });
         }}
       >

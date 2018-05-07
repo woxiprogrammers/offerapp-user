@@ -71,7 +71,6 @@ class GroupListingScreen extends React.Component {
       return (
         <TouchableWithoutFeedback
           onPress={() => {
-            console.log(`Group: ${groupId}`);
             Actions.push('groupScreen', { groupId });
           }}
         >

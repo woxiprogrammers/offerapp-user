@@ -23,7 +23,6 @@ import {
 } from '../constants';
 
 export function addARObject(arObject) {
-  console.log(arObject);
   return dispatch => {
       dispatch({
           type: ADD_AR_OBJECT,
@@ -85,9 +84,6 @@ export function updateGyroData(gyroData) {
   };
 }
 export const updateARFilter = ({ distance, typeSelected }) => {
-  console.log('============--!!!!');
-  console.log(distance);
-  console.log(typeSelected);
   return {
     type: UPDATE_AR_FILTER,
     distance,
@@ -103,7 +99,6 @@ export const getAROffers = ({
   return (dispatch) => {
     dispatch(getAROffersRequest(page));
     const path = 'customer/offer/augmented_reality/seller_info';
-    console.log('Getting AR Offers Screen');
     axios({
       // url: 'http://www.mocky.io/v2/5ae1a0c92d000046009d7d22',
       url: `${URL}/${path}/?token=${token}`,
