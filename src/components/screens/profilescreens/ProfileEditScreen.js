@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, ImageBackground } from 'react-native';
 import {
   Thumbnail,
   Container,
@@ -222,6 +222,7 @@ class ProfileEditScreen extends React.Component {
                 <Item stackedLabel >
                   <Label>Email Address</Label>
                   <Input
+                    keyboardType='email-address'
                     onChangeText={
                         value => {
                           this.props.profileValueChanged({

@@ -41,24 +41,26 @@ export const profileEdit = ({
   token
 }) => {
   return (dispatch) => {
-    const roleSlug = 'customer';
     dispatch({ type: PROFILE_EDIT_REQUEST });
-    // const path = 'register';
+    const path = 'customer/profile/edit';
+    // console.log('peProfilePicBase64 is :');
+    // console.log(peProfilePicBase64);
     axios({
-      url: `http://www.mocky.io/v2/5ae189c12d000028009d7ca2?token=${token}`,
-      // url: `${URL}/${path}`,
+      // url: `http://www.mocky.io/v2/5ae189c12d000028009d7ca2?token=${token}`,
+      url: `${URL}/${path}?token=${token}`,
       method: 'post',
       data: {
-        roleSlug,
-        peFirstName,
-        peLastName,
-        peEmail,
-        peProfilePicBase64,
+        firstName: peFirstName,
+        lastName: peLastName,
+        email: peEmail,
+        profilePicBase64: peProfilePicBase64,
       }
     }).then(async (response) => {
       const status = response.status;
       if (status === 200) {
         const { userData } = response.data.data;
+        console.log('Success Editing Profile');
+        console.log(userData);
         profileEditSuccess(dispatch, userData);
       } else {
         dispatch({ type: PROFILE_EDIT_FAILURE });
@@ -194,18 +196,21 @@ export const passwordValueChanged = (text) => {
 export const changePassword = ({ password, token }) => {
   return (dispatch) => {
     dispatch(changePasswordRequest());
-    // const path = 'getOtp';
+    const path = 'customer/change_credential/password';
+    const credentialSlug = 'password';
     axios({
-      // url: `${URL}/${path}`,
-      url: `http://www.mocky.io/v2/5ae2e3f53100005500083c01?token=${token}`,
+      url: `${URL}/${path}?token=${token}`,
+      // url: `http://www.mocky.io/v2/5ae2e3f53100005500083c01?token=${token}`,
       method: 'post',
       data: {
-        password
+        password,
+        credentialSlug
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
         dispatch(changePasswordSuccess());
+        console.log('Password Change Success');
         Actions.push('mainScreen');
       }
     }).catch((error) => {
@@ -233,19 +238,22 @@ export const changePasswordFailure = (error) => {
 };
 
 
-export const changeMobileVerifyOtp = ({ pecmMobileVerify, peOtpVerify }) => {
+export const changeMobileVerifyOtp = ({ token, pecmMobileVerify, peOtpVerify }) => {
   return (dispatch) => {
     dispatch(changeMobileVerifyOtpRequest());
-    const path = 'verifyOtp';
+    const path = 'customer/change_credential/mobile_no';
+    const credentialSlug = 'mobile_no';
     axios({
-      url: `${URL}/${path}`,
+      url: `${URL}/${path}?token=${token}`,
       // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',
       method: 'post',
       data: {
         mobile_no: pecmMobileVerify,
-        otp: peOtpVerify
+        otp: peOtpVerify,
+        credentialSlug
       }
     }).then((response) => {
+      console.log(response);
       const status = response.status;
       if (status === 200) {
         dispatch(changeMobileVerifyOtpSuccess());
@@ -257,6 +265,7 @@ export const changeMobileVerifyOtp = ({ pecmMobileVerify, peOtpVerify }) => {
         Actions.auth({ type: 'reset' });
       }
     }).catch((error) => {
+        console.log(error);
         dispatch(changeMobileVerifyOtpFailure(error));
     });
   };
