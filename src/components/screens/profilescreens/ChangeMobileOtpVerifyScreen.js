@@ -40,8 +40,8 @@ class ChangeMobileOtpVerifyScreen extends React.Component {
     this.props.changeMobileVerifyOtpChanged(text);
   }
   onButtonPress() {
-    const { pecmMobileVerify, peOtpVerify } = this.props;
-    this.props.changeMobileVerifyOtp({ pecmMobileVerify, peOtpVerify });
+    const { token, pecmMobileVerify, peOtpVerify } = this.props;
+    this.props.changeMobileVerifyOtp({ token, pecmMobileVerify, peOtpVerify });
   }
   renderGetOtpButton() {
     const { verifyOtpStyle, otpButtonStyle } = styles;
@@ -211,11 +211,13 @@ otpButtonStyle: {
 }
 });
 
-function mapStateToProps({ profile }) {
+function mapStateToProps({ user, profile }) {
     const { profileedit, changemobile } = profile;
+    const { token } = user;
     return {
         ...profileedit,
-        ...changemobile
+        ...changemobile,
+        token
     };
 }
 
@@ -224,8 +226,8 @@ function mapDispatchToProps(dispatch) {
         changeMobileVerifyOtpChanged: (text) => {
           return dispatch(changeMobileVerifyOtpChanged(text));
         },
-        changeMobileVerifyOtp: ({ pecmMobileVerify, peOtpVerify }) => {
-          return dispatch(changeMobileVerifyOtp({ pecmMobileVerify, peOtpVerify }));
+        changeMobileVerifyOtp: ({ token, pecmMobileVerify, peOtpVerify }) => {
+          return dispatch(changeMobileVerifyOtp({ token, pecmMobileVerify, peOtpVerify }));
         },
     };
 }

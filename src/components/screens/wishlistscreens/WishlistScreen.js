@@ -50,13 +50,13 @@ class WishlistScreen extends React.Component {
     }
     this.autoBind(
       'onEndReached',
-      'onRefresh',
       'renderRow',
       'refreshFlatlist',
       'showScaleAnimationDialog',
       'renderInterested',
       'renderDialogContent',
-      'renderWishlistOptions'
+      'renderWishlistOptions',
+      'renderLoading'
     );
     this.state = ({
       removeWislistOffer: null,
@@ -89,14 +89,6 @@ class WishlistScreen extends React.Component {
       page += 1;
       this.props.getWishListOffers({ token, page });
     }
-  }
-
-  onRefresh() {
-    const {
-      token
-    } = this.props;
-    const page = 1;
-    this.props.getWishListOffers({ token, page });
   }
   showScaleAnimationDialog = () => {
     this.scaleAnimationDialog.show();
@@ -178,19 +170,22 @@ class WishlistScreen extends React.Component {
         </TouchableOpacity>
       );
   }
-  renderRow(offerDetails) {
-    const { item, index } = offerDetails;
+  renderLoading() {
     const { pagination } = this.props;
     if (pagination.wishListOffersLoading) {
       return (
-        <LoadingIndicator loading={pagination.wishListOffersLoading} />);
-    }
-      return (
-        <View>
-        <OfferCard offerDetails={item} />
-        {this.renderWishlistOptions({ item, index })}
-        </View>
+        <LoadingIndicator loading={pagination.wishListOffersLoading} />
       );
+    }
+  }
+  renderRow(offerDetails) {
+    const { item, index } = offerDetails;
+    return (
+      <View>
+      <OfferCard offerDetails={item} />
+      {this.renderWishlistOptions({ item, index })}
+      </View>
+    );
   }
   renderDialogContent() {
     const {
@@ -283,14 +278,13 @@ class WishlistScreen extends React.Component {
             paddingLeft: responsiveWidth(2.5) }}
         >
           <FlatList
-            automaticallyAdjustContentInsets={false}
+            style={{ flex: 1 }}
             data={wishListOffers}
-            refreshing={false}
             renderItem={this.renderRow}
             keyExtractor={this.keyExtractor}
-            onRefresh={() => { return this.onRefresh(); }}
             onEndReached={() => { return this.onEndReached(); }}
           />
+          {this.renderLoading()}
       </Content>
     </Container>
      );

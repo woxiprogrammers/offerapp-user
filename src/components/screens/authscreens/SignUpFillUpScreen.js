@@ -180,6 +180,7 @@ class SignUpFillUpScreen extends React.Component {
                 <Item stackedLabel >
                   <Label> Email Address</Label>
                   <Input
+                    keyboardType='email-address'
                     onChangeText={
                         value => {
                           this.props.valueChanged({

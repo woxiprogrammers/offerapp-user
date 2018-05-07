@@ -22,7 +22,7 @@ import {
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {
-  responsiveHeight,
+  // responsiveHeight,
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
@@ -35,7 +35,8 @@ class GroupListingScreen extends React.Component {
   constructor(props) {
     super(props);
     this.autoBind(
-      'renderRow'
+      'renderRow',
+      'renderGroupList'
     );
   }
   componentWillMount() {
@@ -48,18 +49,25 @@ class GroupListingScreen extends React.Component {
         return this[method];
       });
   }
-  renderRow(groupDetails) {
-    const { groupId, groupName } = groupDetails;
-    const { groupListLoading } = this.props;
+  renderGroupList() {
+    const { groupListLoading, groupList } = this.props;
     if (groupListLoading) {
       return (
-        <View style={styles.loadingStyle}>
-          <Spinner
-            style={{ height: responsiveHeight(25) }}
-            color='black'
-          />
-        </View>);
+        <LoadingIndicator loading={groupListLoading} />
+      );
     }
+    return (
+      <List
+        dataArray={groupList}
+        renderRow={(group) => {
+            return (this.renderRow(group));
+          }
+        }
+      />
+    );
+  }
+  renderRow(groupDetails) {
+    const { groupId, groupName } = groupDetails;
       return (
         <TouchableWithoutFeedback
           onPress={() => {
@@ -79,7 +87,6 @@ class GroupListingScreen extends React.Component {
       );
   }
   render() {
-    const { groupList } = this.props;
     const {
       containerStyle,
       headerStyle,
@@ -105,20 +112,24 @@ class GroupListingScreen extends React.Component {
           <Right />
         </Header>
         <Content>
-          <List
-            dataArray={groupList}
-            renderRow={(group) => {
-                // console.log('Group: ');
-                // console.log(group);
-                return (this.renderRow(group));
-              }
-            }
-          />
+          {this.renderGroupList()}
         </Content>
       </Container>
     );
   }
 }
+const LoadingIndicator = ({ loading }) => {
+  return (
+    loading ? (
+      <View style={styles.loadingStyle}>
+        <Spinner
+        // style={{ height: responsiveHeight(25) }}
+        color='black'
+        />
+      </View>
+    ) : null
+  );
+};
 const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: colors.white,
@@ -133,7 +144,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'black'
   },
   titleStyle: {
     fontWeight: 'bold',

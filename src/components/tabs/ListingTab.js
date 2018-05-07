@@ -31,6 +31,7 @@ class ListingTab extends Component {
       'onEndReached',
       'onRefresh',
       'renderRow',
+      'renderLoading'
     );
   }
   componentWillMount() {
@@ -41,9 +42,8 @@ class ListingTab extends Component {
       distance,
       typeSelected,
       coords,
-      pagination
     } = this.props;
-    const { page } = pagination;
+    const page = 1;
     console.log('Mounting Listing Tab');
     this.props.getListViewCategory({
       token,
@@ -108,21 +108,24 @@ class ListingTab extends Component {
       });
   }
   keyExtractor = (item, index) => { return index.toString(); };
+  renderLoading() {
+    const { pagination } = this.props;
+    if (pagination.listingViewCategoryOffersLoading) {
+      return (
+        <LoadingIndicator loading={pagination.listingViewCategoryOffersLoading} />
+      );
+    }
+  }
   renderRow(offerDetails) {
     // console.log('Rendering Row');
     // console.log(offerDetails);
     // console.log(offerDetails);
     const { item } = offerDetails;
-    const { pagination } = this.props;
-    if (pagination.listingViewCategoryOffersLoading) {
-      return (
-        <LoadingIndicator loading={pagination.listingViewCategoryOffersLoading} />);
-    }
-      return (
-        <View>
-          <OfferCard offerDetails={item} />
-        </View>
-      );
+    return (
+      <View>
+        <OfferCard offerDetails={item} />
+      </View>
+    );
   }
   render() {
     const {
@@ -139,7 +142,7 @@ class ListingTab extends Component {
           }}
         >
           <FlatList
-            automaticallyAdjustContentInsets={false}
+            style={{ flex: 1 }}
             data={listingViewCategoryOffers}
             refreshing={false}
             renderItem={this.renderRow}
@@ -147,6 +150,8 @@ class ListingTab extends Component {
             onRefresh={() => { return this.onRefresh(); }}
             onEndReached={() => { return this.onEndReached(); }}
           />
+          {this.renderLoading()}
+
         </Content>
        </Container>
      );

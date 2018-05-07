@@ -36,9 +36,9 @@ class GroupScreen extends Component {
     super(props);
     this.autoBind(
       'onEndReached',
-      'onRefresh',
       'renderRow',
-      'renderLeaveGroup'
+      'renderLeaveGroup',
+      'renderLoading'
     );
   }
   componentWillMount() {
@@ -64,14 +64,6 @@ class GroupScreen extends Component {
       this.props.getGroupOffers({ token, page, groupId });
     }
   }
-  onRefresh() {
-    const {
-      token,
-      groupId
-    } = this.props;
-    const page = 1;
-    this.props.getGroupOffers({ token, page, groupId });
-  }
 
   autoBind(...methods) {
       methods.forEach(method => {
@@ -84,18 +76,21 @@ class GroupScreen extends Component {
     const { token, groupId } = this.props;
     this.props.leaveGroup({ token, groupId });
   }
+  renderLoading() {
+    const { pagination } = this.props;
+    if (pagination.groupOffersLoading) {
+      return (
+        <LoadingIndicator loading={pagination.groupOffersLoading} />
+      );
+    }
+  }
   renderRow(offerDetails) {
     // console.log('Rendering Row');
     // console.log(offerDetails);
     const { item } = offerDetails;
-    const { pagination } = this.props;
-    if (pagination.groupOffersLoading) {
-      return (
-        <LoadingIndicator loading={pagination.groupOffersLoading} />);
-    }
-      return (
-        <OfferCard offerDetails={item} />
-      );
+    return (
+      <OfferCard offerDetails={item} />
+    );
   }
   renderLeaveGroup() {
     if (this.props.leaveGroupLoading) {
@@ -147,14 +142,13 @@ class GroupScreen extends Component {
             paddingLeft: responsiveWidth(2.5) }}
         >
         <FlatList
-          refreshing
-          automaticallyAdjustContentInsets={false}
+          style={{ flex: 1 }}
           data={groupOffers}
           renderItem={this.renderRow}
           keyExtractor={this.keyExtractor}
-          onRefresh={() => { return this.onRefresh(); }}
           onEndReached={() => { return this.onEndReached(); }}
         />
+        {this.renderLoading()}
       </Content>
       <View style={leaveGroupStyle}>
       {this.renderLeaveGroup()}

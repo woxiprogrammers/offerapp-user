@@ -12,7 +12,6 @@ import {
   ListItem,
   Header,
   Button,
-  Spinner,
   Right,
   Radio,
   Title,
@@ -35,13 +34,9 @@ import {
   // mixins,
   colors,
 } from '../../../styles';
-import { updateFilter, getOfferTypes, updateOfferTypes, updateDistance } from '../../../actions';
+import { updateFilter, updateOfferTypes, updateDistance } from '../../../actions';
 
 class FilterScreen extends React.Component {
-  componentWillMount() {
-    const { token } = this.props;
-    this.props.getOfferTypes({ token });
-  }
   setType(text) {
     const typeSelected = text;
     this.props.updateOfferTypes(typeSelected);
@@ -52,20 +47,7 @@ class FilterScreen extends React.Component {
   }
   keyExtractor = (item, index) => { return index.toString(); };
   renderOfferTypes() {
-    const { typeSelected, offerTypesLoading, offerTypes } = this.props;
-    if (offerTypesLoading) {
-      return (
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <Spinner color="black" />
-        </View>
-      );
-    }
+    const { typeSelected, offerTypes } = this.props;
     return (
       <FlatList
         data={offerTypes}
@@ -108,7 +90,7 @@ class FilterScreen extends React.Component {
       sliderStyle,
       titleStyle
     } = styles;
-    const { typeSelected } = this.props;
+    const { typeSelected, distance } = this.props;
     const { initialPage } = this.props;
     return (
       <Container style={containerStyle}>
@@ -145,18 +127,17 @@ class FilterScreen extends React.Component {
               <Text>Offer Distance</Text>
             </Left>
             <Right>
-              <Text>{this.props.distance} Km</Text>
+              <Text>{distance} Km</Text>
             </Right>
           </View>
           <Slider
            step={1}
            minimumValue={1}
            maximumValue={5}
-           value={this.props.distance}
+           value={distance}
            onSlidingComplete={
              (val) => {
-               const distance = val;
-               this.props.updateDistance(distance);
+               this.props.updateDistance(val);
              }
            }
           />
@@ -247,10 +228,13 @@ const styles = StyleSheet.create({
     width: responsiveWidth(60)
   },
 });
-function mapStateToProps({ categories, user }) {
+function mapStateToProps({ drawer, categories, user }) {
   const { category } = categories;
   const { token } = user;
+  console.log('offerTypes is :');
+  console.log(drawer.offerTypes);
   return {
+    ...drawer,
     ...category,
      token
   };
@@ -265,9 +249,6 @@ function mapDispatchToProps(dispatch) {
         },
         updateDistance: (distance) => {
           return dispatch(updateDistance(distance));
-        },
-        getOfferTypes: ({ token }) => {
-          return dispatch(getOfferTypes({ token }));
         },
     };
 }

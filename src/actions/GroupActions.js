@@ -56,6 +56,11 @@ export const getGroupListFailure = (error) => {
 
 export const getGroupOffers = ({ token, page, groupId }) => {
   return (dispatch) => {
+    if (page === 1) {
+      dispatch({
+        type: GROUP_OFFERS_RESET
+      });
+    }
     dispatch(getGroupOffersRequest(page));
     const path = 'customer/group/offers';
     axios({
@@ -68,11 +73,6 @@ export const getGroupOffers = ({ token, page, groupId }) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        if (page === 1) {
-          dispatch({
-            type: GROUP_OFFERS_RESET
-          });
-        }
         dispatch(getGroupOffersSuccess(response.data.data));
       }
     }).catch((error) => {

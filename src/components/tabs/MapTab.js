@@ -42,6 +42,7 @@ class MapTab extends Component {
       'onEndReached',
       'onRefresh',
       'renderRow',
+      'renderLoading'
     );
   }
   async componentWillMount() {
@@ -62,9 +63,8 @@ class MapTab extends Component {
       distance,
       typeSelected,
       coords,
-      pagination
     } = this.props;
-    const { page } = pagination;
+    const page = 1;
     console.log('Mounting Map Tab');
     this.props.getMapViewCategory({
       token,
@@ -127,18 +127,21 @@ class MapTab extends Component {
       });
   }
   keyExtractor = (item, index) => { return index.toString(); };
-  renderRow(offerDetails) {
-    const { item } = offerDetails;
+  renderLoading() {
     const { pagination } = this.props;
     if (pagination.mapViewCategoryOffersLoading) {
       return (
-        <LoadingIndicator loading={pagination.mapViewCategoryOffersLoading} />);
-    }
-      return (
-        <View>
-          <MapOfferCard offerDetails={item} />
-        </View>
+        <LoadingIndicator loading={pagination.mapViewCategoryOffersLoading} />
       );
+    }
+  }
+  renderRow(offerDetails) {
+    const { item } = offerDetails;
+    return (
+      <View>
+        <MapOfferCard offerDetails={item} />
+      </View>
+    );
   }
   render() {
     const {
@@ -183,6 +186,7 @@ class MapTab extends Component {
                   height: responsiveHeight(1) }}
               />
               <FlatList
+                style={{ flex: 1 }}
                 data={mapViewCategoryOffers}
                 refreshing={false}
                 scrollEnabled={false}
@@ -191,6 +195,7 @@ class MapTab extends Component {
                 onRefresh={() => { return this.onRefresh(); }}
                 onEndReached={() => { return this.onEndReached(); }}
               />
+              {this.renderLoading()}
             </ScrollView>
         </View>
       </Container>
@@ -207,7 +212,7 @@ const LoadingIndicator = ({ loading }) => {
      <View style={styles.loadingStyle}>
        <Spinner
        // style={{ height: responsiveHeight(25) }}
-       color='black'
+       color='white'
        />
      </View>
    ) : null

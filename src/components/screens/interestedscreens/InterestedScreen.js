@@ -48,7 +48,8 @@ class InterestedScreen extends React.Component {
       'onRefresh',
       'renderRow',
       'showScaleAnimationDialog',
-      'renderInterestedOptions'
+      'renderInterestedOptions',
+      'renderLoading'
     );
     this.state = ({
       selectedGrabOffer: {
@@ -133,22 +134,25 @@ class InterestedScreen extends React.Component {
       </View>
     );
   }
+  renderLoading() {
+    const { pagination } = this.props;
+    if (pagination.interestedOffersLoading) {
+      return (
+        <LoadingIndicator loading={pagination.interestedOffersLoading} />
+      );
+    }
+  }
   renderRow(offerDetails) {
     // console.log('Rendering Row');
     // console.log(offerDetails);
     // console.log(offerDetails);
     const { item, index } = offerDetails;
-    const { pagination } = this.props;
-    if (pagination.interestedOffersLoading) {
-      return (
-        <LoadingIndicator loading={pagination.interestedOffersLoading} />);
-    }
-      return (
-        <View>
-        <OfferCard offerDetails={item} />
-        {this.renderInterestedOptions({ item, index })}
-        </View>
-      );
+    return (
+      <View>
+      <OfferCard offerDetails={item} />
+      {this.renderInterestedOptions({ item, index })}
+      </View>
+    );
   }
   renderDialogContent() {
     const {
@@ -230,7 +234,7 @@ class InterestedScreen extends React.Component {
             paddingLeft: responsiveWidth(2.5) }}
         >
         <FlatList
-          automaticallyAdjustContentInsets={false}
+          style={{ flex: 1 }}
           data={interestedOffers}
           refreshing={false}
           renderItem={this.renderRow}
@@ -238,6 +242,7 @@ class InterestedScreen extends React.Component {
           onRefresh={() => { return this.onRefresh(); }}
           onEndReached={() => { return this.onEndReached(); }}
         />
+        {this.renderLoading()}
       </Content>
     </Container>
     );

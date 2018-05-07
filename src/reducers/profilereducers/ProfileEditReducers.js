@@ -21,13 +21,13 @@ const INITIAL_STATE = {
     peOtpVerifyLoading: false,
     peOtpVerifyError: false,
     peFirstName: '',
-    peProfilePicBase64: null,
+    peProfilePicBase64: '',
     peLastName: '',
     peEmail: '',
     pePassword: '',
     peLoading: false,
     peError: false,
-    pecmMobileVerify: ''
+    pecmMobileVerify: '',
 };
 
 export default (state = INITIAL_STATE, action) => {

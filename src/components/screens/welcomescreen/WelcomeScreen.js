@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, ImageBackground } from 'react-native';
+import { ImageBackground } from 'react-native';
 import Expo from 'expo';
 import {
   Container,

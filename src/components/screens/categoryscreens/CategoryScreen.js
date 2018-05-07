@@ -69,9 +69,9 @@ export default class CategoryScreen extends Component {
             <Title style={titleStyle}>Category Screen</Title>
           </Body>
           <Right>
-            <Button transparent>
+            {/*<Button transparent>
               <Icon style={{ color: 'white' }} ios='ios-pin' android="md-pin" />
-            </Button>
+            </Button>**/}
           </Right>
         </Header>
         <View style={{ flex: 1 }}>

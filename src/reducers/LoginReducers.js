@@ -10,7 +10,7 @@ import {
   } from '../constants';
 
 const INITIAL_STATE = {
-    user: '5555555555',
+    user: '9724233636',
     password: 'tejas',
     error: false,
     loginLoading: false,

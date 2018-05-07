@@ -12,7 +12,6 @@ import {
   Spinner,
   Header,
   Button,
-  Badge,
   Right,
   Title,
   Left,
@@ -276,7 +275,7 @@ class MainScreen extends React.Component {
                   marqueeResetDelay={1000}
                 >{locationNameMain}</MarqueeText>
                 <Right>
-                  <Button
+                  {/*<Button
                     transparent
                     onPress={() => { Actions.push('changeLocationScreen'); }}
                   >
@@ -287,7 +286,7 @@ class MainScreen extends React.Component {
                         color: colors.headerColor,
                        }}
                     >CHANGE</Text>
-                  </Button>
+                  </Button>*/}
                 </Right>
               </View>
             </View>

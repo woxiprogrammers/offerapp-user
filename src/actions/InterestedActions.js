@@ -17,6 +17,11 @@ import {
 
 export const getInterestedOffers = ({ token, page }) => {
   return (dispatch) => {
+    if (page === 1) {
+      dispatch({
+        type: INTERESTED_OFFERS_RESET
+      });
+    }
     dispatch(getInterestedOffersRequest(page));
     const path = 'customer/offer/interested/listing';
     const offerStatus = 'interested';
@@ -30,11 +35,6 @@ export const getInterestedOffers = ({ token, page }) => {
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        if (page === 1) {
-          dispatch({
-            type: INTERESTED_OFFERS_RESET
-          });
-        }
         dispatch(getInterestedOffersSuccess(response.data.data));
       }
     }).catch((error) => {
@@ -112,10 +112,10 @@ export const sendInterestedOfferFailure = (error) => {
 export const getGrabCode = ({ token, offerId }) => {
   return (dispatch) => {
     dispatch(getGrabCodeRequest());
-    // const path = 'customer/offer/interested/add';
+    const path = 'customer/offer/interested/grabcode';
     axios({
-      url: `http://www.mocky.io/v2/5ae9bc0b3000006c005db199?token=${token}`,
-      // url: `${URL}/${path}/?token=${token}`,
+      // url: `http://www.mocky.io/v2/5ae9bc0b3000006c005db199?token=${token}`,
+      url: `${URL}/${path}/?token=${token}`,
       method: 'post',
       data: {
         offerId
