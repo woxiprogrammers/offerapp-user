@@ -1,5 +1,6 @@
 import React from 'react';
 import { Scene, Router, Drawer, Stack, Overlay } from 'react-native-router-flux';
+import WelcomeScreen from './src/components/screens/welcomescreen/WelcomeScreen';
 import LoginScreen from './src/components/screens/authscreens/LoginScreen';
 import ForgotPasswordMobileVerifyScreen from
 './src/components/screens/authscreens/ForgotPasswordMobileVerifyScreen';
@@ -38,6 +39,9 @@ class RouterComponent extends React.Component {
       <Router sceneStyle={{ paddingTop: 0 }}>
         <Overlay key="overlay">
           <Scene key="root">
+          <Scene initial key="welcomeMain" >
+            <Scene hideNavBar key="welcome" component={WelcomeScreen} />
+          </Scene>
           <Scene key="auth">
             <Scene hideNavBar key="loginScreen" component={LoginScreen} />
             <Scene
