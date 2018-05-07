@@ -262,9 +262,79 @@ class ARScreen extends React.Component {
     } = styles;
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
-      return <Text>Camera Null</Text>;
+      return (<Container style={containerStyle}>
+      <Header
+        style={headerStyle}
+        iosBarStyle='light-content'
+      >
+        <Left style={{ flexDirection: 'row' }}>
+          <Button transparent onPress={() => { Actions.popTo('mainScreen'); }}>
+            <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
+          </Button>
+          <Button transparent style={{ padding: 0 }} onPress={Actions.drawerOpen}>
+            <Icon style={{ color: 'white' }} ios='ios-menu' android="md-menu" />
+          </Button>
+        </Left>
+        <Body>
+          <Title style={titleStyle}>AR Screen</Title>
+        </Body>
+        <Right />
+        </Header>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+        <Text>Camera Null</Text>
+        </View>
+        <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
+          <TouchableOpacity
+            onPress={() => { Actions.push('arFilterScreen', { }); }}
+            style={{ flex: 1, alignSelf: 'center' }}
+          >
+            <Text style={{ alignSelf: 'center' }}>Filter</Text>
+          </TouchableOpacity>
+        </View>
+      </Container>);
     } else if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
+      return (<Container style={containerStyle}>
+      <Header
+        style={headerStyle}
+        iosBarStyle='light-content'
+      >
+        <Left style={{ flexDirection: 'row' }}>
+          <Button transparent onPress={() => { Actions.popTo('mainScreen'); }}>
+            <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
+          </Button>
+          <Button transparent style={{ padding: 0 }} onPress={Actions.drawerOpen}>
+            <Icon style={{ color: 'white' }} ios='ios-menu' android="md-menu" />
+          </Button>
+        </Left>
+        <Body>
+          <Title style={titleStyle}>AR Screen</Title>
+        </Body>
+        <Right />
+        </Header>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+        <Text>No Permission to Camera</Text>
+        </View>
+        <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
+          <TouchableOpacity
+            onPress={() => { Actions.push('arFilterScreen', { }); }}
+            style={{ flex: 1, alignSelf: 'center' }}
+          >
+            <Text style={{ alignSelf: 'center' }}>Filter</Text>
+          </TouchableOpacity>
+        </View>
+      </Container>);
     }
     return (
       <Container style={containerStyle}>

@@ -9,12 +9,15 @@ import {
     GET_AR_LISTING_OFFERS_SUCCESS,
     GET_AR_LISTING_OFFERS_FAILURE,
     AR_LISTING_OFFERS_RESET,
+    UPDATE_AR_OFFER_TYPES,
+    UPDATE_AR_DISTANCE,
     GYRO_MOVE_THRESHOLD_X,
     ADD_AR_OBJECT,
     UPDATE_GYRO_DATA,
     CLEAR_AR_OBJECTS,
     UPDATE_X,
     UPDATE_Y,
+    URL
     // AR_HANDLE
 //    GYRO_MOVE_THRESHOLD_Y
 } from '../constants';
@@ -92,18 +95,18 @@ export const updateARFilter = ({ distance, typeSelected }) => {
   };
 };
 export const getAROffers = ({
-  //token,
+  token,
   distance,
   typeSelected,
   coords,
   page }) => {
   return (dispatch) => {
     dispatch(getAROffersRequest(page));
-    // const path = '';
+    const path = 'customer/offer/augmented_reality/seller_info';
     console.log('Getting AR Offers Screen');
     axios({
-      url: 'http://www.mocky.io/v2/5ae1a0c92d000046009d7d22',
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: 'http://www.mocky.io/v2/5ae1a0c92d000046009d7d22',
+      url: `${URL}/${path}/?token=${token}`,
       method: 'post',
       data: {
         distance,
@@ -147,28 +150,30 @@ export const getAROffersFailure = (error) => {
   };
 };
 export const getARListingOffers = ({
-    token,
     sellerAddressId,
+    typeSelected,
+    token,
     page
   }) => {
   return (dispatch) => {
+    if (page === 1) {
+      dispatch({
+        type: AR_LISTING_OFFERS_RESET
+      });
+    }
     dispatch(getARListingOffersRequest(page));
-    // const path = 'customer/offer/interested/listing';
+    const path = 'customer/offer/augmented_reality/listing';
     axios({
-      url: `http://www.mocky.io/v2/5ae19c8e2d00005e009d7d03?token=${token}`,
-      // url: `${URL}/${path}/?token=${token}&page=${page}`,
+      // url: `http://www.mocky.io/v2/5ae19c8e2d00005e009d7d03?token=${token}`,
+      url: `${URL}/${path}/?token=${token}&page=${page}`,
       method: 'post',
       data: {
+        offerTypeSlug: typeSelected,
         sellerAddressId
       }
     }).then((response) => {
       const status = response.status;
       if (status === 200) {
-        if (page === 1) {
-          dispatch({
-            type: AR_LISTING_OFFERS_RESET
-          });
-        }
         dispatch(getARListingOffersSuccess(response.data.data));
       }
     }).catch((error) => {
@@ -196,5 +201,18 @@ export const getARListingOffersFailure = (error) => {
   return {
     type: GET_AR_LISTING_OFFERS_FAILURE,
     error
+  };
+};
+
+export const updateAROfferTypes = (typeSelected) => {
+  return {
+    type: UPDATE_AR_OFFER_TYPES,
+    typeSelected
+  };
+};
+export const updateARDistance = (distance) => {
+  return {
+    type: UPDATE_AR_DISTANCE,
+    distance
   };
 };

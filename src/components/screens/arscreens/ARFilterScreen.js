@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Slider,
   TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  FlatList
 } from 'react-native';
 import {
   Container,
@@ -15,7 +16,6 @@ import {
   Radio,
   Title,
   Left,
-  List,
   Text,
   View,
   Icon,
@@ -33,19 +33,52 @@ import {
   // mixins,
   colors,
 } from '../../../styles';
-import { updateARFilter } from '../../../actions';
+import { updateARFilter, updateAROfferTypes, updateARDistance } from '../../../actions';
 
 class ARFilterScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { distance: 1, typeSelected: 'all' };
-  }
   setType(text) {
-    this.setState({ typeSelected: text });
+    const typeSelected = text;
+    this.props.updateAROfferTypes(typeSelected);
   }
   filterPressed = () => {
-    const { distance, typeSelected } = this.state;
+    const { distance, typeSelected } = this.props;
     this.props.updateARFilter({ distance, typeSelected });
+  }
+  keyExtractor = (item, index) => { return index.toString(); };
+  renderOfferTypes() {
+    const { typeSelected, offerTypes } = this.props;
+    return (
+      <FlatList
+        data={offerTypes}
+        keyExtractor={this.keyExtractor}
+        extraData={this.props.typeSelected}
+        renderItem={(offerItem) => {
+          const { name, slug } = offerItem.item;
+          return (
+            <TouchableWithoutFeedback
+              onPress={() => {
+              console.log(`Setting type: ${slug}`);
+              this.setType(slug);
+              console.log('typeSelected:');
+              console.log(typeSelected);
+              console.log('Slug is:');
+              console.log(slug);
+              }}
+            >
+              <ListItem>
+                <Body>
+                  <Text>{name}</Text>
+                </Body>
+                <Right>
+                  <Radio selected={typeSelected === slug} />
+                </Right>
+              </ListItem>
+            </TouchableWithoutFeedback>
+          );
+          }
+        }
+      />
+    );
   }
   render() {
     const {
@@ -56,7 +89,7 @@ class ARFilterScreen extends React.Component {
       sliderStyle,
       titleStyle
     } = styles;
-    const { typeSelected } = this.state;
+    const { typeSelected, distance } = this.props;
     return (
       <Container style={containerStyle}>
       <Header
@@ -92,15 +125,17 @@ class ARFilterScreen extends React.Component {
               <Text>Offer Distance</Text>
             </Left>
             <Right>
-              <Text>{this.state.distance} Km</Text>
+              <Text>{distance} Km</Text>
             </Right>
           </View>
           <Slider
            step={1}
            minimumValue={1}
            maximumValue={5}
-           value={this.state.distance}
-           onSlidingComplete={(val) => { this.setState({ distance: val }); }}
+           value={distance}
+           onSlidingComplete={(val) => {
+             this.props.updateARDistance(val);
+           }}
           />
           <View
             style={{
@@ -121,48 +156,17 @@ class ARFilterScreen extends React.Component {
         </View>
         <View style={offerTypeStyle}>
         <Text>Offer Type</Text>
-          <List>
-          <TouchableWithoutFeedback onPress={() => { this.setType('all'); }}>
-            <ListItem>
-              <Body>
-                <Text>All</Text>
-              </Body>
-              <Right>
-                <Radio selected={typeSelected === 'all'} />
-              </Right>
-            </ListItem>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => { this.setType('buyGet'); }}>
-            <ListItem>
-              <Body>
-                <Text>BUY X GET Y</Text>
-              </Body>
-              <Right>
-                <Radio selected={typeSelected === 'buyGet'} />
-              </Right>
-            </ListItem>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => { this.setType('flat'); }}>
-            <ListItem>
-              <Body>
-                <Text>Flat %</Text>
-              </Body>
-              <Right>
-                <Radio selected={typeSelected === 'flat'} />
-              </Right>
-            </ListItem>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => { this.setType('upto'); }}>
-            <ListItem>
-              <Body>
-                <Text>Upto %</Text>
-              </Body>
-              <Right>
-                <Radio selected={typeSelected === 'upto'} />
-              </Right>
-            </ListItem>
-          </TouchableWithoutFeedback>
-          </List>
+        <TouchableWithoutFeedback onPress={() => { this.setType('all'); }}>
+          <ListItem>
+            <Body>
+              <Text>All</Text>
+            </Body>
+            <Right>
+              <Radio selected={typeSelected === 'all'} />
+            </Right>
+          </ListItem>
+        </TouchableWithoutFeedback>
+        {this.renderOfferTypes()}
         </View>
         </Content>
         <View style={filterButtonStyle}>
@@ -220,9 +224,11 @@ const styles = StyleSheet.create({
     width: responsiveWidth(60)
   },
 });
-function mapStateToProps({ ar }) {
+function mapStateToProps({ drawer, ar }) {
     const { aroffers } = ar;
+    const { offerTypes } = drawer;
     return {
+      offerTypes,
       ...aroffers
     };
 }
@@ -230,6 +236,12 @@ function mapDispatchToProps(dispatch) {
     return {
         updateARFilter: ({ distance, typeSelected }) => {
           return dispatch(updateARFilter({ distance, typeSelected }));
+        },
+        updateAROfferTypes: (typeSelected) => {
+          return dispatch(updateAROfferTypes(typeSelected));
+        },
+        updateARDistance: (distance) => {
+          return dispatch(updateARDistance(distance));
         },
     };
 }

@@ -3,7 +3,9 @@ import {
   GET_AR_OFFERS_SUCCESS,
   GET_AR_OFFERS_FAILURE,
   AR_OFFERS_RESET,
-  UPDATE_AR_FILTER
+  UPDATE_AR_OFFER_TYPES,
+  UPDATE_AR_DISTANCE,
+  UPDATE_AR_FILTER,
 } from '../../constants';
 
 const INITIAL_STATE = {
@@ -40,6 +42,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         arOffersLoading: false
     };
+    case UPDATE_AR_OFFER_TYPES: {
+      return {
+        ...state,
+        typeSelected: action.typeSelected
+      }; }
+    case UPDATE_AR_DISTANCE:
+      return {
+        ...state,
+        distance: action.distance
+      };
     case UPDATE_AR_FILTER:
     return {
       ...state,

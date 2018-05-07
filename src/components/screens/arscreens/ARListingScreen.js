@@ -39,27 +39,31 @@ class ARListingScreen extends React.Component {
     super(props);
     this.autoBind(
       'onEndReached',
-      'renderRow'
+      'renderRow',
+      'renderLoading'
     );
   }
   componentWillMount() {
     const {
-      token,
-      sellerAddressId
+      sellerAddressId,
+      typeSelected,
+      token
     } = this.props;
     console.log('Mounting ARListingScreen');
     const page = 1;
     this.props.getARListingOffers({
-        token,
         sellerAddressId,
+        typeSelected,
+        token,
         page
       });
   }
   onEndReached() {
     const {
+      sellerAddressId,
+      typeSelected,
       pagination,
-      token,
-      sellerAddressId
+      token
     } = this.props;
     const { perPage, pageCount, totalCount } = pagination;
     let { page } = pagination;
@@ -67,8 +71,9 @@ class ARListingScreen extends React.Component {
     if (!pagination.interestedOffersLoading && !lastPage) {
       page += 1;
       this.props.getARListingOffers({
-          token,
           sellerAddressId,
+          typeSelected,
+          token,
           page
         });
     }
@@ -80,20 +85,22 @@ class ARListingScreen extends React.Component {
       });
   }
   keyExtractor = (item, index) => { return index.toString(); };
+  renderLoading() {
+    const { pagination } = this.props;
+    if (pagination.arListingOffersLoading) {
+      return (
+        <LoadingIndicator loading={pagination.arListingOffersLoading} />
+      );
+    }
+  }
   renderRow(offerDetails) {
     console.log('Rendering Row');
     // console.log(offerDetails);
     // console.log(offerDetails);
     const { item } = offerDetails;
-    const { pagination } = this.props;
-    const loading = pagination.arListingOffersLoading;
-    if (loading) {
-      return (
-        <LoadingIndicator loading={loading} />);
-    }
-      return (
-        <OfferCard offerDetails={item} />
-      );
+    return (
+      <OfferCard offerDetails={item} />
+    );
   }
   render() {
     const {
@@ -136,12 +143,12 @@ class ARListingScreen extends React.Component {
         >
         <FlatList
           style={{ flex: 1 }}
-          automaticallyAdjustContentInsets={false}
           data={arListingOffers}
           renderItem={this.renderRow}
           keyExtractor={this.keyExtractor}
           onEndReached={() => { return this.onEndReached(); }}
         />
+        {this.renderLoading()}
       </Content>
     </Container>
     );
@@ -186,16 +193,27 @@ const styles = StyleSheet.create({
 });
 function mapStateToProps({ ar, user }) {
     const { token } = user;
-    const { arlisting } = ar;
+    const { arlisting, aroffers } = ar;
     return {
         ...arlisting,
+        ...aroffers,
         token
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getARListingOffers: ({ token, sellerAddressId, page }) => {
-          return dispatch(getARListingOffers({ token, sellerAddressId, page }));
+        getARListingOffers: ({
+            sellerAddressId,
+            typeSelected,
+            token,
+            page
+          }) => {
+          return dispatch(getARListingOffers({
+              sellerAddressId,
+              typeSelected,
+              token,
+              page
+            }));
         },
     };
 }

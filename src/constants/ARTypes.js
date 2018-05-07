@@ -9,6 +9,8 @@ export const GET_AR_LISTING_OFFERS_REQUEST = 'get_ar_listing_offers_request';
 export const GET_AR_LISTING_OFFERS_SUCCESS = 'get_ar_listing_offers_success';
 export const GET_AR_LISTING_OFFERS_FAILURE = 'get_ar_listing_offers_failure';
 export const UPDATE_AR_FILTER = 'update_ar_filter';
+export const UPDATE_AR_OFFER_TYPES = 'update_ar_offer_types';
+export const UPDATE_AR_DISTANCE = 'update_ar_distance';
 
 export const ADD_AR_OBJECT = 'add_ar_object';
 export const UPDATE_GYRO_DATA = 'update_gyro_data';
