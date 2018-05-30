@@ -19,7 +19,7 @@ import {
 export const forgotPasswordGetOtp = ({ mobileVerify }) => {
   return (dispatch) => {
     dispatch(forgotPasswordGetOtpRequest());
-    const path = 'getOtp';
+    const path = 'get-otp';
     axios({
       url: `${URL}/${path}`,
       // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',
@@ -65,7 +65,7 @@ export const forgotPasswordPasswordValueChanged = (text) => {
 export const forgotPasswordVerifyOtp = ({ fpMobileVerify, fpOtpVerify }) => {
   return (dispatch) => {
     dispatch(forgotPasswordVerifyOtpRequest());
-    const path = 'verifyOtp';
+    const path = 'verify-otp';
     axios({
       url: `${URL}/${path}`,
       // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',
@@ -120,7 +120,7 @@ export const forgotPasswordVerifyOtpChanged = (text) => {
 export const forgotPassword = ({ password, fpMobileVerify }) => {
   return (dispatch) => {
     dispatch(forgotPasswordRequest());
-    const path = 'forgetpassword';
+    const path = 'forget-password';
     axios({
       url: `${URL}/${path}`,
       // url: 'http://www.mocky.io/v2/5ae2e3f53100005500083c01',

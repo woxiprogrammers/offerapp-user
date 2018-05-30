@@ -71,6 +71,7 @@ class ChangeMobileGetOtpScreen extends React.Component {
       contentStyle,
       // pickerStyle,
       headerStyle,
+      labelStyle,
       titleStyle,
       textStyle,
       itemStyle,
@@ -104,12 +105,10 @@ class ChangeMobileGetOtpScreen extends React.Component {
               <View>
                 <Form style={formStyle}>
                   <View style={itemViewStyle}>
-                    <Item >
-                      <Label> +91</Label>
-                    </Item>
-                    <Item floatingLabel style={itemStyle}>
-                      <Label> Enter your number</Label>
+                    <Item stackedLabel style={itemStyle}>
+                      <Label style={labelStyle}> Enter your number</Label>
                       <Input
+                      style={{ color: 'white' }}
                         onChangeText={this.onMobileVerifyChange.bind(this)}
                         value={this.props.pecmMobileVerify}
                         keyboardType='numeric'
@@ -152,6 +151,11 @@ const styles = StyleSheet.create({
   contentStyle: {
     alignItems: 'center',
   },
+  labelStyle: {
+    color: '#d2d2d2',
+    alignSelf: 'center',
+    justifyContent: 'center'
+   },
   textStyle: {
     fontSize: responsiveFontSize(3.3),
     marginTop: responsiveHeight(5),
@@ -192,7 +196,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   otpButtonStyle: {
-    fontSize: responsiveFontSize(2.2)
+    fontSize: responsiveFontSize(2.5)
   }
 
 });

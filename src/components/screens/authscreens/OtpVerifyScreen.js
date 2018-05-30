@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground } from 'react-native';
+import { StyleSheet, ImageBackground, TouchableOpacity, Platform } from 'react-native';
 import {
   Container,
   Content,
@@ -70,9 +70,11 @@ class OtpVerifyScreen extends React.Component {
       contentStyle,
       headerStyle,
       titleStyle,
+      inputStyle,
       itemStyle,
       formStyle,
       textStyle,
+      iconStyle,
       editStyle
     } = styles;
     return (
@@ -96,29 +98,34 @@ class OtpVerifyScreen extends React.Component {
               </Button>
             </Left>
             <Body>
-              <Title style={titleStyle}>Sign Up-Step 2</Title>
+              <Title style={titleStyle}>Sign Up>Step 2</Title>
             </Body>
             <Right />
           </Header>
           <Content contentContainerStyle={contentStyle}>
             <View>
-              <Text style={textStyle}>Enter the OTP sent to</Text>
+              <Text
+                style={{ color: 'white',
+                 fontSize: responsiveFontSize(3),
+                 paddingTop: responsiveHeight(10) }}
+              >Enter the OTP sent to</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={textStyle}>{this.props.mobileVerify}</Text>
-              <Button onPress={Actions.pop} transparent style={editStyle} >
+              <TouchableOpacity onPress={Actions.pop} transparent style={editStyle} >
                   <Icon
-                    style={{ color: colors.darkGrayTransparent }}
+                    style={iconStyle}
                     ios='ios-create-outline' android="md-create"
                   />
-              </Button>
+              </TouchableOpacity>
             </View>
             <View>
               <Form style={formStyle}>
                 <View style={itemViewStyle}>
                   <Item stackedLabel style={itemStyle} >
-                    <Label> Enter OTP</Label>
+                    <Label style={{ color: '#d2d2d2' }}> Enter OTP</Label>
                     <Input
+                    style={inputStyle}
                       onChangeText={this.onOtpVerifyChange.bind(this)}
                       value={this.props.otpVerify}
                     />
@@ -139,8 +146,21 @@ class OtpVerifyScreen extends React.Component {
 const styles = StyleSheet.create({
 containerStyle: {
   marginTop: 20,
-  flex: 1
-},
+  flex: 1,
+
+  },
+  iconStyle: {
+    color: colors.white,
+    ...Platform.select({
+          ios: {
+            paddingLeft: responsiveWidth(5),
+          },
+          android: {
+            paddingLeft: responsiveWidth(5),
+            paddingTop: responsiveHeight(1)
+          },
+        }),
+  },
 headerStyle: {
   backgroundColor: colors.headerColor,
   borderBottomColor: colors.headerColor,
@@ -165,8 +185,13 @@ contentStyle: {
 textStyle: {
   fontSize: responsiveHeight(3.5),
   marginTop: responsiveHeight(5),
-  color: colors.darkGray,
+  color: colors.white,
   textAlign: 'center',
+},
+inputStyle: {
+ color: 'white',
+justifyContent: 'center',
+
 },
 verifyOtpStyle: {
   width: responsiveWidth(50),
@@ -184,7 +209,7 @@ formStyle: {
   marginTop: responsiveHeight(10),
   width: responsiveWidth(50),
   alignItems: 'center',
-  paddingBottom: responsiveHeight(2)
+  padding: responsiveHeight(2),
 },
 itemViewStyle: {
   height: responsiveHeight(10),
@@ -199,7 +224,7 @@ itemStyle: {
   flex: 1,
 },
 otpButtonStyle: {
-  fontSize: responsiveFontSize(2.2)
+  fontSize: responsiveFontSize(2.5)
 }
 });
 

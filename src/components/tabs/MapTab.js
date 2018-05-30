@@ -145,14 +145,14 @@ class MapTab extends Component {
     );
   }
   renderMapOffers() {
-    const { whiteStyle, mapOffersErrorStyle } = styles;
+    const { blackStyle, mapOffersErrorStyle } = styles;
     const { mapViewCategoryOffers, pagination } = this.props;
     if (pagination.mapViewCategoryOffersLoading) {
       return (
         <View
           showsVerticalScrollIndicator={false}
           style={{
-            backgroundColor: '#1E2D3E',
+            backgroundColor: '#fafafa',
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center'
@@ -161,7 +161,7 @@ class MapTab extends Component {
           <View
             style={{
               width: responsiveWidth(100),
-              backgroundColor: '#1E2D3E',
+              backgroundColor: '#fafafa',
               height: responsiveHeight(1),
               alignItems: 'center',
               justifyContent: 'center'
@@ -174,20 +174,20 @@ class MapTab extends Component {
     if (mapViewCategoryOffers.length === 0) {
       return (
         <View style={mapOffersErrorStyle}>
-          <Icon style={whiteStyle}active name='ionitron' />
-          <Text style={whiteStyle}>Sorry! No Offers to Show </Text>
+          <Icon style={blackStyle}active name='ionitron' />
+          <Text style={blackStyle}>Sorry! No Offers to Show </Text>
         </View>);
     }
     return (<ScrollView
       showsVerticalScrollIndicator={false}
       style={{
-        backgroundColor: '#1E2D3E',
+        backgroundColor: '#fafafa',
         flex: 1, }}
     >
       <View
         style={{
           width: responsiveWidth(100),
-          backgroundColor: '#1E2D3E',
+          backgroundColor: '#fafafa',
           height: responsiveHeight(1) }}
       />
       <FlatList
@@ -248,7 +248,7 @@ const LoadingIndicator = ({ loading }) => {
      <View style={styles.loadingStyle}>
        <Spinner
        // style={{ height: responsiveHeight(25) }}
-       color='white'
+       color='black'
        />
      </View>
    ) : null
@@ -265,10 +265,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1E2D3E',
+    backgroundColor: '#fafafa',
   },
-  whiteStyle: {
-    color: colors.white
+  blackStyle: {
+    color: colors.black
   },
   loadingStyle: {
     flex: 1,

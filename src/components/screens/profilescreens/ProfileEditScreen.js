@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, ImageBackground, TouchableOpacity, Platform } from 'react-native';
 import {
   Thumbnail,
   Container,
@@ -13,6 +13,7 @@ import {
   Label,
   Form,
   Item,
+  Text,
   Left,
   View,
   Icon,
@@ -140,6 +141,8 @@ class ProfileEditScreen extends React.Component {
       viewItemStyle,
       contentStyle,
       headerStyle,
+      labelStyle,
+      inputStyle,
       formStyle,
       titleStyle,
       // errorStyle
@@ -196,6 +199,7 @@ class ProfileEditScreen extends React.Component {
                   <Item stackedLabel>
                     <Label>First Name</Label>
                     <Input
+                      style={inputStyle}
                       onChangeText={
                           value => {
                             this.props.profileValueChanged({
@@ -211,6 +215,7 @@ class ProfileEditScreen extends React.Component {
                   <Item stackedLabel>
                     <Label>Last Name</Label>
                     <Input
+                    style={inputStyle}
                       onChangeText={
                           value => {
                             this.props.profileValueChanged({
@@ -227,6 +232,7 @@ class ProfileEditScreen extends React.Component {
                 <Item stackedLabel >
                   <Label>Email Address</Label>
                   <Input
+                  style={inputStyle}
                     keyboardType='email-address'
                     onChangeText={
                         value => {
@@ -244,9 +250,9 @@ class ProfileEditScreen extends React.Component {
                 onPress={() => { Actions.changeMobileGetOtpScreen(); }}
               >
               <View style={viewItemStyle}>
-                <Item>
-                  <Label>Change Mobile Number</Label>
-                </Item>
+
+                  <Text>Change Mobile Number</Text>
+
               </View>
               </Button>
               <Button
@@ -254,9 +260,9 @@ class ProfileEditScreen extends React.Component {
                 onPress={() => { Actions.changePasswordOtpVerifyScreen(); }}
               >
               <View style={viewItemStyle}>
-                <Item >
-                  <Label>Change Password</Label>
-                </Item>
+
+                  <Text>Change Password</Text>
+
               </View>
               </Button>
             </Form>
@@ -274,6 +280,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flex: 1
   },
+
   headerStyle: {
     borderBottomColor: colors.headerColor,
     backgroundColor: colors.headerColor,
@@ -302,8 +309,20 @@ formStyle: {
   marginTop: responsiveHeight(5),
   flex: 1,
 },
+inputStyle: {
+  ...Platform.select({
+        ios: {
+          height: responsiveHeight(5),
+          paddingBottom: responsiveHeight(3)
+        },
+        android: {
+
+          paddingTop: responsiveHeight(1)
+        },
+      }),
+},
 viewEmailItemStyle: {
-  backgroundColor: '#D4D4D4',
+  backgroundColor: 'white',
   width: responsiveWidth(100),
   height: responsiveHeight(12),
   justifyContent: 'center',
@@ -312,7 +331,7 @@ viewEmailItemStyle: {
   paddingLeft: responsiveWidth(2)
 },
 errorStyle: {
-  backgroundColor: '#D4D4D4',
+  backgroundColor: 'white',
   width: responsiveWidth(100),
   height: responsiveHeight(6),
   justifyContent: 'center',
@@ -321,7 +340,7 @@ errorStyle: {
   paddingLeft: responsiveWidth(2)
 },
 viewItemStyle: {
-  backgroundColor: '#D4D4D4',
+  backgroundColor: 'white',
   width: responsiveWidth(100),
   height: responsiveHeight(7),
   marginTop: responsiveHeight(2),
@@ -332,7 +351,7 @@ viewItemStyle: {
 viewFirstNameStyle: {
   marginRight: responsiveWidth(3),
   height: responsiveHeight(12),
-  backgroundColor: '#D4D4D4',
+  backgroundColor: 'white',
   flex: 1,
   paddingBottom: responsiveHeight(2),
   paddingLeft: responsiveWidth(2)
@@ -340,7 +359,7 @@ viewFirstNameStyle: {
 },
 viewLastNameStyle: {
   height: responsiveHeight(12),
-  backgroundColor: '#D4D4D4',
+  backgroundColor: 'white',
   flex: 1,
   paddingBottom: responsiveHeight(2),
   paddingLeft: responsiveWidth(2)

@@ -28,7 +28,7 @@ export const valueChanged = ({ prop, value }) => {
 export const getOtp = ({ mobileVerify }) => {
   return (dispatch) => {
     dispatch(getOtpRequest());
-    const path = 'getOtp';
+    const path = 'get-otp';
     axios({
       url: `${URL}/${path}`,
       // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',
@@ -43,6 +43,7 @@ export const getOtp = ({ mobileVerify }) => {
         Actions.push('verifyOtpScreen');
       }
     }).catch((error) => {
+      console.log(error);
         dispatch(getOtpFailure(error));
     });
   };
@@ -68,7 +69,7 @@ export const getOtpFailure = (error) => {
 export const verifyOtp = ({ mobileVerify, otpVerify }) => {
   return (dispatch) => {
     dispatch(verifyOtpRequest());
-    const path = 'verifyOtp';
+    const path = 'verify-otp';
     axios({
       url: `${URL}/${path}`,
       // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',
