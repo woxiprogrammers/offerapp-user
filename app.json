@@ -18,7 +18,12 @@
       "supportsTablet": true
     },
     "android": {
-     "package": "com.offerapp.customer"
-   }
+     "package": "com.offerapp.customer",
+     "config": {
+       "googleMaps": {
+         "apiKey": "AIzaSyB1EA7FuwD4cFktEx1qHf3k4xiFpMyN7VU"
+       }
+      }
+    }
   }
 }

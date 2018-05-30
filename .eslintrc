@@ -3,5 +3,9 @@
   "rules": {
       "arrow-body-style": ["error", "always"],
       "no-underscore-dangle": ["error", { "allow": ["_root"] }]
-    }
+    },
+  "globals": {
+      "fetch": false,
+      "FormData": false,
+  }
 }
