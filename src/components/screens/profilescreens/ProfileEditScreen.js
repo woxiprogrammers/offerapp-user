@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground } from 'react-native';
+import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import {
   Thumbnail,
   Container,
@@ -36,6 +36,7 @@ import {
 import backgroundImage from '../../../assets/images/BackgroundImage.png';
 import {
   profileValueChanged,
+  peProfilePicUpload,
   profileEdit,
 } from '../../../actions';
 
@@ -58,28 +59,32 @@ class ProfileEditScreen extends React.Component {
     this.setState({ cameraPermission: cameraPermission.status });
   }
   pickImage = async () => {
-  const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-  this.setState({ hasRollPermission: status === 'granted' });
-  if (this.state.hasRollPermission) {
-    const response = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [1, 1],
-      base64: true
-    });
-    if (!response.cancelled) {
-        // const { token } = this.props;
-        this.props.profileValueChanged({ prop: 'peProfilePicBase64', value: response.base64 });
-        this.props.profileValueChanged({ prop: 'peProfilePic', value: response.uri });
-        // this.props.profileValueChanged({ prop: 'pro', value: response.base64 });
-        // this.props.profilePicUpload({ profilePicBase64: response.base64, token });
-      }
-  } else {
-    Toast.show({
-              text: 'Camera Roll Permission Denied',
-              buttonText: 'Okay',
-              duration: 3000
-            });
-  }
+    const { token } = this.props;
+    const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+    this.setState({ hasRollPermission: status === 'granted' });
+    if (this.state.hasRollPermission) {
+      const response = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+        base64: true
+      });
+      if (!response.cancelled) {
+          // const { token } = this.props;
+          console.log('Loading Image !');
+          await this.props.profileValueChanged({ prop: 'peProfilePicResult', value: response.uri });
+          await this.props.profileValueChanged({ prop: 'peProfilePic', value: response.uri });
+          this.props.peProfilePicUpload({ peProfilePicResult: response, token });
+
+          // this.props.profileValueChanged({ prop: 'pro', value: response.base64 });
+          // this.props.profilePicUpload({ profilePicBase64: response.base64, token });
+        }
+    } else {
+      Toast.show({
+                text: 'Camera Roll Permission Denied',
+                buttonText: 'Okay',
+                duration: 3000
+              });
+    }
   }
   DonePressed() {
     const { token } = this.props;
@@ -87,7 +92,7 @@ class ProfileEditScreen extends React.Component {
       peFirstName,
       peLastName,
       peEmail,
-      peProfilePicBase64
+      peProfilePicName
     } = this.props;
     const EmailValid = EmailValidator.validate(peEmail);
     if (EmailValid) {
@@ -95,7 +100,7 @@ class ProfileEditScreen extends React.Component {
         peFirstName,
         peLastName,
         peEmail,
-        peProfilePicBase64,
+        peProfilePicName,
         token
       });
     } else {
@@ -173,7 +178,7 @@ class ProfileEditScreen extends React.Component {
           </Header>
         <Content contentContainerStyle={contentStyle}>
           <View style={{ marginTop: responsiveHeight(5) }}>
-            <Button
+            <TouchableOpacity
               style={{ alignSelf: 'center' }}
               transparent
               onPress={this.pickImage.bind(this)}
@@ -182,7 +187,7 @@ class ProfileEditScreen extends React.Component {
                 large
                 source={{ uri: peProfilePic }}
               />
-            </Button>
+            </TouchableOpacity>
           </View>
           <View>
             <Form style={formStyle}>
@@ -302,7 +307,7 @@ viewEmailItemStyle: {
   width: responsiveWidth(100),
   height: responsiveHeight(12),
   justifyContent: 'center',
-  marginTop: 10,
+  marginTop: responsiveHeight(2),
   paddingBottom: responsiveHeight(2),
   paddingLeft: responsiveWidth(2)
 },
@@ -312,17 +317,17 @@ errorStyle: {
   height: responsiveHeight(6),
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: 10,
+  marginTop: responsiveHeight(2),
   paddingLeft: responsiveWidth(2)
 },
 viewItemStyle: {
   backgroundColor: '#D4D4D4',
   width: responsiveWidth(100),
   height: responsiveHeight(7),
-  marginTop: 10,
+  marginTop: responsiveHeight(2),
   paddingLeft: responsiveWidth(2),
   alignItems: 'center',
-  flexDirection: 'row'
+  flexDirection: 'row',
 },
 viewFirstNameStyle: {
   marginRight: responsiveWidth(3),
@@ -355,6 +360,9 @@ function mapStateToProps({ user, profile }) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        peProfilePicUpload: ({ peProfilePicResult, token }) => {
+          return dispatch(peProfilePicUpload({ peProfilePicResult, token }));
+        },
         profileValueChanged: ({ prop, value }) => {
           return dispatch(profileValueChanged({ prop, value }));
         },
@@ -362,14 +370,14 @@ function mapDispatchToProps(dispatch) {
           peFirstName,
           peLastName,
           peEmail,
-          peProfilePicBase64,
+          peProfilePicName,
           token
         }) => {
           return dispatch(profileEdit({
             peFirstName,
             peLastName,
             peEmail,
-            peProfilePicBase64,
+            peProfilePicName,
             token
           }));
         }

@@ -12,6 +12,10 @@ export const PROFILE_GET_OTP_REQUEST = 'profile_get_otp_request';
 export const PROFILE_GET_OTP_SUCCESS = 'profile_get_otp_success';
 export const PROFILE_GET_OTP_FAILURE = 'profile_get_otp_failure';
 
+export const PROFILE_PIC_UPLOAD_REQUEST = 'profile_pic_upload_request';
+export const PROFILE_PIC_UPLOAD_SUCCESS = 'profile_pic_upload_success';
+export const PROFILE_PIC_UPLOAD_FAILURE = 'profile_pic_upload_failure';
+
 export const PASSWORD_VALUE_CHANGED = 'password_value_changed';
 export const CHANGE_PASSWORD_REQUEST = 'change_password_request';
 export const CHANGE_PASSWORD_SUCCESS = 'change_password_success';

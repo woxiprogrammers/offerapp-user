@@ -18,6 +18,9 @@ import {
   PROFILE_GET_OTP_REQUEST,
   PROFILE_GET_OTP_SUCCESS,
   PROFILE_GET_OTP_FAILURE,
+  PROFILE_PIC_UPLOAD_REQUEST,
+  PROFILE_PIC_UPLOAD_SUCCESS,
+  PROFILE_PIC_UPLOAD_FAILURE,
   PASSWORD_VALUE_CHANGED,
   CHANGE_PASSWORD_REQUEST,
   CHANGE_PASSWORD_SUCCESS,
@@ -37,7 +40,7 @@ export const profileEdit = ({
   peFirstName,
   peLastName,
   peEmail,
-  peProfilePicBase64,
+  peProfilePicName,
   token
 }) => {
   return (dispatch) => {
@@ -51,7 +54,7 @@ export const profileEdit = ({
         firstName: peFirstName,
         lastName: peLastName,
         email: peEmail,
-        profilePicBase64: peProfilePicBase64,
+        profilePicName: peProfilePicName
       }
     }).then(async (response) => {
       const status = response.status;
@@ -259,7 +262,6 @@ export const changeMobileVerifyOtp = ({ token, pecmMobileVerify, peOtpVerify }) 
         Actions.auth({ type: 'reset' });
       }
     }).catch((error) => {
-        console.log(error);
         dispatch(changeMobileVerifyOtpFailure(error));
     });
   };
@@ -279,6 +281,62 @@ export const changeMobileVerifyOtpRequest = () => {
 export const changeMobileVerifyOtpFailure = (error) => {
   return {
     type: CM_VERIFY_OTP_FAILURE,
+    error
+  };
+};
+
+export const peProfilePicUpload = ({ peProfilePicResult, token }) => {
+    // ImagePicker saves the taken photo to disk and returns a local URI to it
+    // console.log('peProfilePicResult in Actions : ');
+    // console.log(peProfilePicResult);
+    const localUri = peProfilePicResult.uri;
+    const filename = localUri.split('/').pop();
+
+    // Infer the type of the image
+    const match = /\.(\w+)$/.exec(filename);
+    const type = match ? `image/${match[1]}` : 'image';
+    const path = 'customer/profile/picture';
+
+    // Upload the image using the fetch and FormData APIs
+    const formData = new FormData();
+    // Assume "photo" is the name of the form field the server expects
+    formData.append('image_for', 'customer-profile-edit');
+    formData.append('image', { uri: localUri, name: filename, type });
+    return (dispatch) => {
+        dispatch(peProfilePicUploadRequest());
+        return fetch(`${URL}/${path}?token=${token}`, {
+            method: 'POST',
+            body: formData,
+            header: {
+                'content-type': 'multipart/form-data',
+            },
+        })
+            .then((response) => { return response.json(); })
+            .then((responseJson) => {
+                dispatch(peProfilePicUploadSuccess(responseJson.data.profilePicName));
+            })
+            .catch((error) => {
+                dispatch(peProfilePicUploadFailure(error));
+            });
+    };
+};
+
+export const peProfilePicUploadSuccess = (profilePicName) => {
+  return {
+    type: PROFILE_PIC_UPLOAD_SUCCESS,
+    peProfilePicName: profilePicName
+  };
+};
+
+export const peProfilePicUploadRequest = () => {
+  return {
+    type: PROFILE_PIC_UPLOAD_REQUEST
+  };
+};
+
+export const peProfilePicUploadFailure = (error) => {
+  return {
+    type: PROFILE_PIC_UPLOAD_FAILURE,
     error
   };
 };

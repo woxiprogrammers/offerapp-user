@@ -10,6 +10,9 @@ import {
     PROFILE_EDIT_REQUEST,
     PROFILE_EDIT_SUCCESS,
     PROFILE_EDIT_FAILURE,
+    PROFILE_PIC_UPLOAD_REQUEST,
+    PROFILE_PIC_UPLOAD_SUCCESS,
+    PROFILE_PIC_UPLOAD_FAILURE,
     CM_MOBILE_VERIFY_CHANGED,
   } from '../../constants';
 
@@ -21,23 +24,27 @@ const INITIAL_STATE = {
     peOtpVerifyLoading: false,
     peOtpVerifyError: false,
     peFirstName: '',
-    peProfilePicBase64: '',
+    peProfilePicResult: '',
     peLastName: '',
     peEmail: '',
     pePassword: '',
     peLoading: false,
     peError: false,
     pecmMobileVerify: '',
+    peProfilePicUploadLoading: false,
+    peProfilePicName: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-      case PROFILE_VALUE_CHANGED:
+      case PROFILE_VALUE_CHANGED: {
+        // console.log(action.payload.prop);
+        // console.log(action.payload.value);
         return {
           ...state,
           [action.payload.prop]: action.payload.value,
           peError: false
-        };
+        }; }
       case CM_MOBILE_VERIFY_CHANGED:
         return { ...state, pecmMobileVerify: action.payload, peMobileVerifyError: false };
       case PROFILE_GET_OTP_SUCCESS:
@@ -72,6 +79,19 @@ export default (state = INITIAL_STATE, action) => {
       //     otpVerifyLoading: false };
       // case VERIFY_OTP_REQUEST:
       //   return { ...state, otpVerifyLoading: true, otpVerifyError: false };
+      case PROFILE_PIC_UPLOAD_SUCCESS:
+        return {
+          ...state,
+          peProfilePicName: action.peProfilePicName,
+          peProfilePicUploadLoading: false
+        };
+      case PROFILE_PIC_UPLOAD_FAILURE:
+        return {
+          ...state,
+          peProfilePicUploadLoading: false,
+         };
+      case PROFILE_PIC_UPLOAD_REQUEST:
+        return { ...state, peProfilePicUploadLoading: true };
       case PROFILE_EDIT_SUCCESS:
         return {
           ...state,
