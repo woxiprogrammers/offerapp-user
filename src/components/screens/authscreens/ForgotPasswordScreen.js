@@ -13,6 +13,7 @@ import {
   Form,
   Item,
   Left,
+  Text,
   View,
   Icon,
   Body,
@@ -79,6 +80,8 @@ class ForgotPasswordScreen extends React.Component {
     const {
       backgroundImageStyle,
       viewEmailItemStyle,
+      buttonTextStyle,
+      buttonViewStyle,
       containerStyle,
       contentStyle,
       headerStyle,
@@ -106,7 +109,7 @@ class ForgotPasswordScreen extends React.Component {
               <Title style={titleStyle}>Change Password</Title>
             </Body>
             <Right>
-              {this.renderDone()}
+              {/*this.renderDone()*/}
             </Right>
           </Header>
         <Content contentContainerStyle={contentStyle}>
@@ -114,15 +117,24 @@ class ForgotPasswordScreen extends React.Component {
             <Form style={formStyle}>
               <View style={viewEmailItemStyle}>
                 <Item stackedLabel>
-                  <Label>Password</Label>
+                  <Label style={{ color: '#d2d2d2' }}>Password</Label>
                   <Input
                     secureTextEntry
                     onChangeText={this.onChangePassword.bind(this)}
                     value={password}
                   />
+
                 </Item>
+
               </View>
+              <View>
+              <Button style={buttonViewStyle}>
+                <Text style={buttonTextStyle}>CHANGE PASSWORD</Text>
+              </Button>
+                </View>
              </Form>
+
+
           </View>
         </Content>
       </Container>
@@ -141,6 +153,18 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.headerColor,
     backgroundColor: colors.headerColor,
     paddingTop: 0
+  },
+  buttonTextStyle: {
+    fontSize: responsiveFontSize(2.5),
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonViewStyle: {
+    backgroundColor: colors.headerColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: responsiveHeight(10)
   },
   titleStyle: {
     fontSize: responsiveFontSize(3),
@@ -167,7 +191,7 @@ formStyle: {
   flex: 1,
 },
 viewEmailItemStyle: {
-  backgroundColor: '#D4D4D4',
+  backgroundColor: 'white',
   width: responsiveWidth(100),
   height: responsiveHeight(12),
   justifyContent: 'center',

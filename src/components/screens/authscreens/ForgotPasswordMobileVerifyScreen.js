@@ -103,12 +103,11 @@ class ForgotPasswordMobileVerifyScreen extends React.Component {
               <View>
                 <Form style={formStyle}>
                   <View style={itemViewStyle}>
-                    <Item >
-                      <Label> +91</Label>
-                    </Item>
-                    <Item floatingLabel style={itemStyle}>
-                      <Label> Enter your number</Label>
+
+                    <Item stackedLabel style={itemStyle}>
+                      <Label style={{ color: '#d2d2d2' }}> Enter your number</Label>
                       <Input
+                      style={{ color: colors.white }}
                         onChangeText={this.onMobileVerifyChange.bind(this)}
                         value={this.props.fpMobileVerify}
                         keyboardType='numeric'
@@ -192,7 +191,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   otpButtonStyle: {
-    fontSize: responsiveFontSize(2.2)
+    fontSize: responsiveFontSize(2.5)
   }
 
 });

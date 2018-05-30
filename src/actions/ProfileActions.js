@@ -82,7 +82,7 @@ const profileEditSuccess = (dispatch, userData) => {
 export const changePasswordVerifyOtp = ({ peMobileVerify, peOtpVerify }) => {
   return (dispatch) => {
     dispatch(changePasswordVerifyOtpRequest());
-    const path = 'verifyOtp';
+    const path = 'verify-otp';
     axios({
       url: `${URL}/${path}`,
       // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',
@@ -144,7 +144,7 @@ export const changeMobileMobileVerifyChanged = (text) => {
 export const profileGetOtp = ({ mobileVerify, fromChangeMobile }) => {
   return (dispatch) => {
     dispatch(profileGetOtpRequest());
-    const path = 'getOtp';
+    const path = 'get-otp';
     axios({
       url: `${URL}/${path}`,
       // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',
@@ -195,7 +195,7 @@ export const passwordValueChanged = (text) => {
 export const changePassword = ({ password, token }) => {
   return (dispatch) => {
     dispatch(changePasswordRequest());
-    const path = 'customer/change_credential/password';
+    const path = 'customer/change-credential/password';
     const credentialSlug = 'password';
     axios({
       url: `${URL}/${path}?token=${token}`,
@@ -239,7 +239,7 @@ export const changePasswordFailure = (error) => {
 export const changeMobileVerifyOtp = ({ token, pecmMobileVerify, peOtpVerify }) => {
   return (dispatch) => {
     dispatch(changeMobileVerifyOtpRequest());
-    const path = 'customer/change_credential/mobile_no';
+    const path = 'customer/change-credential/mobile-no';
     const credentialSlug = 'mobile_no';
     axios({
       url: `${URL}/${path}?token=${token}`,

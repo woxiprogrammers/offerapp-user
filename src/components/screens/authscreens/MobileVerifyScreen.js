@@ -94,7 +94,7 @@ class MobileVerifyScreen extends React.Component {
                 </Button>
               </Left>
               <Body>
-                <Title style={titleStyle}>Sign Up-Step 1</Title>
+                <Title style={titleStyle}>Sign Up>Step 1</Title>
               </Body>
               <Right />
             </Header>
@@ -105,14 +105,13 @@ class MobileVerifyScreen extends React.Component {
               <View>
                 <Form style={formStyle}>
                   <View style={itemViewStyle}>
-                    <Item >
-                      <Label style={labelStyle}> +91</Label>
-                    </Item>
+                  { /* <Item >
+                      <Label style={{ color: 'white', paddingBottom: 20 }}> +91</Label>
+                    </Item>*/}
                     <Item stackedLabel style={itemStyle}>
                       <Label style={labelStyle}> Enter your number</Label>
                       <Input
                       style={inputStyle}
-
                         onChangeText={this.onMobileVerifyChange.bind(this)}
                         value={this.props.mobileVerify}
                         keyboardType='numeric'
@@ -163,6 +162,8 @@ const styles = StyleSheet.create({
    },
    labelStyle: {
      color: '#d2d2d2',
+     alignSelf: 'center',
+     justifyContent: 'center'
     },
   getotpStyle: {
     width: responsiveWidth(50),
@@ -187,21 +188,23 @@ const styles = StyleSheet.create({
   },
   itemViewStyle: {
     width: responsiveWidth(70),
-    flexDirection: 'row',
     paddingBottom: 10,
-    marginTop: 9,
     justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center'
   },
   itemStyle: {
     marginTop: responsiveHeight(-3.3),
-    width: responsiveWidth(50),
-    alignSelf: 'center',
+    width: responsiveWidth(45),
+    alignItems: 'center',
   },
   inputStyle: {
    color: 'white',
+  justifyContent: 'center',
+
   },
   otpButtonStyle: {
-    fontSize: responsiveFontSize(2.2)
+    fontSize: responsiveFontSize(2.5)
   }
 
 });

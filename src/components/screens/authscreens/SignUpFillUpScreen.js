@@ -103,6 +103,7 @@ class SignUpFillUpScreen extends React.Component {
       viewItemStyle,
       contentStyle,
       headerStyle,
+      labelStyle,
       acceptStyle,
       formStyle,
       titleStyle
@@ -147,7 +148,7 @@ class SignUpFillUpScreen extends React.Component {
               <View style={{ flexDirection: 'row' }}>
                 <View style={viewFirstNameStyle}>
                   <Item stackedLabel>
-                    <Label style={{ color: '#d2d2d2' }}> First Name</Label>
+                    <Label style={labelStyle}> First Name</Label>
                     <Input
                       onChangeText={
                           value => {
@@ -162,7 +163,7 @@ class SignUpFillUpScreen extends React.Component {
                 </View>
                 <View style={viewLastNameStyle}>
                   <Item stackedLabel>
-                    <Label> Last Name</Label>
+                    <Label style={labelStyle}> Last Name</Label>
                     <Input
                       onChangeText={
                           value => {
@@ -178,7 +179,7 @@ class SignUpFillUpScreen extends React.Component {
               </View>
               <View style={viewItemStyle}>
                 <Item stackedLabel >
-                  <Label> Email Address</Label>
+                  <Label style={labelStyle}> Email Address</Label>
                   <Input
                     keyboardType='email-address'
                     onChangeText={
@@ -194,7 +195,7 @@ class SignUpFillUpScreen extends React.Component {
               </View>
               <View style={viewItemStyle}>
                 <Item stackedLabel >
-                  <Label> Password</Label>
+                  <Label style={labelStyle}> Password</Label>
                   <Input
                     secureTextEntry
                     onChangeText={
@@ -215,6 +216,7 @@ class SignUpFillUpScreen extends React.Component {
               }}
               >
                 <CheckBox
+                style={{ borderColor: colors.headerColor, backgroundColor: colors.headerColor }}
                   checked={isChecked}
                 />
                 <Text>    Accept the terms and conditions</Text>
@@ -307,12 +309,15 @@ acceptStyle: {
   marginTop: responsiveHeight(3),
   height: responsiveHeight(5),
   width: responsiveWidth(100),
-  backgroundColor: '#FFFFFF',
+  backgroundColor: colors.white,
   flexDirection: 'row',
-  alignItems: 'center'
+  alignItems: 'center',
 },
 signUpButtonTextStyle: {
-  fontSize: responsiveFontSize(2.2)
+  fontSize: responsiveFontSize(2.5)
+},
+labelStyle: {
+  color: '#d2d2d2'
 }
 
 });

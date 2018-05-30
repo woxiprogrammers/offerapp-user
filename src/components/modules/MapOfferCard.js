@@ -37,7 +37,7 @@ import {
         <TouchableOpacity
           onPress={() => { Actions.push('offerDetailScreen', { getOffer: offerId }); }}
           style={{
-            backgroundColor: '#1E2D3E',
+            backgroundColor: '#fafafa',
             height: responsiveHeight(16.5),
             marginTop: responsiveHeight(-1) }}
         >
@@ -54,6 +54,7 @@ import {
                 style={{
                   marginLeft: normalize.normalize(7),
                   alignSelf: 'flex-start',
+                  color: colors.headerColor,
                   fontSize: responsiveFontSize(3) }}
               >{offerName}</Text>
               <Text

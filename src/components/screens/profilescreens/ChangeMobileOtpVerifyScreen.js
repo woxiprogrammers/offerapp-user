@@ -87,8 +87,9 @@ class ChangeMobileOtpVerifyScreen extends React.Component {
             <Form style={formStyle}>
               <View style={itemViewStyle}>
                 <Item stackedLabel style={itemStyle} >
-                  <Label> Enter OTP</Label>
+                  <Label style={{ color: '#d2d2d2' }}> Enter OTP</Label>
                   <Input
+                  style={{ color: colors.white }}
                     onChangeText={this.onOtpVerifyChange.bind(this)}
                     value={this.props.peOtpVerify}
                   />
@@ -173,7 +174,7 @@ contentStyle: {
 textStyle: {
   fontSize: responsiveHeight(3.5),
   marginTop: responsiveHeight(5),
-  color: colors.darkGray,
+  color: colors.white,
   textAlign: 'center',
 },
 verifyOtpStyle: {
@@ -207,7 +208,7 @@ itemStyle: {
   flex: 1,
 },
 otpButtonStyle: {
-  fontSize: responsiveFontSize(2.2)
+  fontSize: responsiveFontSize(2.5)
 }
 });
 

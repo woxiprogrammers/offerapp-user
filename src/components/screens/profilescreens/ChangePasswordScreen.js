@@ -82,6 +82,7 @@ class ChangePasswordScreen extends React.Component {
       containerStyle,
       contentStyle,
       headerStyle,
+      labelStyle,
       formStyle,
       titleStyle
     } = styles;
@@ -114,8 +115,9 @@ class ChangePasswordScreen extends React.Component {
             <Form style={formStyle}>
               <View style={viewEmailItemStyle}>
                 <Item stackedLabel>
-                  <Label>Password</Label>
+                  <Label style={labelStyle}>Password</Label>
                   <Input
+                  style={{ color: colors.white }}
                     secureTextEntry
                     onChangeText={this.onChangePassword.bind(this)}
                     value={password}
@@ -166,6 +168,11 @@ formStyle: {
   marginTop: 20,
   flex: 1,
 },
+labelStyle: {
+  color: '#d2d2d2',
+  alignSelf: 'center',
+  justifyContent: 'center'
+ },
 viewEmailItemStyle: {
   backgroundColor: '#D4D4D4',
   width: responsiveWidth(100),
