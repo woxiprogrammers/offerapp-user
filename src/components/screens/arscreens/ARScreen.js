@@ -102,7 +102,7 @@ class ARScreen extends React.Component {
                 this.setState({
                   bearing: trueHeading
                 });
-              } else if (difference >= 3 || difference <= -3) {
+              } else if (difference >= 1 || difference <= -1) {
                 this.props.updateX(difference);
                 this.setState({
                   bearing: trueHeading
@@ -120,15 +120,15 @@ class ARScreen extends React.Component {
   }
   componentDidMount() {
     this.props.clearARObjects();
-    Gyroscope.removeAllListeners();
-    Gyroscope.setUpdateInterval(500);
-    Gyroscope.addListener((result) => {
-      this.props.updateGyroData(result);
-    });
+    // Gyroscope.removeAllListeners();
+    // Gyroscope.setUpdateInterval(500);
+    // Gyroscope.addListener((result) => {
+    //   this.props.updateGyroData(result);
+    // });
   }
   componentWillUnmount() {
     const { watchHeading, watchPosition } = this.state;
-    Gyroscope.removeAllListeners();
+    // Gyroscope.removeAllListeners();
     this.props.clearARObjects();
     watchHeading.remove();
     watchPosition.remove();

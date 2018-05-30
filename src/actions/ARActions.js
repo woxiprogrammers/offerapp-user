@@ -98,7 +98,7 @@ export const getAROffers = ({
   page }) => {
   return (dispatch) => {
     dispatch(getAROffersRequest(page));
-    const path = 'customer/offer/augmented_reality/seller_info';
+    const path = 'customer/offer/augmented-reality/seller-info';
     axios({
       // url: 'http://www.mocky.io/v2/5ae1a0c92d000046009d7d22',
       url: `${URL}/${path}/?token=${token}`,
@@ -157,7 +157,7 @@ export const getARListingOffers = ({
       });
     }
     dispatch(getARListingOffersRequest(page));
-    const path = 'customer/offer/augmented_reality/listing';
+    const path = 'customer/offer/augmented-reality/listing';
     axios({
       // url: `http://www.mocky.io/v2/5ae19c8e2d00005e009d7d03?token=${token}`,
       url: `${URL}/${path}/?token=${token}&page=${page}`,

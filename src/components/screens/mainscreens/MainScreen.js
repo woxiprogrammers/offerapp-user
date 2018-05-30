@@ -3,11 +3,12 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  BackHandler,
-  Platform,
+  // BackHandler,
+  // Platform,
+  NetInfo,
   FlatList,
   TouchableOpacity,
-  DeviceEventEmitter
+  // DeviceEventEmitter
 } from 'react-native';
 import {
   Container,
@@ -33,7 +34,6 @@ import {
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
-import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 import {
   normalize,
   //variables,
@@ -77,10 +77,11 @@ class MainScreen extends React.Component {
       'renderSwiper',
       'onEndReached',
       'renderRow',
-      'checkIsLocation'
+      'renderNetStat'
     );
     this.state = ({
       message: '',
+      isConnected: true
     });
   }
   async componentWillMount() {
@@ -106,39 +107,11 @@ class MainScreen extends React.Component {
     await this.props.getNearbyOffers({ token, page, coords });
   }
   componentDidMount() {
-    if (Platform.OS === 'android') {
-      LocationServicesDialogBox.checkLocationServicesIsEnabled({
-          message: '<h2>Use Location ?</h2>This app wants to change your' +
-          ' device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for ' +
-          " location<br/><br/><a href='#'>Learn more</a>",
-          ok: 'YES',
-          cancel: 'NO',
-          enableHighAccuracy: true,
-          // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
-          showDialog: true, // false => Opens the Location access page directly
-          openLocationServices: true,
-          // false => Directly catch method is called if location services are turned off
-          preventOutSideTouch: false,
-          //true => To prevent the location services popup
-          // from closing when it is clicked outside
-          preventBackClick: false,
-          //true => To prevent the location services popup from closing
-          // when it is clicked back button
-          providerListener: true
-          // true ==> Trigger "locationProviderStatusChange"
-          //listener when the location state changes
-      }).then((success) => { console.log(success); }
-      ).catch((error) => {
-          console.log(error.message);
-      });
-
-      DeviceEventEmitter.addListener('locationProviderStatusChange', (status) => {
-        // only trigger when "providerListener" is enabled
-          console.log(status);
-        //  status => {enabled: false, status: "disabled"} or {enabled: true, status: "enabled"}
-      });
-    }
-    }
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+  }
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+  }
   onEndReached() {
     const {
       pagination,
@@ -155,6 +128,13 @@ class MainScreen extends React.Component {
       this.props.getNearbyOffers({ token, page, coords });
     }
   }
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
   autoBind(...methods) {
       methods.forEach(method => {
         this[method] = this[method].bind(this);
@@ -180,6 +160,15 @@ class MainScreen extends React.Component {
       return (
         <SmallOfferCard offerDetails={item} />
       );
+  }
+  renderNetStat() {
+    if (!this.state.isConnected) {
+      return (
+        <View style={styles.offlineContainer}>
+          <Text style={styles.offlineText}>No Internet Connection</Text>
+        </View>);
+    }
+    return null;
   }
   renderSwiper() {
     const { swiperStyle, swiperErrorStyle, whiteStyle } = styles;
@@ -286,8 +275,9 @@ class MainScreen extends React.Component {
             </Button>
           </Right>
         </Header>
-        <Content style={{ paddingTop: normalize.normalize(5) }}>
+        <Content>
           <View style={{ flex: 1 }}>
+          {this.renderNetStat()}
             <View style={locationStyle}>
               <View>
                 <Text
@@ -439,7 +429,15 @@ const styles = StyleSheet.create({
   loadingImage: {
     width: 60,
     height: 60
-  }
+  },
+  offlineContainer: {
+    backgroundColor: '#b52424',
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: responsiveWidth(100),
+  },
+  offlineText: { color: colors.white }
 });
 
 
