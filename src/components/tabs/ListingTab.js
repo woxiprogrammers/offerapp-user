@@ -7,7 +7,9 @@ import {
   Container,
   Content,
   Spinner,
-  View
+  View,
+  Icon,
+  Text
 } from 'native-base';
 // import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
@@ -31,7 +33,8 @@ class ListingTab extends Component {
       'onEndReached',
       'onRefresh',
       'renderRow',
-      'renderLoading'
+      'renderLoading',
+      'renderListOffers'
     );
   }
   componentWillMount() {
@@ -123,11 +126,47 @@ class ListingTab extends Component {
       </View>
     );
   }
+  renderListOffers() {
+    const { blackStyle, listOffersErrorStyle } = styles;
+    const { listingViewCategoryOffers, pagination } = this.props;
+    if (pagination.listingViewCategoryOffersLoading) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center' }}
+        >
+         {this.renderLoading()}
+        </View>
+      );
+    } else if (listingViewCategoryOffers.length === 0) {
+      return (
+        <View style={listOffersErrorStyle}>
+          <Icon style={blackStyle}active name='ionitron' />
+          <Text style={blackStyle}>Sorry! No Offers to Show </Text>
+        </View>);
+    }
+    return (
+      <View
+        style={{ flex: 1 }}
+      >
+        <FlatList
+          style={{ flex: 1 }}
+          data={listingViewCategoryOffers}
+          refreshing={false}
+          renderItem={this.renderRow}
+          keyExtractor={this.keyExtractor}
+          onRefresh={() => { return this.onRefresh(); }}
+          onEndReached={() => { return this.onEndReached(); }}
+        />
+        {this.renderLoading()}
+      </View>);
+  }
   render() {
     const {
       containerStyle
     } = styles;
-    const { listingViewCategoryOffers } = this.props;
     return (
       <Container style={containerStyle}>
         <Content
@@ -135,19 +174,10 @@ class ListingTab extends Component {
           contentContainerStyle={{
             paddingTop: responsiveHeight(1),
             paddingLeft: responsiveWidth(2.5),
+            flex: 1
           }}
         >
-          <FlatList
-            style={{ flex: 1 }}
-            data={listingViewCategoryOffers}
-            refreshing={false}
-            renderItem={this.renderRow}
-            keyExtractor={this.keyExtractor}
-            onRefresh={() => { return this.onRefresh(); }}
-            onEndReached={() => { return this.onEndReached(); }}
-          />
-          {this.renderLoading()}
-
+          {this.renderListOffers()}
         </Content>
        </Container>
      );
@@ -170,7 +200,16 @@ const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: colors.white,
   },
-  container: {
+  listOffersErrorStyle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  blackStyle: {
+    color: colors.black
+  },
+  loadingStyle: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

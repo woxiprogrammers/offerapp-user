@@ -45,9 +45,9 @@ const scaleAnimation = new ScaleAnimation();
 class WishlistScreen extends React.Component {
   constructor(props) {
     super(props);
-    if (Platform.OS === 'android') {
-      UIManager.setLayoutAnimationEnabledExperimental(true);
-    }
+    // if (Platform.OS === 'android') {
+    //   UIManager.setLayoutAnimationEnabledExperimental(true);
+    // }
     this.autoBind(
       'onEndReached',
       'renderRow',
@@ -73,9 +73,14 @@ class WishlistScreen extends React.Component {
     const page = 1;
     this.props.getWishListOffers({ token, page });
   }
-  componentWillUpdate() {
-    LayoutAnimation.easeInEaseOut();
-  }
+  // componentWillUpdate() {
+  //   LayoutAnimation.easeInEaseOut();
+  // }
+  // componentWillUnmount() {
+  //   if (Platform.OS === 'android') {
+  //     UIManager.setLayoutAnimationEnabledExperimental(false);
+  //   }
+  // }
   onEndReached() {
     const {
       pagination,
@@ -114,6 +119,7 @@ class WishlistScreen extends React.Component {
     return (
       <View
         style={{
+          flex: 1,
           width: responsiveWidth(95),
           flexDirection: 'row',
           height: responsiveHeight(8)
@@ -179,9 +185,9 @@ class WishlistScreen extends React.Component {
   renderRow(offerDetails) {
     const { item, index } = offerDetails;
     return (
-      <View>
-      <OfferCard offerDetails={item} />
-      {this.renderWishlistOptions({ item, index })}
+      <View style={{ flex: 1 }}>
+        <OfferCard offerDetails={item} />
+        {this.renderWishlistOptions({ item, index })}
       </View>
     );
   }
@@ -253,7 +259,10 @@ class WishlistScreen extends React.Component {
           dialogTitle={<DialogTitle title={offerName} />}
           actions={[
             <DialogButton
-              textContainerStyle={{ height: responsiveHeight(5) }}
+              textContainerStyle={{
+                height: responsiveHeight(10),
+                paddingTop: responsiveHeight(2.5)
+              }}
               text="Submit"
               onPress={async () => {
                 await this.props.sendInterestedOffer({
@@ -264,7 +273,7 @@ class WishlistScreen extends React.Component {
                 Actions.interestedScreen();
               }}
               key="submit"
-            />,
+            />
           ]}
         >
         {this.renderDialogContent()}
@@ -277,6 +286,7 @@ class WishlistScreen extends React.Component {
         >
           <FlatList
             style={{ flex: 1 }}
+            refreshing={false}
             data={wishListOffers}
             renderItem={this.renderRow}
             keyExtractor={this.keyExtractor}
@@ -313,15 +323,14 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.headerColor
   },
   titleStyle: {
-    fontWeight: 'bold',
+    fontSize: responsiveFontSize(3),
+    width: responsiveWidth(60),
     color: colors.white,
     textAlign: 'center',
-    fontSize: responsiveFontSize(3),
-    width: responsiveWidth(60)
+    fontWeight: 'bold',
   },
   loadingStyle: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
   dialogContentView: {
@@ -332,7 +341,7 @@ const styles = StyleSheet.create({
   },
   pickerStyle: {
     //backgroundColor: colors.lightGrayTransparent,
-    width: responsiveWidth(30),
+      width: responsiveWidth(35),
       marginTop: 10,
       paddingBottom: 10,
   },

@@ -9,7 +9,7 @@ import {
 } from '../../constants';
 
 const INITIAL_STATE = {
-  arOffersLoading: false,
+  arOffersLoading: true,
   arOffers: [],
   distance: 1,
   typeSelected: 'all',
@@ -18,7 +18,6 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case AR_OFFERS_RESET: {
-      
       return {
         ...INITIAL_STATE
       };

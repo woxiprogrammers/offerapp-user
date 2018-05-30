@@ -52,12 +52,14 @@ export default class SmallOfferCard extends Component {
                 style={{
                   marginLeft: normalize.normalize(7),
                   alignSelf: 'flex-start',
+                  color: colors.headerColor,
                   fontSize: responsiveFontSize(2.8) }}
               >{offerName}</Text>
               <Text
                 style={{
                   marginLeft: normalize.normalize(7),
                   alignSelf: 'flex-start',
+                  color: '#666666',
                   fontSize: responsiveFontSize(1.9) }}
               >
                 {sellerInfo}

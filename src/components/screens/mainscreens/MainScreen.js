@@ -3,8 +3,11 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  BackHandler,
+  Platform,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  DeviceEventEmitter
 } from 'react-native';
 import {
   Container,
@@ -30,6 +33,7 @@ import {
   responsiveWidth,
   responsiveFontSize
 } from 'react-native-responsive-dimensions';
+import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 import {
   normalize,
   //variables,
@@ -72,7 +76,8 @@ class MainScreen extends React.Component {
       'loadHandle',
       'renderSwiper',
       'onEndReached',
-      'renderRow'
+      'renderRow',
+      'checkIsLocation'
     );
     this.state = ({
       message: '',
@@ -100,6 +105,40 @@ class MainScreen extends React.Component {
     const page = 1;
     await this.props.getNearbyOffers({ token, page, coords });
   }
+  componentDidMount() {
+    if (Platform.OS === 'android') {
+      LocationServicesDialogBox.checkLocationServicesIsEnabled({
+          message: '<h2>Use Location ?</h2>This app wants to change your' +
+          ' device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for ' +
+          " location<br/><br/><a href='#'>Learn more</a>",
+          ok: 'YES',
+          cancel: 'NO',
+          enableHighAccuracy: true,
+          // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
+          showDialog: true, // false => Opens the Location access page directly
+          openLocationServices: true,
+          // false => Directly catch method is called if location services are turned off
+          preventOutSideTouch: false,
+          //true => To prevent the location services popup
+          // from closing when it is clicked outside
+          preventBackClick: false,
+          //true => To prevent the location services popup from closing
+          // when it is clicked back button
+          providerListener: true
+          // true ==> Trigger "locationProviderStatusChange"
+          //listener when the location state changes
+      }).then((success) => { console.log(success); }
+      ).catch((error) => {
+          console.log(error.message);
+      });
+
+      DeviceEventEmitter.addListener('locationProviderStatusChange', (status) => {
+        // only trigger when "providerListener" is enabled
+          console.log(status);
+        //  status => {enabled: false, status: "disabled"} or {enabled: true, status: "enabled"}
+      });
+    }
+    }
   onEndReached() {
     const {
       pagination,
@@ -116,7 +155,6 @@ class MainScreen extends React.Component {
       this.props.getNearbyOffers({ token, page, coords });
     }
   }
-
   autoBind(...methods) {
       methods.forEach(method => {
         this[method] = this[method].bind(this);
@@ -237,7 +275,7 @@ class MainScreen extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title style={titleStyle}>MAIN SCREEN</Title>
+            <Title style={titleStyle}>Offer App</Title>
           </Body>
           <Right>
             <Button
@@ -252,21 +290,26 @@ class MainScreen extends React.Component {
           <View style={{ flex: 1 }}>
             <View style={locationStyle}>
               <View>
-                <Text style={{ fontSize: responsiveFontSize(1.5) }}>YOUR LOCATION</Text>
+                <Text
+                  style={{
+                  color: '#888888',
+                  fontSize: responsiveFontSize(1.5)
+                  }}
+                >Your Current Location</Text>
               </View>
               <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                 <Icon
                   style={{
                     paddingRight: responsiveWidth(2),
-                    color: 'black',
-                    fontSize: responsiveFontSize(4) }}
+                    color: colors.headerColor,
+                    fontSize: responsiveFontSize(2.7) }}
                   ios='ios-pin'
                   android="md-pin"
                 />
                 <MarqueeText
                   style={{
-                    fontSize: responsiveFontSize(3),
-                    width: responsiveWidth(65) }}
+                    fontSize: responsiveFontSize(2),
+                    width: responsiveWidth(85) }}
                   duration={4000}
                   marqueeOnStart
                   loop
@@ -294,7 +337,7 @@ class MainScreen extends React.Component {
             </View>
             <View
               style={{
-                backgroundColor: '#1C2A3A',
+                backgroundColor: '#fafafa',
                 height: responsiveHeight(40),
                 marginTop: responsiveHeight(1),
                 paddingBottom: responsiveHeight(2) }}
@@ -304,9 +347,9 @@ class MainScreen extends React.Component {
                   style={{
                     paddingLeft: responsiveWidth(2.5),
                     paddingTop: responsiveHeight(2),
-                    color: colors.white,
-                    fontSize: responsiveFontSize(2.5) }}
-                >Offers Nearby Me</Text>
+                    color: '#888888',
+                    fontSize: responsiveFontSize(1.7) }}
+                >Offers nearby me</Text>
               </View>
               {this.renderNearByOffers()}
             </View>

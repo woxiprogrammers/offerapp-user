@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground } from 'react-native';
+import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import {
   Thumbnail,
   Container,
@@ -125,7 +125,7 @@ class SignUpFillUpScreen extends React.Component {
             style={headerStyle}
             iosBarStyle='light-content'
           >
-          <Left style={{ marginRight: -(responsiveWidth(30)) }}>
+          <Left>
             <Button transparent onPress={() => { Actions.popTo('loginScreen'); }}>
               <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
             </Button>
@@ -133,7 +133,7 @@ class SignUpFillUpScreen extends React.Component {
           <Body>
             <Title style={titleStyle}>Sign Up Screen</Title>
           </Body>
-          <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
+          <Right />
         </Header>
         <Content contentContainerStyle={contentStyle}>
           <View style={{ marginTop: 20 }}>
@@ -147,7 +147,7 @@ class SignUpFillUpScreen extends React.Component {
               <View style={{ flexDirection: 'row' }}>
                 <View style={viewFirstNameStyle}>
                   <Item stackedLabel>
-                    <Label> First Name</Label>
+                    <Label style={{ color: '#d2d2d2' }}> First Name</Label>
                     <Input
                       onChangeText={
                           value => {
@@ -208,15 +208,17 @@ class SignUpFillUpScreen extends React.Component {
                   />
                 </Item>
               </View>
-              <View style={acceptStyle}>
+              <TouchableOpacity
+              style={acceptStyle}
+              onPress={() => {
+                this.setState({ isChecked: !this.state.isChecked });
+              }}
+              >
                 <CheckBox
                   checked={isChecked}
-                  onPress={() => {
-                    this.setState({ isChecked: !this.state.isChecked });
-                  }}
                 />
                 <Text>    Accept the terms and conditions</Text>
-              </View>
+              </TouchableOpacity>
               <View>
               {this.renderSignUpButton()}
               </View>
@@ -246,7 +248,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     fontSize: responsiveFontSize(3),
-    width: responsiveWidth(100),
+    width: responsiveWidth(60),
     justifyContent: 'center',
     color: colors.white,
     fontWeight: 'bold',
@@ -281,7 +283,7 @@ formStyle: {
   flex: 1,
 },
 viewItemStyle: {
-  backgroundColor: '#D4D4D4',
+  backgroundColor: '#FFFFFF',
   width: responsiveWidth(100),
   height: responsiveHeight(12),
   justifyContent: 'center',
@@ -291,13 +293,13 @@ viewItemStyle: {
 viewFirstNameStyle: {
   marginRight: responsiveWidth(3),
   height: responsiveHeight(12),
-  backgroundColor: '#D4D4D4',
+  backgroundColor: '#FFFFFF',
   flex: 1,
   paddingBottom: responsiveHeight(2)
 },
 viewLastNameStyle: {
   height: responsiveHeight(12),
-  backgroundColor: '#D4D4D4',
+  backgroundColor: '#FFFFFF',
   flex: 1,
   paddingBottom: responsiveHeight(2)
 },
@@ -305,7 +307,7 @@ acceptStyle: {
   marginTop: responsiveHeight(3),
   height: responsiveHeight(5),
   width: responsiveWidth(100),
-  backgroundColor: '#D4D4D4',
+  backgroundColor: '#FFFFFF',
   flexDirection: 'row',
   alignItems: 'center'
 },

@@ -6,7 +6,7 @@ import {
 } from '../../constants';
 
 const INITIAL_STATE = {
-  pagination: { page: 1, listingViewCategoryOffersLoading: false },
+  pagination: { page: 1, listingViewCategoryOffersLoading: true },
   listingViewCategoryOffers: [],
 };
 

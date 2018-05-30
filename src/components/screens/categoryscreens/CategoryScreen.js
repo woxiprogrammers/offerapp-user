@@ -43,7 +43,6 @@ export default class CategoryScreen extends Component {
       headerStyle,
       titleStyle
     } = styles;
-    const { initialPage = 1 } = this.props;
     return (
       <Container style={containerStyle}>
         <Header
@@ -52,7 +51,7 @@ export default class CategoryScreen extends Component {
           hasTabs
         >
           <Left style={{ flexDirection: 'row' }}>
-            <Button transparent onPress={Actions.mainScreen}>
+            <Button transparent onPress={() => { Actions.popTo('mainScreen'); }}>
               <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
             </Button>
             <Button transparent onPress={Actions.drawerOpen}>
@@ -70,37 +69,44 @@ export default class CategoryScreen extends Component {
         </Header>
         <View style={{ flex: 1 }}>
           <Tabs
-          initialPage={initialPage}
+          initialPage={0}
           locked
+          tabBarUnderlineStyle={{
+            backgroundColor: 'white', height: responsiveHeight(0.3)
+          }}
           >
             <Tab
               heading={
-                <TabHeading style={{ backgroundColor: '#EFF2F7' }}>
-                  <Icon name="list" />
-                    <Text>Listing</Text>
+                <TabHeading style={{ backgroundColor: '#3b5998' }}>
+                  <Icon style={{ color: '#fafafa' }} name="list" />
+                    <Text style={{ color: '#fafafa' }}>Listing</Text>
                 </TabHeading>}
             >
               <ListingTab />
-              <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
+              <View
+              style={{ flexDirection: 'row',
+              height: responsiveHeight(8),
+               backgroundColor: colors.lightGray }}
+              >
               <TouchableOpacity
                 onPress={() => { Actions.push('sortByScreen'); }}
                 style={{ flex: 1, alignSelf: 'center' }}
               >
-                  <Text style={{ alignSelf: 'center' }}>Sort By</Text>
+                  <Text style={{ alignSelf: 'center', color: '#000000' }}>Sort By</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => { Actions.push('filterScreen', { initialPage: 0 }); }}
                   style={{ flex: 1, alignSelf: 'center' }}
                 >
-                  <Text style={{ alignSelf: 'center' }}>Filter</Text>
+                  <Text style={{ alignSelf: 'center', color: '#000000' }}>Filter</Text>
                 </TouchableOpacity>
               </View>
             </Tab>
             <Tab
               heading={
-                <TabHeading style={{ backgroundColor: '#EFF2F7' }}>
-                  <Icon name="map" />
-                    <Text>Map</Text>
+                <TabHeading style={{ backgroundColor: '#3b5998' }}>
+                  <Icon style={{ color: '#fafafa' }} name="map" />
+                    <Text style={{ color: '#fafafa' }}>Map</Text>
                 </TabHeading>}
             >
               <MapTab />

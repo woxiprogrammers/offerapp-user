@@ -43,7 +43,7 @@ import {
      this.props.loginUser({ user, password });
    }
    renderButton() {
-     const { loginStyle, textStyle } = styles;
+     const { loginStyle, buttonTextStyle } = styles;
      if (this.props.loginLoading) {
        return (<Button style={loginStyle}>
                 <Spinner color='white' />
@@ -51,23 +51,25 @@ import {
      } else if (this.props.error) {
        return (
          <Button style={loginStyle}>
-           <Text style={textStyle}>LOG FAILED</Text>
+           <Text style={buttonTextStyle}>LOG FAILED</Text>
          </Button>);
     }
     return (
       <Button style={loginStyle} onPress={this.onButtonPress.bind(this)}>
-        <Text style={textStyle}>LOG IN</Text>
+        <Text style={buttonTextStyle}>LOGIN</Text>
       </Button>);
    }
    render() {
      const {
        backgroundImageStyle,
+       buttonTextStyle,
        containerStyle,
        itemViewStyle,
        passwordStyle,
        contentStyle,
        headerStyle,
        signupStyle,
+       inputStyle,
        // loginStyle,
        textStyle,
        itemStyle,
@@ -90,8 +92,9 @@ import {
             <Form>
               <View style={itemViewStyle}>
                 <Item stackedLabel style={itemStyle} >
-                  <Label style={textStyle}> UserName</Label>
+                  <Label style={textStyle}> Username</Label>
                   <Input
+                    style={inputStyle}
                     onChangeText={this.onUserChange.bind(this)}
                     value={this.props.user}
                   />
@@ -102,6 +105,7 @@ import {
                   <Label style={textStyle}> Password</Label>
                   <Input
                     secureTextEntry
+                    style={inputStyle}
                     onChangeText={this.onPasswordChange.bind(this)}
                     value={this.props.password}
                   />
@@ -116,8 +120,8 @@ import {
           <TouchableOpacity
             onPress={() => { Actions.forgotPasswordMobileVerifyScreen(); }}
           >
-            <Text style={{ color: 'white', fontSize: responsiveFontSize(2) }}>
-            Forget Password ?</Text>
+            <Text style={{ color: 'white', fontSize: responsiveFontSize(2.5) }}>
+            Forgot Password ?</Text>
           </TouchableOpacity>
         </View>
         <View style={orstyle} >
@@ -127,7 +131,7 @@ import {
         </View>
         <View >
           <Button style={signupStyle} onPress={() => { Actions.mobileVerifyScreen(); }}>
-            <Text style={textStyle}>SIGN UP</Text>
+            <Text style={buttonTextStyle}>SIGN UP</Text>
           </Button>
         </View>
       </Content>
@@ -149,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.login,
     width: responsiveWidth(85),
-    marginTop: responsiveHeight(4)
+    marginTop: responsiveHeight(4),
    },
    contentStyle: {
      alignItems: 'center',
@@ -186,8 +190,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: responsiveFontSize(6.6)
    },
+   inputStyle: {
+    color: 'white',
+   },
  textStyle: {
-  fontSize: responsiveFontSize(2.2)
+  fontSize: responsiveFontSize(2),
+   color: '#d2d2d2',
+},
+buttonTextStyle: {
+ fontSize: responsiveFontSize(2.5),
+ color: 'white',
+ paddingTop: responsiveHeight(1)
 },
 backgroundImageStyle: {
   height: responsiveHeight(100),

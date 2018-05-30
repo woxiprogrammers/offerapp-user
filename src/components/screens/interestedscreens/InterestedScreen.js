@@ -144,9 +144,9 @@ class InterestedScreen extends React.Component {
   renderRow(offerDetails) {
     const { item, index } = offerDetails;
     return (
-      <View>
-      <OfferCard offerDetails={item} />
-      {this.renderInterestedOptions({ item, index })}
+      <View style={{ flex: 1 }}>
+        <OfferCard offerDetails={item} />
+        {this.renderInterestedOptions({ item, index })}
       </View>
     );
   }
@@ -212,13 +212,16 @@ class InterestedScreen extends React.Component {
           dialogTitle={<DialogTitle title={selectedGrabOffer.offerName} />}
           actions={[
             <DialogButton
-              textContainerStyle={{ height: responsiveHeight(5) }}
+              textContainerStyle={{
+                height: responsiveHeight(10),
+                paddingTop: responsiveHeight(2.5)
+              }}
               text="Close"
               onPress={() => {
                 this.scaleAnimationDialog.dismiss();
               }}
               key="close"
-            />,
+            />
           ]}
         >
         {this.renderDialogContent()}

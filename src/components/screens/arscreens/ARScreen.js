@@ -61,6 +61,7 @@ class ARScreen extends React.Component {
       watchPosition: null,
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
+      message: ''
     };
     this.autoBind('handleARStart', 'calculateAngleDegress');
   }
@@ -89,20 +90,28 @@ class ARScreen extends React.Component {
           const initBearing = await Location.getHeadingAsync();
           await this.setState({ initialBearing: initBearing.trueHeading });
           await this.setState({ bearing: initBearing.trueHeading });
-          const watchHeading = await Location.watchHeadingAsync(({ trueHeading }) => {
+          const watchHeading = await Location.watchHeadingAsync(({ trueHeading, accuracy }) => {
             const { bearing } = this.state;
             const difference = bearing - trueHeading;
-            if (difference >= 180 || difference <= -180) {
-              const newDifference = difference >= 180 ? difference - 360 : difference + 360;
-              this.props.updateX(newDifference);
-            } else if (difference >= 0.8 || difference <= -0.8) {
-              this.props.updateX(difference);
-            }
-            this.setState({
-              bearing: trueHeading
-            });
-            if (!this.props.arOffersLoading && !this.state.loaded) {
-              this.handleARStart();
+            // console.log(`difference is : ${difference}`);
+            // console.log(accuracy);
+            if (accuracy >= 2) {
+              if (difference >= 180 || difference <= -180) {
+                const newDifference = difference >= 180 ? difference - 360 : difference + 360;
+                this.props.updateX(newDifference);
+                this.setState({
+                  bearing: trueHeading
+                });
+              } else if (difference >= 3 || difference <= -3) {
+                this.props.updateX(difference);
+                this.setState({
+                  bearing: trueHeading
+                });
+              }
+              if (!this.props.arOffersLoading && !this.state.loaded) {
+                console.log('Handle AR Started!!!');
+                this.handleARStart();
+              }
             }
           });
           this.setState({ watchHeading });
@@ -112,7 +121,7 @@ class ARScreen extends React.Component {
   componentDidMount() {
     this.props.clearARObjects();
     Gyroscope.removeAllListeners();
-    Gyroscope.setUpdateInterval(50);
+    Gyroscope.setUpdateInterval(500);
     Gyroscope.addListener((result) => {
       this.props.updateGyroData(result);
     });
@@ -138,7 +147,7 @@ class ARScreen extends React.Component {
         timeInterval: 1000 }, (coords) => {
           const { userLocation, loaded } = this.state;
           if (userLocation.accuracy > coords.accuracy && loaded === true) {
-          this.setState({ userLocation: coords });
+          this.setState({ userLocation: coords.coords });
           this.handleARStart();
           }
       });
@@ -153,11 +162,10 @@ class ARScreen extends React.Component {
       this.props.clearARObjects();
       const { initialBearing, userLocation } = this.state;
       const { arOffers } = this.props;
-
+      console.log(`initialBearing : ${initialBearing}`);
       arOffers.map((offer, i) => {
             const xDisplacementDegrees = this.calculateAngleDegress(userLocation, offer);
             const xDeviation = ((180 + xDisplacementDegrees) - Math.round(initialBearing)) / 10;
-            // console.log(`initialBearing : ${initialBearing}`);
             // console.log(`xDisplacementDegrees: ${xDisplacementDegrees}`);
             console.log(`xDeviation ${i} : ${xDeviation}`);
             const startingPosY = (height / 2);
@@ -197,51 +205,53 @@ class ARScreen extends React.Component {
     const { arOffersLoading } = this.props;
     if (!arOffersLoading) {
       return (
-        <Camera style={styles.arView} type={this.state.type}>
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <Text
+        <View style={{ flex: 1 }}>
+          <View
             style={{
-              color: 'rgba(226, 229, 239, 0.3)'
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(0,0,0,0)',
             }}
-          >───────{ Math.round(bearing) }───────</Text>
+          >
+            <Text
+              style={{
+                color: 'rgba(226, 229, 239, 0.3)'
+              }}
+            >───────{ Math.round(bearing) }───────</Text>
+          </View>
+          <View style={{ backgroundColor: colors.grayTransparent }}>
+          <View style={styles.arDisplay}>
+          {
+            this.props.arObjects.map((arObj, i) => {
+              return (
+                  <ARObject
+                    key={`arObject-${i}`}
+                    index={i}
+                    startingPosX={arObj.startingPosX}
+                    startingPosY={arObj.startingPosY}
+                    offerCount={arObj.offerCount}
+                    sellerAddressId={arObj.sellerAddressId}
+                    sellerInfo={arObj.sellerInfo}
+                  />
+              );
+            })
+          }
+          </View>
+          </View>
         </View>
-        <View style={styles.arDisplay}>
-        {
-          this.props.arObjects.map((arObj, i) => {
-            return (
-                <ARObject
-                  key={`arObject-${i}`}
-                  index={i}
-                  startingPosX={arObj.startingPosX}
-                  startingPosY={arObj.startingPosY}
-                  offerCount={arObj.offerCount}
-                  sellerAddressId={arObj.sellerAddressId}
-                  sellerInfo={arObj.sellerInfo}
-                />
-            );
-          })
-        }
-        </View>
-        </Camera>
       );
     }
       return (
-        <Camera style={styles.arView} type={this.state.type}>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0)',
+          }}
+        >
           <ActivityIndicator size='large' color='white' />
-          </View>
-        </Camera>
+        </View>
       );
   }
   render() {
@@ -253,7 +263,8 @@ class ARScreen extends React.Component {
     } = styles;
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
-      return (<Container style={containerStyle}>
+      return (
+    <Container style={containerStyle}>
       <Header
         style={headerStyle}
         iosBarStyle='light-content'
@@ -328,7 +339,7 @@ class ARScreen extends React.Component {
       </Container>);
     }
     return (
-      <Container style={containerStyle}>
+    <Container style={containerStyle}>
       <Header
         style={headerStyle}
         iosBarStyle='light-content'
@@ -346,7 +357,11 @@ class ARScreen extends React.Component {
         </Body>
         <Right />
         </Header>
-        {this.renderAR()}
+        <View style={{ flex: 1 }}>
+          <Camera style={styles.arView} type={this.state.type}>
+            {this.renderAR()}
+          </Camera>
+        </View>
         <View style={{ flexDirection: 'row', height: responsiveHeight(8) }}>
           <TouchableOpacity
             onPress={() => { Actions.push('arFilterScreen', { }); }}
@@ -369,7 +384,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0)',
+        backgroundColor: colors.lightGrayTransparent
     },
     containerStyle: {
       backgroundColor: colors.white,
@@ -389,9 +404,8 @@ const styles = StyleSheet.create({
     },
     arView: {
         flex: 1,
-        width: variables.SCREEN_WIDTH
+        width: variables.SCREEN_WIDTH,
     },
-
 });
 
 function mapStateToProps({ ar, user }) {

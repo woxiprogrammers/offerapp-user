@@ -10,7 +10,7 @@ import {
   } from '../constants';
 
 const INITIAL_STATE = {
-    user: '9724233636',
+    user: '8082448809',
     password: 'tejas',
     error: false,
     loginLoading: false,
@@ -41,6 +41,8 @@ export default (state = INITIAL_STATE, action) => {
       case USER_DATA_FETCH_SUCCESS: {
         const profilePic = action.userData.profilePic;
         const profilePicPath = `${IMAGEURL}${profilePic}`;
+        console.log('profilePicPath is :');
+        console.log(profilePicPath);
         return {
           ...state,
           userData: {

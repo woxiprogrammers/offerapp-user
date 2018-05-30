@@ -58,7 +58,7 @@ class ARObject extends React.Component {
           <Icon
             ios="ios-albums"
             android="md-albums"
-            style={{ fontSize: responsiveFontSize(8), color: 'white' }}
+            style={{ fontSize: responsiveFontSize(7), color: 'white' }}
           />
           <Badge
             primary

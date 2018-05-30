@@ -71,6 +71,8 @@ class MobileVerifyScreen extends React.Component {
       // pickerStyle,
       headerStyle,
       titleStyle,
+      labelStyle,
+      inputStyle,
       textStyle,
       itemStyle,
       formStyle,
@@ -86,7 +88,7 @@ class MobileVerifyScreen extends React.Component {
             style={headerStyle}
             iosBarStyle='light-content'
             >
-              <Left style={{ marginRight: -(responsiveWidth(30)) }}>
+              <Left>
                 <Button transparent onPress={Actions.pop}>
                   <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
                 </Button>
@@ -94,7 +96,7 @@ class MobileVerifyScreen extends React.Component {
               <Body>
                 <Title style={titleStyle}>Sign Up-Step 1</Title>
               </Body>
-              <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
+              <Right />
             </Header>
             <Content contentContainerStyle={contentStyle}>
               <View>
@@ -104,11 +106,13 @@ class MobileVerifyScreen extends React.Component {
                 <Form style={formStyle}>
                   <View style={itemViewStyle}>
                     <Item >
-                      <Label> +91</Label>
+                      <Label style={labelStyle}> +91</Label>
                     </Item>
-                    <Item floatingLabel style={itemStyle}>
-                      <Label> Enter your number</Label>
+                    <Item stackedLabel style={itemStyle}>
+                      <Label style={labelStyle}> Enter your number</Label>
                       <Input
+                      style={inputStyle}
+
                         onChangeText={this.onMobileVerifyChange.bind(this)}
                         value={this.props.mobileVerify}
                         keyboardType='numeric'
@@ -138,11 +142,11 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   titleStyle: {
-    width: responsiveWidth(100),
+    fontSize: responsiveFontSize(3),
+    width: responsiveWidth(60),
     color: colors.white,
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: responsiveFontSize(3),
   },
   backgroundImageStyle: {
     height: responsiveHeight(100),
@@ -157,6 +161,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
    },
+   labelStyle: {
+     color: '#d2d2d2',
+    },
   getotpStyle: {
     width: responsiveWidth(50),
     marginTop: responsiveHeight(10),
@@ -189,6 +196,9 @@ const styles = StyleSheet.create({
     marginTop: responsiveHeight(-3.3),
     width: responsiveWidth(50),
     alignSelf: 'center',
+  },
+  inputStyle: {
+   color: 'white',
   },
   otpButtonStyle: {
     fontSize: responsiveFontSize(2.2)

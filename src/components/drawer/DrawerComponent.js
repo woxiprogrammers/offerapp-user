@@ -106,7 +106,7 @@ class DrawerComponent extends React.Component {
               }}
             >
               <Icon
-                style={{ fontSize: responsiveFontSize(4), color: 'white' }}
+                style={{ fontSize: responsiveFontSize(4), color: '#888888' }}
                 ios='ios-arrow-forward'
                 android="md-arrow-forward"
               />
@@ -136,7 +136,7 @@ class DrawerComponent extends React.Component {
             }}
           >
             <Left>
-              <Text style={{ color: 'white' }}>{category.name}</Text>
+              <Text style={{ color: '#666666' }}>{category.name}</Text>
             </Left>
           </TouchableWithoutFeedback>
           {this.renderArrow(category)}
@@ -159,7 +159,7 @@ class DrawerComponent extends React.Component {
             }}
           >
             <Left>
-              <Text style={{ color: 'white' }}>{category.name}</Text>
+              <Text style={{ color: '#666666' }}>{category.name}</Text>
             </Left>
           </TouchableWithoutFeedback>
         </View>
@@ -180,14 +180,14 @@ class DrawerComponent extends React.Component {
             }}
           >
             <Icon
-              style={{ fontSize: responsiveFontSize(2.5), color: 'white' }}
+              style={{ fontSize: responsiveFontSize(2.5), color: '#c2c2c2' }}
               ios='ios-arrow-back'
               android="md-arrow-back"
             />
             <Text
               style={{
-                color: 'white',
-                fontSize: responsiveFontSize(2.5)
+                color: '#c2c2c2',
+                fontSize: responsiveFontSize(2)
               }}
             >Back to Categories</Text>
           </Button>
@@ -235,22 +235,22 @@ class DrawerComponent extends React.Component {
     const { firstName, profilePic } = this.props;
     return (
       <Container style={containerStyle}>
-        <Content>
+        <Content style={{ backgroundColor: 'white' }}>
           <TouchableWithoutFeedback
             onPress={() => { Actions.drawerClose(); Actions.profileEditScreen(); }}
           >
             <View style={profileStyle}>
               <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
                 <Text
-                  style={{ fontSize: responsiveFontSize(3), color: 'white' }}
+                  style={{ fontSize: responsiveFontSize(2.5), color: colors.headerColor }}
                 >
                   Hello, {firstName}</Text>
                 <Text
-                  style={{ fontSize: responsiveFontSize(2), color: 'white' }}
+                  style={{ fontSize: responsiveFontSize(1.5), color: '#666666' }}
                 >
-                  Reward Points:1234</Text>
+                  Reward Points : 1234</Text>
               </View>
-              <View style={{ paddingLeft: responsiveWidth(5) }}>
+              <View style={{ paddingLeft: responsiveWidth(3) }}>
                 <Thumbnail
                   large
                   source={{ uri: profilePic }}
@@ -263,19 +263,19 @@ class DrawerComponent extends React.Component {
               onPress={() => { Actions.drawerClose(); Actions.groupListingScreen(); }}
             >
               <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
-                <Icon style={{ color: 'white' }} ios='ios-people' android="md-people" />
-                  <Text style={{ fontSize: responsiveFontSize(1.8), color: 'white' }}>Groups</Text>
+                <Icon style={{ color: colors.headerColor }} ios='ios-people' android="md-people" />
+                  <Text style={{ fontSize: responsiveFontSize(2), color: '#666666' }}>Groups</Text>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback
               onPress={() => { Actions.drawerClose(); Actions.wishlistScreen(); }}
             >
               <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
-                <Icon style={{ color: 'white' }} ios='ios-heart' android="md-heart" />
+                <Icon style={{ color: colors.headerColor }} ios='ios-heart' android="md-heart" />
                   <Text
-                    style={{ fontSize: responsiveFontSize(1.8), color: 'white' }}
+                    style={{ fontSize: responsiveFontSize(2), color: '#666666' }}
                   >
-                  Wish List
+                  Wishlist
                   </Text>
               </View>
             </TouchableWithoutFeedback>
@@ -283,24 +283,36 @@ class DrawerComponent extends React.Component {
               onPress={() => { Actions.drawerClose(); Actions.interestedScreen(); }}
             >
               <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
-                <Icon style={{ color: 'white' }} ios='ios-thumbs-up' android="md-thumbs-up" />
+                <Icon
+                  style={{ color: colors.headerColor }}
+                  ios='ios-thumbs-up'
+                  android="md-thumbs-up"
+                />
                   <Text
-                    style={{ fontSize: responsiveFontSize(1.8), color: 'white' }}
+                    style={{ fontSize: responsiveFontSize(2), color: '#666666' }}
                   >
-                    I am interested
+                    Interested
                   </Text>
               </View>
             </TouchableWithoutFeedback>
           </View>
+          <View style={{ backgroundColor: '#e2e2e2', height: responsiveHeight(0.1) }} />
           <View style={categoriesStyle}>
-            <Text style={{ color: 'white', fontSize: responsiveFontSize(2) }}>Categories</Text>
+            <Text style={{ color: '#c2c2c2', fontSize: responsiveFontSize(2) }}>Categories</Text>
             {this.renderCategories()}
           </View>
-            <View style={{ paddingTop: responsiveHeight(5), paddingLeft: responsiveWidth(5) }}>
-            <TouchableOpacity onPress={() => { this.props.logoutUser(); }} >
-                <Text style={{ color: 'white' }}>Log Out</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={{ backgroundColor: '#e2e2e2', height: responsiveHeight(0.1) }} />
+          <View
+            style={{
+              backgroundColor: 'white',
+              paddingTop: responsiveHeight(3),
+              paddingLeft: responsiveWidth(5)
+            }}
+          >
+          <TouchableOpacity onPress={() => { this.props.logoutUser(); }} >
+              <Text style={{ color: '#666666' }}>Log Out</Text>
+            </TouchableOpacity>
+          </View>
         </Content>
       </Container>
     );
@@ -315,7 +327,7 @@ const styles = StyleSheet.create({
     paddingTop: responsiveHeight(6),
     paddingLeft: responsiveWidth(5),
     flexDirection: 'row',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   iconStyle: {
     flexDirection: 'row',
@@ -324,7 +336,10 @@ const styles = StyleSheet.create({
 
   },
   categoriesStyle: {
+    paddingBottom: responsiveHeight(1),
+    paddingTop: responsiveHeight(1),
     paddingLeft: responsiveWidth(5),
+    backgroundColor: 'white'
   },
   categoriesListStyle: {
     paddingRight: responsiveWidth(5)

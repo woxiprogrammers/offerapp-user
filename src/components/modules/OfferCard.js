@@ -49,6 +49,7 @@ import {
           >
             <Text
               style={{
+                color: colors.headerColor,
                 marginLeft: normalize.normalize(7),
                 alignSelf: 'flex-start',
                 fontSize: responsiveFontSize(3) }}
@@ -57,6 +58,7 @@ import {
               style={{
                 marginLeft: normalize.normalize(7),
                 alignSelf: 'flex-start',
+                color: '#666666',
                 fontSize: responsiveFontSize(2) }}
             >{sellerInfo}</Text>
             </Left>
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     width: responsiveWidth(95)
   },
   cardHeaderStyle: {
-    backgroundColor: colors.smallOfferCardHeader,
+    backgroundColor: '#fafafa',
     paddingRight: 0,
     paddingLeft: 0,
     paddingTop: 5,

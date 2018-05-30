@@ -292,7 +292,7 @@ class OfferDetailScreen extends React.Component {
         iosBarStyle='light-content'
       >
         <Left style={{ flexDirection: 'row' }}>
-          <Button transparent onPress={() => { Actions.popTo('mainScreen'); }}>
+          <Button transparent onPress={() => { Actions.pop(); }}>
             <Icon style={{ color: 'white' }} ios='ios-arrow-back' android="md-arrow-back" />
           </Button>
           <Button transparent style={{ padding: 0 }} onPress={Actions.drawerOpen}>
@@ -403,7 +403,7 @@ class OfferDetailScreen extends React.Component {
                 style={{
                   paddingLeft: responsiveWidth(1),
                   paddingRight: responsiveWidth(1),
-                  fontSize: responsiveFontSize(1.7) }}
+                  fontSize: responsiveFontSize(1.5) }}
               >Show on Map</Text>
               </Button>
               </View>

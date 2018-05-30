@@ -86,7 +86,7 @@ class OtpVerifyScreen extends React.Component {
             style={headerStyle}
             iosBarStyle='light-content'
           >
-            <Left style={{ marginRight: -(responsiveWidth(30)) }}>
+            <Left>
               <Button transparent onPress={Actions.pop}>
                 <Icon
                 style={{ color: colors.white }}
@@ -98,7 +98,7 @@ class OtpVerifyScreen extends React.Component {
             <Body>
               <Title style={titleStyle}>Sign Up-Step 2</Title>
             </Body>
-            <Right style={{ marginLeft: -(responsiveWidth(25)) }} />
+            <Right />
           </Header>
           <Content contentContainerStyle={contentStyle}>
             <View>
@@ -151,11 +151,11 @@ editStyle: {
 },
 titleStyle: {
   fontSize: responsiveFontSize(3),
-  width: responsiveWidth(100),
+  width: responsiveWidth(60),
   justifyContent: 'center',
-  fontWeight: 'bold',
   color: colors.white,
-  textAlign: 'center'
+  textAlign: 'center',
+  fontWeight: 'bold',
 },
 contentStyle: {
   backgroundColor: colors.lightGrayTransparent,

@@ -7,7 +7,9 @@ import {
 import {
   Container,
   Spinner,
-  View
+  View,
+  Icon,
+  Text
 } from 'native-base';
 import { MapView, Location } from 'expo';
 import { Actions } from 'react-native-router-flux';
@@ -42,7 +44,8 @@ class MapTab extends Component {
       'onEndReached',
       'onRefresh',
       'renderRow',
-      'renderLoading'
+      'renderLoading',
+      'renderMapOffers'
     );
   }
   async componentWillMount() {
@@ -141,15 +144,73 @@ class MapTab extends Component {
       </View>
     );
   }
+  renderMapOffers() {
+    const { whiteStyle, mapOffersErrorStyle } = styles;
+    const { mapViewCategoryOffers, pagination } = this.props;
+    if (pagination.mapViewCategoryOffersLoading) {
+      return (
+        <View
+          showsVerticalScrollIndicator={false}
+          style={{
+            backgroundColor: '#1E2D3E',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <View
+            style={{
+              width: responsiveWidth(100),
+              backgroundColor: '#1E2D3E',
+              height: responsiveHeight(1),
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          />
+          {this.renderLoading()}
+        </View>
+      );
+    }
+    if (mapViewCategoryOffers.length === 0) {
+      return (
+        <View style={mapOffersErrorStyle}>
+          <Icon style={whiteStyle}active name='ionitron' />
+          <Text style={whiteStyle}>Sorry! No Offers to Show </Text>
+        </View>);
+    }
+    return (<ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{
+        backgroundColor: '#1E2D3E',
+        flex: 1, }}
+    >
+      <View
+        style={{
+          width: responsiveWidth(100),
+          backgroundColor: '#1E2D3E',
+          height: responsiveHeight(1) }}
+      />
+      <FlatList
+        style={{ flex: 1 }}
+        data={mapViewCategoryOffers}
+        refreshing={false}
+        scrollEnabled={false}
+        renderItem={this.renderRow}
+        keyExtractor={this.keyExtractor}
+        onRefresh={() => { return this.onRefresh(); }}
+        onEndReached={() => { return this.onEndReached(); }}
+      />
+      {this.renderLoading()}
+    </ScrollView>);
+  }
   render() {
     const {
       containerStyle,
       mapStyle
     } = styles;
-    const { mapViewCategoryOffers } = this.props;
     return (
       <Container style={containerStyle}>
-        <View style={{ backgroundColor: 'black', flex: 1 }} >
+        <View style={{ backgroundColor: 'white', flex: 1 }} >
           <View style={{ flex: 1 }} >
             <MapView
               showsUserLocation
@@ -171,30 +232,7 @@ class MapTab extends Component {
               })}
             </MapView>
           </View>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              style={{
-                backgroundColor: '#1E2D3E',
-                flex: 1, }}
-            >
-              <View
-                style={{
-                  width: responsiveWidth(100),
-                  backgroundColor: '#1E2D3E',
-                  height: responsiveHeight(1) }}
-              />
-              <FlatList
-                style={{ flex: 1 }}
-                data={mapViewCategoryOffers}
-                refreshing={false}
-                scrollEnabled={false}
-                renderItem={this.renderRow}
-                keyExtractor={this.keyExtractor}
-                onRefresh={() => { return this.onRefresh(); }}
-                onEndReached={() => { return this.onEndReached(); }}
-              />
-              {this.renderLoading()}
-            </ScrollView>
+            {this.renderMapOffers()}
         </View>
       </Container>
     );
@@ -222,6 +260,20 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     ...StyleSheet.absoluteFillObject,
+  },
+  mapOffersErrorStyle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1E2D3E',
+  },
+  whiteStyle: {
+    color: colors.white
+  },
+  loadingStyle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 function mapStateToProps({ main, categories, user }) {
