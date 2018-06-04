@@ -223,9 +223,9 @@ class MapTab extends Component {
                   <MapView.Marker
                     key={marker.key}
                     coordinate={marker.coordinate}
-                    pinColor={this.randomColor()}
+                    pinColor={colors.headerColor}
                     onPress={() => {
-                      Actions.push('offerDetailScreen', { offerId: marker.offerId });
+                      Actions.push('offerDetailScreen', { getOffer: marker.offerId });
                     }}
                   />
                 );

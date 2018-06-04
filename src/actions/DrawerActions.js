@@ -75,7 +75,7 @@ export const userDataFetch = ({ token }) => {
 export const getReachInTime = ({ token }) => {
   return (dispatch) => {
     dispatch(getReachInTimeRequest());
-    const path = 'customer/offer/reach_in_time/listing';
+    const path = 'customer/offer/reach-in-time/listing';
     axios({
       url: `${URL}/${path}/?token=${token}`,
       // url: 'http://www.mocky.io/v2/5adb7a2c29000050003e3e04',

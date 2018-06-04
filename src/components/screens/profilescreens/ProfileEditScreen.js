@@ -113,7 +113,7 @@ class ProfileEditScreen extends React.Component {
     }
   }
   renderDone() {
-    if (this.props.peLoading) {
+    if (this.props.peLoading || this.props.peProfilePicUploadLoading) {
       return <Spinner color="white" />;
     }
     return (
@@ -141,7 +141,7 @@ class ProfileEditScreen extends React.Component {
       viewItemStyle,
       contentStyle,
       headerStyle,
-      labelStyle,
+      // labelStyle,
       inputStyle,
       formStyle,
       titleStyle,

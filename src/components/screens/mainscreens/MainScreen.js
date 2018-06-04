@@ -8,6 +8,7 @@ import {
   NetInfo,
   FlatList,
   TouchableOpacity,
+  Alert,
   // DeviceEventEmitter
 } from 'react-native';
 import {
@@ -85,20 +86,52 @@ class MainScreen extends React.Component {
     });
   }
   async componentWillMount() {
-    const { token } = this.props;
-    if (!this.props.fromChangeLocation) {
-      const { status } = await Permissions.askAsync(Permissions.LOCATION);
-      if (status !== 'granted') {
-        this.setState({
-          message: 'Permission to access location was denied',
-        });
-      } else {
+    console.log('In componentWillMount');
+    const { token, fromChangeLocation } = this.props;
+    if (!fromChangeLocation) {
+      Location.getProviderStatusAsync()
+      .then(status => {
+      console.log('Getting status');
+      if (!status.locationServicesEnabled) {
+        Alert.alert('Please turn on your location');
+      }
+    })
+    .then(() => { return Permissions.askAsync(Permissions.LOCATION); })
+    .then(permissions => {
+      if (permissions.status !== 'granted') {
+        throw new Error('Ask for permissions');
+      }
+    })
+    .then(async () => {
       const location = await Location.getCurrentPositionAsync(GEOLOCATION_OPTIONS);
       const latitude = location.coords.latitude;
       const longitude = location.coords.longitude;
       const coords = { latitude, longitude };
       await this.props.getLocation(token, coords);
-    }
+    })
+    .catch(error => {
+      console.log(error);
+      this.setState({
+        message: 'Permission to access location was denied',
+      });
+    });
+    //   const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    //   console.log('Status is :');
+    //   console.log(status !== 'granted');
+    //   if (status !== 'granted') {
+    //     this.setState({
+    //       message: 'Permission to access location was denied',
+    //     });
+    //   } else {
+    //   console.log('Granted Permission');
+    //   const location = await Location.getCurrentPositionAsync(GEOLOCATION_OPTIONS);
+    //   console.log('location is :');
+    //   console.log(location);
+    //   const latitude = location.coords.latitude;
+    //   const longitude = location.coords.longitude;
+    //   const coords = { latitude, longitude };
+    //   await this.props.getLocation(token, coords);
+    // }
     }
     const { latitude, longitude } = this.props;
     const coords = { latitude, longitude };
@@ -206,7 +239,7 @@ class MainScreen extends React.Component {
 
   renderNearByOffers() {
     const { pagination, nearByOffers } = this.props;
-    const { loadingStyle, whiteStyle, nearbyErrorStyle } = styles;
+    const { loadingStyle, blackStyle, nearbyErrorStyle } = styles;
     if (pagination.nearByOffersLoading) {
       return (
         <View style={loadingStyle}>
@@ -216,8 +249,8 @@ class MainScreen extends React.Component {
     } else if (nearByOffers.length === 0) {
       return (
         <View style={nearbyErrorStyle}>
-          <Icon style={whiteStyle}active name='ionitron' />
-          <Text style={whiteStyle}>Sorry! No Offers to Show </Text>
+          <Icon style={blackStyle}active name='ionitron' />
+          <Text style={blackStyle}>Sorry! No Offers to Show </Text>
         </View>);
     }
    return (
@@ -394,6 +427,9 @@ const styles = StyleSheet.create({
   },
   whiteStyle: {
     color: colors.white
+  },
+  blackStyle: {
+    color: colors.black
   },
   swiperErrorStyle: {
     backgroundColor: '#1C2A3A',

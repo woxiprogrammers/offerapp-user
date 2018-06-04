@@ -367,7 +367,12 @@ class OfferDetailScreen extends React.Component {
           </View>
           <View style={offerStyle}>
             <View style={{ width: responsiveWidth(65) }}>
-            <Text style={{ fontSize: responsiveFontSize(3.8) }}>{offerName}</Text>
+            <Text
+              style={{
+                color: colors.headerColor,
+                fontSize: responsiveFontSize(3.8)
+              }}
+            >{offerName}</Text>
             <Text style={{ fontSize: responsiveFontSize(2.5) }}>{sellerInfo}</Text>
             <Text
               style={{ fontSize: responsiveFontSize(1.7) }}
@@ -393,18 +398,13 @@ class OfferDetailScreen extends React.Component {
               <View style={{ paddingTop: responsiveHeight(2) }}>
               <Button
                 style={{
-                  height: responsiveHeight(5),
-                  width: responsiveWidth(25),
+                  height: responsiveHeight(7),
+                  width: responsiveWidth(16),
                   justifyContent: 'center',
                   backgroundColor: '#47525E'
                 }}
                 onPress={this.showMapDialog}
-              ><Text
-                style={{
-                  paddingLeft: responsiveWidth(1),
-                  paddingRight: responsiveWidth(1),
-                  fontSize: responsiveFontSize(1.5) }}
-              >Show on Map</Text>
+              ><Icon style={{ color: '#fafafa' }} name="map" />
               </Button>
               </View>
             </View>

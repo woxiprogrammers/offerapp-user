@@ -116,6 +116,7 @@ export const getAROffers = ({
             type: AR_OFFERS_RESET
           });
         }
+        console.log('Get AR Success');
         dispatch(getAROffersSuccess(response.data.data));
       }
     }).catch((error) => {

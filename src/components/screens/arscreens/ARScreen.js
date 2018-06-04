@@ -87,12 +87,15 @@ class ARScreen extends React.Component {
             coords,
             page
           });
+          console.log('Return from Get Location');
           const initBearing = await Location.getHeadingAsync();
-          await this.setState({ initialBearing: initBearing.trueHeading });
-          await this.setState({ bearing: initBearing.trueHeading });
-          const watchHeading = await Location.watchHeadingAsync(({ trueHeading, accuracy }) => {
+          console.log('initBearing is :');
+          console.log(initBearing);
+          await this.setState({ initialBearing: initBearing.magHeading });
+          await this.setState({ bearing: initBearing.magHeading });
+          const watchHeading = await Location.watchHeadingAsync(({ magHeading, accuracy }) => {
             const { bearing } = this.state;
-            const difference = bearing - trueHeading;
+            const difference = bearing - magHeading;
             // console.log(`difference is : ${difference}`);
             // console.log(accuracy);
             if (accuracy >= 2) {
@@ -100,12 +103,12 @@ class ARScreen extends React.Component {
                 const newDifference = difference >= 180 ? difference - 360 : difference + 360;
                 this.props.updateX(newDifference);
                 this.setState({
-                  bearing: trueHeading
+                  bearing: magHeading
                 });
               } else if (difference >= 1 || difference <= -1) {
                 this.props.updateX(difference);
                 this.setState({
-                  bearing: trueHeading
+                  bearing: magHeading
                 });
               }
               if (!this.props.arOffersLoading && !this.state.loaded) {
@@ -168,7 +171,7 @@ class ARScreen extends React.Component {
             const xDeviation = ((180 + xDisplacementDegrees) - Math.round(initialBearing)) / 10;
             // console.log(`xDisplacementDegrees: ${xDisplacementDegrees}`);
             console.log(`xDeviation ${i} : ${xDeviation}`);
-            const startingPosY = (height / 2);
+            const startingPosY = (height / 3);
             const startingPosX = (width / 2) + (xDeviation * width);
             const offerCount = offer.offerCount;
             const sellerAddressId = offer.sellerAddressId;

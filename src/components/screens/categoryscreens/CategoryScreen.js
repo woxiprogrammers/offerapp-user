@@ -79,7 +79,7 @@ export default class CategoryScreen extends Component {
               heading={
                 <TabHeading style={{ backgroundColor: '#3b5998' }}>
                   <Icon style={{ color: '#fafafa' }} name="list" />
-                    <Text style={{ color: '#fafafa' }}>Listing</Text>
+                  <Text style={{ color: '#fafafa' }}>Listing</Text>
                 </TabHeading>}
             >
               <ListingTab />
@@ -106,7 +106,7 @@ export default class CategoryScreen extends Component {
               heading={
                 <TabHeading style={{ backgroundColor: '#3b5998' }}>
                   <Icon style={{ color: '#fafafa' }} name="map" />
-                    <Text style={{ color: '#fafafa' }}>Map</Text>
+                  <Text style={{ color: '#fafafa' }}>Map</Text>
                 </TabHeading>}
             >
               <MapTab />
